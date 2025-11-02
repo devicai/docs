@@ -1,5 +1,45 @@
-l sistema de logs de Devic no solo aporta visibilidad técnica, sino que constituye una herramienta esencial para la mejora continua y la validación del comportamiento de los agentes.
-</Note>
-
-***
-
+- title: Introducción
+  url: https://docs.devic.ai/devic/introduction
+  one_liner: Presenta Devic como plataforma para que empresas SaaS se vuelvan “AI-native” sin construir infraestructura propia.
+  answers: [
+    "¿Qué es Devic y qué problema resuelve para un SaaS?",
+    "¿Qué componentes básicos ofrece Devic (agentes, asistentes, bases de datos, herramientas)?",
+    "¿Por qué elegir Devic frente a montar tu propia infraestructura de IA?"
+  ]
+  key_terms: ["Devic", "plataforma AI-native", "SaaS IA", "agentes asistentes bases de datos"]
+  prerequisites: []
+  steps: |
+    1) Comprender el objetivo principal de Devic: transformar un SaaS en empresa AI-native.
+    2) Identificar los componentes clave que ofrece: MCPs (herramientas), agentes, asistentes, bases de datos vectoriales.
+    3) Valorar los beneficios: agnóstico de modelo (OpenAI, Anthropic, Azure, on-premise), gestión de prompts, trazabilidad, RAG nativo, control de costes.
+  api_surface: |
+    No aplica (página de alto nivel, no describe endpoints específicos).
+  constraints: |
+    Es una visión general; para detalles técnicos específicos se debe consultar las secciones correspondientes (agentes, asistentes, MCPs, bases de datos).
+  examples: |
+    No hay ejemplos directos de código en esta página, solo categorías de lo que puede construirse (ej. “asistentes en tiempo real con acceso a tus datos y herramientas”).
+  related: ["Primeros pasos", "Qué son los agentes", "Qué son los asistentes", "MCPs personalizados", "Bases de datos vectoriales"]
+- title: Quickstart
+  url: https://docs.devic.ai/devic/quickstart
+  one_liner: Configura y lanza tu primer flujo en Devic en minutos para comenzar con agentes o asistentes.
+  answers: [
+    "¿Cómo empiezo a usar Devic desde cero?",
+    "¿Cuáles son los pasos para configurar mi entorno en Devic?",
+    "¿Qué modelo de lenguaje elegir y cómo conectar herramientas al inicio?"
+  ]
+  key_terms: ["quickstart", "primeros pasos", "Onboarding Devic", "setup inicial Devic"]
+  prerequisites: ["Una cuenta en Devic", "Acceso a proveedor de modelo (API key)", "Conocimiento básico de IA/LLM"]
+  steps: |
+    1) Accede al dashboard de Devic y crea un nuevo proyecto o workspace.
+    2) Selecciona tu proveedor de modelo (OpenAI, Anthropic, Azure, on-premises) e introduce tu clave/API.
+    3) Elige si vas a crear un agente, un asistente, o una base de datos como punto de partida.
+    4) Asigna las herramientas (MCPs) necesarias, conecta las integraciones y configura los accesos.
+    5) Define un prompt inicial, ajusta los parámetros de ejecución (tokens, temperatura) y lanza una prueba.
+    6) Revisa los logs/resultados, ajusta el prompt o la herramienta si es necesario, y despliega al entorno de producción.
+  api_surface: |
+    No endpoints específicos listados en la página rápida; se trata de configuración de entorno.
+  constraints: |
+    Solo recomendable para entornos de prueba o piloto antes de escalar; la configuración completa de producción requiere pasos adicionales en otras secciones.
+  examples: |
+    Ejemplo rápido: “Usa OpenAI GPT-4, conecta tu base de datos interna como herramienta, y lanza un agente que responda a las FAQ de tu producto en menos de 10 minutos.”
+  related: ["Introducción", "Qué son los agentes", "Qué son los asistentes", "MCPs index"]
