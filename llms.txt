@@ -6,7 +6,7 @@
     "¿Qué componentes básicos ofrece Devic (agentes, asistentes, bases de datos, herramientas)?",
     "¿Por qué elegir Devic frente a montar tu propia infraestructura de IA?"
   ]
-  key_terms: ["Devic", "plataforma AI-native", "SaaS IA", "agentes asistentes bases de datos"]
+  key_terms: ["Devic", "plataforma AI-native", "SaaS IA", "agentes Devic", "asistentes Devic", "base de datos vectorial Devic"]
   prerequisites: []
   steps: |
     1) Comprender el objetivo principal de Devic: transformar un SaaS en empresa AI-native.
@@ -18,7 +18,7 @@
     Es una visión general; para detalles técnicos específicos se debe consultar las secciones correspondientes (agentes, asistentes, MCPs, bases de datos).
   examples: |
     No hay ejemplos directos de código en esta página, solo categorías de lo que puede construirse (ej. “asistentes en tiempo real con acceso a tus datos y herramientas”).
-  related: ["Primeros pasos", "Qué son los agentes", "Qué son los asistentes", "MCPs personalizados", "Bases de datos vectoriales"]
+  related: ["Quickstart", "Agentes index", "Asistentes index", "MCPs index"]
 - title: Quickstart
   url: https://docs.devic.ai/devic/quickstart
   one_liner: Configura y lanza tu primer flujo en Devic en minutos para comenzar con agentes o asistentes.
@@ -27,19 +27,933 @@
     "¿Cuáles son los pasos para configurar mi entorno en Devic?",
     "¿Qué modelo de lenguaje elegir y cómo conectar herramientas al inicio?"
   ]
-  key_terms: ["quickstart", "primeros pasos", "Onboarding Devic", "setup inicial Devic"]
+  key_terms: ["quickstart", "primeros pasos", "onboarding Devic", "configuración inicial", "setup Devic", "primer agente", "primer asistente"]
   prerequisites: ["Una cuenta en Devic", "Acceso a proveedor de modelo (API key)", "Conocimiento básico de IA/LLM"]
   steps: |
     1) Accede al dashboard de Devic y crea un nuevo proyecto o workspace.
     2) Selecciona tu proveedor de modelo (OpenAI, Anthropic, Azure, on-premises) e introduce tu clave/API.
-    3) Elige si vas a crear un agente, un asistente, o una base de datos como punto de partida.
+    3) Elige si vas a crear un agente, un asistente o una base de datos como punto de partida.
     4) Asigna las herramientas (MCPs) necesarias, conecta las integraciones y configura los accesos.
     5) Define un prompt inicial, ajusta los parámetros de ejecución (tokens, temperatura) y lanza una prueba.
     6) Revisa los logs/resultados, ajusta el prompt o la herramienta si es necesario, y despliega al entorno de producción.
   api_surface: |
-    No endpoints específicos listados en la página rápida; se trata de configuración de entorno.
+    No endpoints específicos listados en la guía rápida; se trata de configuración inicial mediante la interfaz de Devic.
   constraints: |
-    Solo recomendable para entornos de prueba o piloto antes de escalar; la configuración completa de producción requiere pasos adicionales en otras secciones.
+    Guía pensada para entorno de prueba. No cubre despliegues multiusuario, control de costes ni monitoreo avanzado. Para esos temas, consulta “Optimización continua”.
   examples: |
     Ejemplo rápido: “Usa OpenAI GPT-4, conecta tu base de datos interna como herramienta, y lanza un agente que responda a las FAQ de tu producto en menos de 10 minutos.”
-  related: ["Introducción", "Qué son los agentes", "Qué son los asistentes", "MCPs index"]
+  related: ["Introducción", "Agentes index", "Asistentes index", "MCPs index", "Bases de datos index"]
+- title: MCPs – Qué son y cómo funcionan
+  url: https://docs.devic.ai/devic/mcps/index
+  one_liner: Explica el estándar MCP (Model Context Protocol) de Devic y cómo integrar herramientas, APIs y servicios externos.
+  answers: [
+    "¿Qué es un MCP en Devic?",
+    "¿Cómo conecto un servicio externo como herramienta usando MCP?",
+    "¿Cuáles son los tipos de MCP en Devic (Built-in, mis MCPs, de terceros)?"
+  ]
+  key_terms: ["MCP", "Model Context Protocol", "integración de herramientas Devic", "mis MCPs", "built-in tools Devic", "importar MCP tercero"]
+  prerequisites: ["Haber leído la sección de Introducción a Devic"]
+  steps: |
+    1) Entender el papel de los MCPs: son la capa que conecta tus agentes/asistentes con servicios externos (APIs, bases de datos, herramientas).  
+    2) Conocer los tres grandes bloques: Built-in Tools (ya disponibles), Mis MCPs (tus propias integraciones), Importar terceros (servicios externos preparados).  
+    3) Elegir qué tipo necesitas según tu caso: si solo usas lo que ofrece Devic → Built-in; si tienes API propia → Mis MCPs; si usas un servicio ya hecho por otro proveedor → Importar terceros.  
+    4) Configurar autenticaciones, permisos y endpoints según la herramienta que vayas a usar.  
+    5) Enlazar el MCP al agente o asistente en Devic y probar una llamada de herramienta para validar que la integración funciona correctamente.  
+  api_surface: |
+    No endpoints concretos en esta página; se remite a secciones de configuración de cada tipo de MCP para detalles.
+  constraints: |
+    Este índice es una visión global. Para detalles técnicos completos deberás revisar cada sub-sección (“Mi MCPs”, “Built-in Tools”, “Importar MCPs terceros”). Algunos servicios pueden requerir plan pago, versiones específicas o autenticaciones especiales.
+  examples: |
+    Ejemplo: “Quiero conectar mi API interna de tickets como herramienta: crearé un ‘Mis MCPs’ definiendo endpoint POST /tickets, credenciales, mapping de parámetros → luego lo usaré desde un agente para crear tickets automáticamente.”  
+  related: ["Mis MCPs – Qué son", "Importar MCPs de terceros", "Built-in Tools – Qué son", "Agentes index", "Asistentes index"]
+- title: Qué son mis MCPs
+  url: https://docs.devic.ai/devic/mcps/my-mcps/what-it-is
+  one_liner: Crea y gestiona tus propios servidores MCP para que los LLMs ejecuten directamente tus APIs o servicios internos.
+  answers: [
+    "¿Qué significa ‘Mis MCPs’ en Devic?",
+    "¿Cómo transformo mi API interna en un MCP compatible con Devic?",
+    "¿Qué interfaz visual ofrece el panel de Mis MCPs y qué puedo hacer desde allí?"
+  ]
+  key_terms: ["Mis MCPs", "custom MCP Devic", "servidor MCP interno", "API como herramienta Devic", "conector MCP Devic"]
+  prerequisites: ["Haber entendido el estándar MCP", "Tener una API o servicio interno accesible"]
+  steps: |
+    1) Accede al panel “Mis MCPs” en Devic desde la sección de MCPs.
+    2) Haz clic en “Add custom MCP” para iniciar la creación de un nuevo conector.
+    3) Proporciona el nombre del conector, la descripción, y los datos de autenticación/endpoints de tu API.
+    4) Configura las herramientas (tools) que el conector expondrá: parámetros, métodos HTTP, autorización.
+    5) Publica el MCP y verifica que aparece el indicador “activo”. Luego, asócielo a un agente o asistente y usa una llamada de prueba para validar que el LLM puede invocar la herramienta.
+  api_surface: |
+    Define un nuevo servidor MCP con tu API, incluyendo endpoints HTTP, parámetros de entrada, tipos de retorno, y mapeado de tool. El conector se registra en Devic y se hace visible en el panel de “Mis MCPs”.
+  constraints: |
+    Solo APIs que sean accesibles (internas o externas) y con formato compatible pueden transformarse en MCPs. Requiere permisos de publicación y conocimiento técnico para definir los endpoints correctamente. No cubre APIs sin autenticación o fuera del control del usuario.
+  examples: |
+    Ejemplo: “Tengo una API interna de tickets (POST /api/v1/tickets). Creo un conector ‘Tickets-MCP’, defino el método POST con parámetros {userId, issueDesc}, publico el MCP y luego pido al agente ‘crea un ticket para el usuario 123 con descripción X’, y el LLM invoca la herramienta via el MCP.”
+  related: ["MCPs index", "Importar MCPs de terceros", "Configurar las tools de Mis MCPs", "SDKs y Widgets MCP", "Integración con LLMs MCP"]
+- title: Importar tool en Mis MCPs
+  url: https://docs.devic.ai/devic/mcps/my-mcps/import-tool
+  one_liner: Aprende a importar una herramienta externa (API o servicio) como tool en tu conector “Mis MCPs” para que tus agentes o asistentes la utilicen.
+  answers: [
+    "¿Cómo importar una herramienta (API existente) como tool en Mis MCPs de Devic?",
+    "¿Cuáles son los requisitos para importar una tool externa en Devic?",
+    "¿Qué errores comunes ocurren al importar una tool y cómo solucionarlos?"
+  ]
+  key_terms: ["importar tool Devic", "tool externa MCP", "Mis MCPs importar servicio", "integrar API como tool Devic"]
+  prerequisites: ["Tener un conector Mis MCPs ya creado", "Acceso a la API externa con documentación de endpoints"]
+  steps: |
+    1) En el panel de “Mis MCPs” selecciona el conector al que quieres añadir la tool.  
+    2) Haz clic en “Import tool” o “Añadir herramienta” para iniciar el proceso de integración.  
+    3) Proporciona la especificación de la API: endpoint, método HTTP, parámetros de entrada, formato de salida y autenticación/credenciales.  
+    4) Mapea los parámetros de la API a los campos de la tool: define nombres de campos, tipos, validaciones y comportamiento de error.  
+    5) Guarda la tool, publica el conector si es necesario, y realiza una llamada de prueba desde el agente o asistente para verificar que funciona correctamente.  
+    6) Ajusta los parámetros (timeout, fallback, errores) y documenta la tool para que los usuarios finales sepan cómo invocarla.  
+  api_surface: |
+    Al importar una tool se define un endpoint externo que el MCP expondrá como herramienta interna.  
+    Parámetros típicos:  
+    - `endpoint`: URL string  
+    - `method`: string (e.g., "GET", "POST")  
+    - `parameters`: object (entrada de la API)  
+    - `responseMapping`: object (formato esperado por Devic)  
+    - `authConfig`: object (credenciales/token)  
+  constraints: |
+    La API externa debe estar accesible, documentada y compatible con los formatos que Devic acepta. Las herramientas importadas pueden tener latencia, fallos o limitaciones de uso (API quotas). Debes revisar la versión del conector y límites del entorno de producción.  
+  examples: |
+    Ejemplo: “Tengo una API REST de facturación: POST /v1/invoices {customerId, amount}. En ‘Mis MCPs’ creo un conector ‘Facturación-MCP’, importo la tool ‘CrearFactura’ con endpoint, mapeo parámetros, publico y luego el agente puede invocar: ‘Crea factura para cliente 123 por importe 50’.”  
+  related: ["Mis MCPs – Qué son", "Configurar tools de Mis MCPs", "Publicar MCP", "SDKs y Widgets MCP", "Integración con LLMs MCP"]
+- title: Menú de tools de Mis MCPs
+  url: https://docs.devic.ai/devic/mcps/my-mcps/tools-menu
+  one_liner: Gestiona, organiza y accede a las herramientas (tools) de tu conector “Mis MCPs” desde el panel de Devic.
+  answers: [
+    "¿Dónde encuentro y cómo gestiono las tools dentro de Mis MCPs en Devic?",
+    "¿Cómo añado, edito o elimino una tool desde el menú de tools?",
+    "¿Qué vistas y filtros proporciona el menú de tools para ver todas las herramientas registradas?"
+  ]
+  key_terms: ["tools menu Devic", "menú herramientas Mis MCPs", "gestionar tools Devic", "panel de tools MCPs", "lista de tools Devic"]
+  prerequisites: ["Tener un conector Mis MCPs creado", "Acceso al panel de Mis MCPs en Devic"]
+  steps: |
+    1) Abre el panel “Mis MCPs” desde la sección de MCPs en el dashboard de Devic.  
+    2) Selecciona el conector al que quieres acceder y haz clic en la sección “Tools” o “Herramientas”.  
+    3) Desde el menú de tools, puedes ver la lista de todas las herramientas asociadas: nombre, descripción, estado (activo/inactivo), fecha de creación.  
+    4) Para añadir una nueva herramienta haz clic en “Añadir tool”, proporciona nombre, endpoint, parámetros y mapeo.  
+    5) Para editar una herramienta existente, selecciona el registro, modifica los campos necesarios, guarda los cambios y publica si es necesario.  
+    6) Para eliminar o desactivar una herramienta, selecciona la opción correspondiente y confirma. Usa filtros/búsqueda para encontrar rápidamente tools en estados específicos (activo/pendiente) o con etiquetas.  
+  api_surface: |
+    El menú en sí es parte de la interfaz de usuario de Devic; no se exponen directamente endpoints públicos desde esta página.  
+  constraints: |
+    Solo se listan las herramientas del conector seleccionado; no se permite gestionar tools de otros conectores en este menú. Algunos campos solo pueden modificarse cuando la tool está en estado inactivo.  
+  examples: |
+    Ejemplo: “Voy al conector ‘Facturación-MCP’ > Tools > veo 3 herramientas: CrearFactura, ConsultarSaldo, ListarFacturas. Quiero editar ‘CrearFactura’, hago clic, cambio el timeout de 30s a 60s, guardo, y luego la tool pasa al estado ‘Re-publicada’.”  
+  related: ["Importar tool en Mis MCPs", "Configurar tools de Mis MCPs", "Publicar MCP", "Sesiones y actividad de Mis MCPs"]
+- title: Configurar las tools de Mis MCPs
+  url: https://docs.devic.ai/devic/mcps/my-mcps/configure-tools
+  one_liner: Ajusta los detalles de cada tool (endpoint, parámetros, autenticación, widgets) en tu conector Mis MCPs.
+  answers: [
+    "¿Cómo edito una tool ya importada en Mis MCPs de Devic?",
+    "¿Qué campos puedo configurar para una tool (endpoint, método, parámetros, headers, widget)?",
+    "¿Cómo pruebo o valido que la tool funciona tras configurarla?"
+  ]
+  key_terms: ["configurar tools Devic", "editar tool Mis MCPs", "parámetros tool Devic", "autenticación tool Devic", "widget tool Devic"]
+  prerequisites: ["Tener definido e importado una tool en Mis MCPs", "Acceso al panel de configuración de la tool en Devic"]
+  steps: |
+    1) Entra en el conector correspondiente en “Mis MCPs” y selecciona la tool que deseas configurar.  
+    2) En el editor de configuración define: Function Name, Description, Parameters (nombre, tipo, descripción), Endpoint (ruta), Method (GET/POST/PUT/DELETE).  
+    3) Opcional: cambia al modo JSON para ver/editar manualmente el esquema de request/respuesta o importar OpenAPI.  
+    4) Configura opciones avanzadas: Query Parameters, Path Parameters, Body Property Key, Custom Headers, Widget Binding.  
+    5) Haz clic en Confirm para validar y luego Save Changes para aplicar.  
+    6) Verifica la llamada de la tool desde la pestaña “Tool Calls” o conectándola a un agente/asistente y comprobando que la invocación devuelve resultados esperados.  
+  api_surface: |
+    La configuración define cómo el MCP expondrá la tool al modelo y al entorno Devic:  
+    - `endpoint`: string (URL del servicio)  
+    - `method`: string ("GET","POST","PUT","DELETE")  
+    - `parameters`: object (lista de entradas definidas por el usuario)  
+    - `customHeaders`: object (cabeceras HTTP personalizadas)  
+    - `widgetBinding`: object (definición de widgets/SDKs que usan la herramienta)  
+  constraints: |
+    La tool debe tener una API accesible y correctamente documentada; la latencia o fallos de la API pueden influir en la experiencia. Algunos campos solo pueden modificarse si la tool está inactiva o en revisión.  
+  examples: |
+    Ejemplo: “Tengo una tool ‘ListarFacturas’ con endpoint `/api/v1/invoices/list`, método GET. Configuro function name = ‘ListInvoices’, parámetros {customerId:string, status:string}, headers {Authorization:Bearer …}, guardo. Luego en el agente hago: ‘muestra facturas pendientes del cliente 789’ y la herramienta responde con la lista filtrada.”  
+  related: ["Importar tool en Mis MCPs", "Menú de tools de Mis MCPs", "Publicar MCP", "Sesiones y actividad del MCP"]
+- title: Publicar MCP
+  url: https://docs.devic.ai/devic/mcps/my-mcps/publish
+  one_liner: Haz que tu conector “Mis MCPs” esté activo y disponible para agentes o asistentes en Devic.
+  answers: [
+    "¿Cómo publico un conector MCP para que los agentes lo utilicen en Devic?",
+    "¿Qué pasos hay para mover un MCP de borrador a producción en Devic?",
+    "¿Qué comprobaciones debo hacer antes de publicar un MCP y qué errores pueden aparecer?"
+  ]
+  key_terms: ["publicar MCP Devic", "activar conector MCP", "deploy MCP Devic", "MCP producción Devic"]
+  prerequisites: ["Conector MCP ya creado y configurado (tools importadas, parámetros definidos)", "Pruebas exitosas de las tools asociadas al MCP"]
+  steps: |
+    1) En el panel “Mis MCPs”, selecciona el conector que deseas publicar.  
+    2) Asegúrate de que todas las tools estén importadas, configuradas y correctamente mapeadas a parámetros.  
+    3) Revisa el estado de la integración: ejecuta una llamada piloto a cada tool para verificar que responde como se espera.  
+    4) Haz clic en “Publicar” o “Deploy” (según la interfaz) y define el ámbito de visibilidad del conector (por ejemplo: privado, equipo, organización o público).  
+    5) Espera a que el sistema cambie el estado a “Activo / Published” y revisa que el conector aparece en la lista de MCPs disponibles para los agentes o asistentes.  
+    6) Comprueba desde un agente o asistente que el conector publicado aparece como herramienta utilizable; si hay errores, vuelve a la fase de configuración, corregir y republicar.  
+  api_surface: |
+    Este paso activa el conector MCP en el sistema Devic para que pueda ser referenciado por agentes/asistentes. Las herramientas dentro del MCP se exponen como endpoints utilizable por los workflows de IA. No se describen endpoints explícitos en esta página, ya que es una acción administrativa en la plataforma.
+  constraints: |
+    El conector sólo puede publicarse si todas las tools están en estado “Ready” y no tienen errores críticos. Una vez publicado, modificar parámetros esenciales (por ejemplo: esquema de solicitud) puede requerir downtime o reinstanciación del conector. Las políticas de visibilidad pueden imponer restricciones de acceso según plan de Devic.  
+  examples: |
+    Ejemplo: “Mi conector ‘Facturación-MCP’ ya tiene 5 tools listas: CrearFactura, ListarFacturas, ConsultarSaldo, AnularFactura, HistorialFacturas. Realizo llamadas de prueba, funciona todo, clic en Publicar, lo hago visible al equipo. Luego desde un agente invoco ‘Facturación-MCP.ListarFacturas’ dentro de la conversación y obtengo los datos correctamente.”  
+  related: ["Configurar tools de Mis MCPs", "Importar tool en Mis MCPs", "Sesiones y actividad de Mis MCPs", "SDKs y Widgets MCP", "Integración con LLMs MCP"]
+- title: Sesiones y actividad de Mis MCPs
+  url: https://docs.devic.ai/devic/mcps/my-mcps/sessions
+  one_liner: Monitoriza las sesiones, llamadas y métricas de uso de tus conectores “Mis MCPs” para analizar rendimiento y actividad.
+  answers: [
+    "¿Cómo ver cuántas llamadas se han hecho a un conector Mis MCP en Devic?",
+    "¿Qué datos de actividad muestra el panel de sesiones en Mis MCPs?",
+    "¿Cómo interpretar los logs o métricas de sesiones para optimizar mi conector?"
+  ]
+  key_terms: ["sesiones Mis MCPs Devic", "actividad MCP Devic", "monitorización MCP sesiones", "logs herramientas MCP Devic"]
+  prerequisites: ["Conector Mis MCPs ya publicado y siendo utilizado por agentes/asistentes", "Acceso al panel de Sesiones/Actividad en Devic"]
+  steps: |
+    1) Entra en “Mis MCPs” → selecciona el conector que deseas monitorizar.  
+    2) Haz clic en la pestaña “Sesiones” o “Actividad” para acceder al panel de métricas.  
+    3) Revisa la vista general: número de sesiones iniciadas, llamadas a cada tool del MCP, estado de éxito/error, latencia media.  
+    4) Filtra por periodo de tiempo (hora, día, semana) o por herramienta específica para analizar patrones de uso.  
+    5) Si detectas errores elevadas o latencia alta, haz clic en el log detallado, identifica la tool y el stack-trace, luego corrige la configuración de la tool o ajusta el endpoint.  
+    6) Exporta o programa alertas según el plan de Devic para notificar sobre caídas, excesos de latencia o uso no autorizado.  
+  api_surface: |
+    No se exponen nuevos endpoints públicos en esta página; es un panel de métricas dentro de Devic que agrupa información de uso para tus conectores.  
+  constraints: |
+    Las métricas reflejan únicamente la actividad desde que el conector fue publicado. Las llamadas archivadas o externas al sistema pueden no estar incluidas. El nivel de detalle y retención de datos depende del plan contratado en Devic.  
+  examples: |
+    Ejemplo: “Mi conector ‘Facturación-MCP’ tiene durante el último día 124 sesiones, 356 llamadas a la tool ‘ListarFacturas’, latencia media de 420 ms, y 3 errores de ‘timeout’. Gracias a esto decido reducir el timeout de la tool a 30 s y habilitar retry automático.”  
+  related: ["Publicar MCP", "Configurar tools de Mis MCPs", "SDKs y Widgets MCP", "Integración con LLMs MCP"]
+- title: SDKs y Widgets de Mis MCPs
+  url: https://docs.devic.ai/devic/mcps/my-mcps/sdks-and-widgets
+  one_liner: Integra tus herramientas MCP como SDKs o widgets personalizados para que tus agentes/asistentes las utilicen de forma más rica e interactiva.
+  answers: [
+    "¿Qué son los SDKs y Widgets en Mis MCPs de Devic?",
+    "¿Cómo genero un SDK o widget a partir de una tool de mi MCP para usar en un asistente o producto?",
+    "¿Cuáles son las diferencias entre usar un SDK o un widget dentro de Devic?"
+  ]
+  key_terms: ["SDK MCP Devic", "widget MCP Devic", "integración UI Devic", "herramienta visual MCP Devic", "SDK externalización MCP Devic"]
+  prerequisites: ["Conector Mis MCPs ya publicado con tools configuradas", "Comprender cómo las tools se exponen dentro de Devic"]
+  steps: |
+    1) Entra en tu conector dentro de “Mis MCPs” y selecciona la tool que quieres exponer como SDK o widget.  
+    2) En el panel de la tool haz clic en “Generar SDK/Widget” (o equivalente) para crear el paquete o componente visual.  
+    3) Define el tipo de integración: SDK (librería para backend/frontend) o Widget (componente UI embebible).  
+    4) Configura los parámetros de exportación: lenguaje (JavaScript, Python, etc.), packaging (npm, pip), y ajustes del widget (dimensiones, estilizado, eventos).  
+    5) Publica el SDK/Widget y obtén el snippet o URL embebible; luego incorpóralo en tu asistente, aplicación o web.  
+    6) Verifica que la herramienta funciona correctamente desde el entorno de frontend o backend: realiza una llamada estándar, revisa UI, valida comportamiento/integración.  
+  api_surface: |
+    La página describe cómo se exportan las herramientas como componentes; típicamente incluye:  
+    - `generateSDK(toolId: string, language: string) → SDKPackage`  
+    - `generateWidget(toolId: string, options: WidgetConfig) → WidgetURL`  
+    - `install SDKPackage` o `<script src="WidgetURL"></script>`  
+    - `SDK.invoke(parameters)` o `widget.trigger(event)`  
+  constraints: |
+    Los SDKs/widgets solo estarán disponibles tras publicar el conector MCP y dependerán del plan de Devic. Algunas características (como eventos personalizados del widget) pueden estar en beta o requerir autorización adicional. Asegúrate de que la herramienta expuesta cumple con las políticas de seguridad de tu organización.  
+  examples: |
+    Ejemplo: “Tengo la tool ‘CrearFactura’ en ‘Facturación-MCP’. Genero un SDK en JavaScript: `npm install devic-facturacion-sdk`. Luego en mi frontend importo `import { createInvoice } from 'devic-facturacion-sdk';`. Alternativamente, genero un widget embebible: `<iframe src="https://widgets.devic.ai/facturacion/create-invoice?customerId=…" width=600 height=400></iframe>`. El agente que usa el widget muestra interfaz visual al usuario final para completar los datos de factura.”  
+  related: ["Publicar MCP", "Sesiones y actividad de Mis MCPs", "Importar tool en Mis MCPs", "Configurar tools de Mis MCPs", "Integración con LLMs MCP"]
+- title: Integración con LLMs en Mis MCPs
+  url: https://docs.devic.ai/devic/mcps/my-mcps/integration-with-llms
+  one_liner: Conecta tus MCPs con modelos de lenguaje como ChatGPT, Claude o Cursor y habilita su uso desde agentes y asistentes en Devic.
+  answers: [
+    "¿Cómo conecto un conector MCP a un modelo de lenguaje en Devic?",
+    "¿Qué modelos de lenguaje son compatibles con My MCPs en Devic?",
+    "¿Cómo uso un MCP desde un agente o asistente en Devic tras integrarlo con un LLM?"
+  ]
+  key_terms: ["integración LLM Devic", "MCP con ChatGPT Devic", "MCP con Claude Devic", "usar MCP desde agente Devic", "modelos de lenguaje compatibles Devic"]
+  prerequisites: ["Tener un conector MCP publicado y visible", "Contar con acceso al modelo de lenguaje (API key) compatible"]
+  steps: |
+    1) Asegúrate de que tu conector “Mis MCPs” está publicado y visible en el panel de herramientas de Devic.  
+    2) En la sección de integración selecciona el modelo de lenguaje al que deseas conectar: por ejemplo, ChatGPT, Claude, Cursor u otro proveedor compatible.  
+    3) Proporciona la configuración necesaria: clave/API del modelo, endpoint, parámetros de invocación, tiempo de espera, estrategia de fallback.  
+    4) Enlaza tu conector-MCP con un agente o asistente (desde su configuración → herramientas) para que el modelo pueda invocar las tools definidas en el MCP.  
+    5) Lanza una prueba desde el agente o asistente: “Usa la tool X del conector Y para…”. Verifica que el modelo llama la herramienta correctamente y devuelve el resultado esperado.  
+    6) Si hay error en la integración, revisa los logs del agente/asistente y del conector MCP para ver fallos de autenticación, tiempo de espera o esquemas de parámetros erróneos. Ajusta y vuelve a probar.  
+  api_surface: |
+    Esta página describe cómo habilitar la conexión entre un modelo de lenguaje y un conector MCP en la plataforma Devic. No se listan endpoints públicos concretos en la documentación de usuario final.  
+  constraints: |
+    Solo los modelos listados como compatibles en la plataforma (ChatGPT, Claude, Cursor, etc) pueden conectarse directamente; los modelos propios pueden requerir configuración adicional. Además, el conector MCP debe estar correctamente configurado (tools validas, esquema definido) antes de vincular al LLM.  
+  examples: |
+    Ejemplo rápido: “Tengo el conector ‘Facturación-MCP’ ya publicado. Ahora selecciono modelo ChatGPT-4, ingreso mi API key, enlazo el conector con un asistente llamado ‘SoporteFacturas’. En el asistente pregunto: ‘Lista las facturas pendientes del cliente 789’, y ChatGPT invoca la tool del MCP y me devuelve la lista automáticamente.”  
+  related: ["Publicar MCP", "SDKs y Widgets de Mis MCPs", "Importar tool en Mis MCPs", "Configurar tools de Mis MCPs"]
+- title: Built-in Tools – Qué son  
+  url: https://docs.devic.ai/devic/mcps/built-in-tools/index  
+  one_liner: Presenta las herramientas integradas que ofrece Devic como servicios listos para usar sin configuración manual.  
+  answers: [
+    "¿Qué son las Built-in Tools en Devic?",
+    "¿Cuándo conviene usar una herramienta integrada en lugar de crear mi propio MCP?",
+    "¿Qué limitaciones existen al usar las herramientas de fábrica de Devic?"
+  ]  
+  key_terms: ["built-in tools Devic", "herramientas integradas Devic", "tools nativas Devic", "usar tool sin MCP personalizado"]  
+  prerequisites: ["Tener una cuenta en Devic", "Conocer al menos el concepto de MCPs"]  
+  steps: |
+    1) En el menú de MCPs de Devic, selecciona “Built-in Tools”.  
+    2) Explora el catálogo de herramientas listadas: descripción, casos de uso, API, condiciones.  
+    3) Selecciona la herramienta que necesitas y haz clic en “Usar” o “Añadir al proyecto”.  
+    4) Ajusta los permisos, configura parámetros mínimos (clave de servicio, endpoint interno, etc.).  
+    5) Usa desde un agente o asistente la tool como una funcionalidad pre-integrada: “Invoca tool X para Y”.  
+  api_surface: |
+    Las tools “Built-in” están expuestas como servicios ad hoc en Devic. Ejemplos típicos incluyen:  
+      - toolId: "EmbeddingSearch" → endpoint interno Devic '/api/built-in/embedding/search'  
+      - toolId: "KnowledgeGraphQuery" → endpoint '/api/built-in/kg/query'  
+    Parámetros: toolId (string), input (object), options (object)  
+  constraints: |
+    Aunque listas para usar, las built-in tools pueden tener limitaciones en personalización, cuotas de uso o acceso según el plan. No permiten cambios estructurales en el endpoint o en el esquema sin pasar a una versión personalizada.  
+  examples: |
+    Ejemplo: “Quiero implementar búsqueda semántica en mi producto usando Devic. En Built-in Tools selecciono ‘EmbeddingSearch’, conecto mi base de datos de documentos, y en el asistente hago: ‘Busca en la base de conocimiento el término “facturas retrasadas”’. La herramienta devuelve los resultados relevantes sin necesidad de crear un MCP desde cero.”  
+  related: ["MCPs – Qué son", "Mis MCPs – Qué son", "Importar MCPs de terceros", "Agentes index"]
+- title: Listado de Built-in Tools  
+  url: https://docs.devic.ai/devic/mcps/built-in-tools/tools-list  
+  one_liner: Catálogo completo de herramientas integradas (Built-in Tools) que Devic ofrece listas para usar sin necesidad de configurar un MCP personalizado.  
+  answers: [
+    "¿Qué herramientas integradas ofrece Devic como Built-in Tools?",
+    "¿Cómo selecciono y uso una Built-in Tool en Devic?",
+    "¿Qué diferencias hay entre usar una Built-in Tool y crear un MCP propio?"
+  ]  
+  key_terms: ["lista built-in tools Devic", "catálogo tools Devic integradas", "herramientas nativas Devic", "usar built-in Devic"]  
+  prerequisites: ["Contar con una cuenta activa en Devic", "Haber revisado el concepto de MCPs"]  
+  steps: |
+    1) Navega a la sección “Built-in Tools” en el panel de MCPs de Devic.  
+    2) Explora el listado: nombre de cada tool, descripción, casos de uso, requisitos y estado.  
+    3) Haz clic en la herramienta que te interese para ver su ficha técnica (endpoint, parámetros, ejemplos).  
+    4) Añade la herramienta a tu proyecto/agente/asistente desde el botón “Use” o “Añadir”.  
+    5) Configura (si aplica) los permisos, parámetros mínimos, proveedor de modelo o base de datos que utilizará la herramienta.  
+    6) Lanza una prueba desde un agente o asistente: invoca la herramienta con un prompt apropiado y verifica que devuelve resultados según lo descrito.  
+  api_surface: |
+    Las herramientas integradas están exposadas como servicios listos en Devic, cada una con su endpoint interno; por ejemplo:  
+      - toolId: "SemanticSearch" → endpoint `/api/builtin/semantic-search`  
+      - toolId: "ImageGeneration" → endpoint `/api/builtin/image-gen`  
+    Parámetros comunes: { toolId: string, input: object, options: object }  
+  constraints: |
+    Las built-in tools ofrecen alta facilidad de uso, pero pueden tener menos personalización, posibles límites de uso según plan, y no permiten modificar profundamente el endpoint o esquema de datos. Si necesitas adaptaciones complejas, se recomienda crear un MCP personalizado.  
+  examples: |
+    Ejemplo: “Quiero implementar un chat que conteste con información de mi base de conocimiento. Voy a Built-in Tools > selecciono ‘SemanticSearch’, la activo en mi asistente, y en el prompt pregunto: ‘Busca en la documentación interna el término “costes de agente continuous-optimization”’. La herramienta devuelve resultados relevantes sin necesidad de desarrollar un conector adicional.”  
+  related: ["Built-in Tools – Qué son", "MCPs – Qué son", "Mis MCPs – Qué son", "Agentes index"]
+- title: Agentes – Qué son  
+  url: https://docs.devic.ai/devic/agents/index  
+  one_liner: Describe qué son los agentes en Devic, cómo funcionan y en qué se diferencian de los asistentes.  
+  answers: [
+    "¿Qué es un agente en Devic?",
+    "¿En qué se diferencia un agente de un asistente en Devic?",
+    "¿Cuándo debo usar un agente en lugar de un asistente?"
+  ]  
+  key_terms: ["agentes Devic", "agent Devic", "qué son los agentes", "agentes vs asistentes Devic", "plataforma Devic agente"]  
+  prerequisites: ["Haber leído la Introducción a Devic"]  
+  steps: |
+    1) Identifica el concepto: un agente en Devic es un componente automatizado que puede tomar decisiones, ejecutar acciones y usar herramientas definidas vía MCPs.  
+    2) Comprende sus características clave: acceso a herramientas, capacidad de planificación, ejecución, trazabilidad, etc.  
+    3) Observa la diferencia con un asistente: los agentes operan de forma más autónoma, con enfoque operativo, mientras que los asistentes están orientados a interacción conversacional.  
+    4) Evalúa cuándo usar un agente: para workflows automatizados, tareas repetitivas que requieren herramientas externas, o integraciones profundas en productos SaaS.  
+  api_surface: |
+    No se exponen en esta página endpoints específicos; se trata de una página de definición/concepto.  
+  constraints: |
+    Esta página es de nivel conceptual. Para ver cómo se despliega un agente, se debe consultar la página “Deploy your first agent” y las subsecciones de configuración de herramientas.  
+  examples: |
+    Ejemplo: “Quiero que mi plataforma SaaS maneje tickets de soporte automáticamente: creo un agente en Devic que conecta con mi API de tickets, usa un conector MCP y lanza acciones sin intervención humana.”  
+  related: ["Agentes Deploy your first agent", "Agentes Prompt", "Agentes Tools", "Agentes RAG", "Asistentes Qué son"]
+- title: Deploy your first agent
+  url: https://docs.devic.ai/devic/agents/deploy-your-first-agent
+  one_liner: Guía paso a paso para desplegar tu primer agente en Devic, desde la configuración hasta la puesta en producción.
+  answers: [
+    "¿Cómo creo y publico mi primer agente en Devic?",
+    "¿Qué pasos debo seguir para desplegar un agente que responda a los usuarios o ejecute tareas?",
+    "¿Qué revisiones debo hacer antes de desplegar para asegurar que el agente funciona correctamente?"
+  ]
+  key_terms: ["desplegar agente Devic", "publicar agente Devic", "primer agente Devic", "deploy agent Devic", "agente producción Devic"]
+  prerequisites: ["Haber entendido qué es un agente y tener uno configurado", "Tener herramientas (MCPs) conectadas al agente", "Tener configurado el modelo de lenguaje para el agente"]
+  steps: |
+    1) En el panel de Agentes de Devic, haz clic en “Crear nuevo agente” o selecciona un agente existente en borrador.  
+    2) Define el nombre del agente, el modelo de lenguaje que usará, el prompt base o plantilla de conversación, y las herramientas (MCPs) que podrá invocar.  
+    3) Configura los parámetros de ejecución: tokens máximos, temperatura, límite de tiempo, fallback en caso de error.  
+    4) Realiza pruebas en entorno de desarrollo: envía preguntas típicas, invoca herramientas vinculadas, revisa logs de ejecución y errores.  
+    5) Ajusta el comportamiento del agente según resultados: optimiza el prompt, ajusta las herramientas vinculadas, corrige flujos de datos incorrectos.  
+    6) Publica o despliega el agente: define visibilidad (privado, equipo, público), conecta el agente a tu canal de usuario (widget web, API, app interna) y monitoriza su rendimiento continuo.  
+  api_surface: |
+    No se detallan endpoints específicos en esta página; se enfoca en el proceso de configuración y despliegue dentro de la plataforma Devic.  
+  constraints: |
+    Asegúrate de que todas las herramientas (MCPs) estén publicadas y aprobadas antes de desplegar el agente. Una vez en producción, modificar el modelo o las herramientas puede requerir detener el agente o reprocesar sesiones existentes.  
+  examples: |
+    Ejemplo: “Tengo un agente ‘SoporteAutomático’ que utiliza modelo GPT-4, vincula el conector ‘Facturación-MCP’ y la tool ‘ListarFacturas’. Realizo pruebas de ejemplo: “¿Cuántas facturas tiene el cliente 123?” → la herramienta devuelve la lista. Ajusto timeout de 30 s a 60 s tras observar latencia. Luego publico el agente y lo integro en el chat de mi producto SaaS.”  
+  related: ["Agentes Qué son", "Agentes Prompt", "Agentes Tools", "Agentes RAG"]
+- title: Prompt del agente  
+  url: https://docs.devic.ai/devic/agents/prompt  
+  one_liner: Aprende a diseñar, versionar y optimizar el prompt para un agente en Devic, para guiar eficazmente su comportamiento y uso de herramientas.  
+  answers: [
+    "¿Cómo defino el prompt base de un agente en Devic?",
+    "¿Qué parámetros y estilo debe tener el prompt para que el agente actúe correctamente?",
+    "¿Cuándo y cómo debo versionar o ajustar el prompt del agente en Devic?"
+  ]  
+  key_terms: ["prompt agente Devic", "diseño prompt Devic", "optimizar prompt agente", "versionar prompt Devic", "prompt engineering Devic agentes"]  
+  prerequisites: ["Haber creado un agente o tener una idea clara del caso de uso", "Conocer las herramientas (MCPs) que el agente podrá invocar"]  
+  steps: |
+    1) Abre la configuración del agente en Devic y localiza la sección “Prompt” o “Plantilla de conversación”.  
+    2) Define un prompt base que incluya: Rol del agente, Objetivo del agente (qué problema resuelve), Herramientas disponibles, Restricciones y tono.  
+    3) Ajusta los parámetros del prompt: tokens máximos, temperatura, instrucciones de fallback, etc.  
+    4) Realiza pruebas iterativas: envía preguntas reales, revisa cómo el agente usa las herramientas, ajusta el prompt para mejorar precisión, evitar errores o respuestas irrelevantes.  
+    5) Versiona el prompt (por ejemplo: v1.0, v1.1) para mantener trazabilidad del cambio y permitir rollback si una versión empeora el rendimiento.  
+    6) Monitorea métricas de uso: tasa de éxito de herramientas, latencia, errores de comprensión del prompt; usa estos datos para refinar el diseño del prompt.  
+  api_surface: |
+    No se presentan endpoints específicos en esta página, pues se trata del diseño de prompt dentro de la interfaz de Devic. El prompt es consumido por el agente al iniciarse o en cada interacción, según configuración interna.  
+  constraints: |
+    El prompt debe ser claro y acotado: un prompt demasiado largo o ambiguo puede disminuir el rendimiento del agente. Versionar el prompt implica que cambios previos pueden afectar sesiones activas. Asegúrate de que las herramientas (MCPs) referenciadas en el prompt estén correctamente configuradas antes de publicar el agente.  
+  examples: |
+    Ejemplo: “Prompt v1.0 – ‘Eres un agente de soporte para la plataforma X. Tu objetivo es ayudar al cliente a resolver dudas sobre facturación. Puedes usar las herramientas CrearFactura (MCP) y ConsultarSaldo. Siempre confirmas el ID de cliente antes de usar la herramienta. Si no dispones del ID, pide al usuario.’”  
+  related: ["Agentes Qué son", "Agentes Deploy your first agent", "Agentes Tools", "Agentes RAG", "MCPs Qué son"]
+- title: Tools de Agentes
+  url: https://docs.devic.ai/devic/agents/tools
+  one_liner: Define y gestiona las herramientas (MCPs) que un agente en Devic puede invocar para realizar acciones y acceder a datos.
+  answers: [
+    "¿Cómo asigno herramientas a un agente en Devic?",
+    "¿Qué tipo de herramientas puede usar un agente (MCPs, built-in, etc.)?",
+    "¿Cómo se configura el permiso de una herramienta para que el agente la utilice?"
+  ]
+  key_terms: ["herramientas agente Devic", "tools agente Devic", "MCPs para agentes Devic", "asignar tool agente Devic"]
+  prerequisites: ["Haber creado un agente en Devic", "Tener al menos un conector MCP o una built-in tool disponible"]
+  steps: |
+    1) Entra en la configuración del agente en Devic y localiza la sección “Tools” o “Herramientas”.  
+    2) Haz clic en “Añadir herramienta” y selecciona la herramienta de la lista (podría venir de un conector MCP o una built-in tool).  
+    3) Define los permisos de acceso, el alias interno de la herramienta, y los parámetros que el agente puede usar.  
+    4) Enlaza la herramienta al prompt o flujo del agente para que sepa cuándo invocarla.  
+    5) Realiza una prueba de ejecución: haz que el agente utilice la herramienta en una conversación real o simulada.  
+    6) Revisa los logs o métricas para detectar fallos en la herramienta (por ejemplo: parámetros incorrectos, tiempo de espera, errores de endpoint).  
+  api_surface: |
+    No se listan endpoints específicos en esta página; se trata de configuración de interfaz en Devic que asigna herramientas a agentes.  
+  constraints: |
+    La herramienta debe estar ya publicada o activada en Devic para poder asignarse al agente. Un agente no puede invocar herramientas que no están definidas o sin permisos adecuados. Cambiar alias o parámetros tras producción puede requerir reprovisionar el agente.  
+  examples: |
+    Ejemplo: “Tengo un agente ‘SoporteFacturas’ que necesita usar la tool ‘ListarFacturas’ de mi conector ‘Facturación-MCP’. En la sección Tools del agente selecciono ‘ListarFacturas’, asigno alias ‘getInvoices’, permito parámetro customerId:string, guardo. Luego pregunto al agente: ‘¿Cuántas facturas pendientes tiene el cliente 456?’ y el agente invoca correctamente la herramienta.”
+  related: ["Deploy your first agent", "Prompt del agente", "MCPs – Qué son", "Built-in Tools – Qué son"]
+- title: RAG para Agentes  
+  url: https://docs.devic.ai/devic/agents/rag  
+  one_liner: Explica cómo los agentes en Devic utilizan la técnica de Retrieval-Augmented Generation (RAG) para obtener y utilizar conocimiento externo antes de generar respuestas.  
+  answers: [
+    "¿Qué es RAG en el contexto de un agente Devic?",
+    "¿Cómo configuro un agente en Devic para que use RAG?",
+    "¿Cuáles son los limitaciones o requisitos al implementar RAG en un agente Devic?"
+  ]  
+  key_terms: ["RAG Devic", "Retrieval-Augmented Generation Devic", "agente RAG Devic", "configurar RAG agente Devic", "knowledge retrieval agente Devic"]  
+  prerequisites: ["Haber entendido qué es un agente en Devic", "Tener definida una base de conocimientos o fuente de datos externa que el agente va a consultar"]  
+  steps: |
+    1) En la configuración de tu agente en Devic, activa la opción de RAG o “knowledge retrieval” según la interfaz.  
+    2) Define cuál será la fuente de conocimiento externa: base de datos, vector store, documentos, APIs.  
+    3) Configura los parámetros de RAG: tamaño del contexto a recuperar, número de documentos, estrategia de filtrado/re-ranking, límite de tokens para la recuperación.  
+    4) Asocia la herramienta de recuperación al flujo del agente, de modo que cuando el agente reciba una consulta, primero ejecute una búsqueda, recupere contexto relevante y luego genere la respuesta basándose en ese contexto.  
+    5) Realiza pruebas con preguntas reales: verifica que el agente recupera documentos pertinentes y los usa para generar respuestas correctas y fundamentadas.  
+    6) Monitorea indicadores de eficacia: tasa de aciertos del agente, tasa de relevancia de documentos recuperados, latencia de recuperación, coste de tokens. Ajusta la configuración de RAG si se observa baja precisión o alto coste.  
+  api_surface: |
+    Aunque la página es conceptual, normalmente el mecanismo de RAG involucra:  
+      - una función `retrieve(documents[], query: string, top_k: number)` que devuelve un set de documentos.  
+      - la invocación del modelo de lenguaje con contexto recuperado: `generate(context + user_query)`.  
+  constraints: |
+    RAG sólo funciona si la base de conocimiento está correctamente indexada y accesible. Un prompt de recuperación mal diseñado puede devolver documentos irrelevantes, lo que degrada la respuesta del agente. También existe coste añadido en tokens y latencia. Si la fuente de datos no es actualizada, el agente puede dar respuestas desfasadas.  
+  examples: |
+    Ejemplo: “Tengo un agente ‘SoporteLegal’ en Devic. Habilito RAG, conecto una base de documentos legales internos y configuro top_k=5. El usuario pregunta: ‘¿Cuál es la cláusula de cancelación en el contrato X?’ → el agente primero recupera los 5 documentos más relevantes, luego genera la respuesta basada en ellos, citando los artículos correspondientes.”  
+  related: ["Prompt del agente", "Tools de Agentes", "Deploy your first agent", "Bases de datos index"]
+- title: Optimización continua de agentes
+  url: https://docs.devic.ai/devic/agents/continuous-optimization/index
+  one_liner: Supervisa, evalúa y mejora el rendimiento de tus agentes en Devic con trazabilidad y métricas operativas.
+  answers: [
+    "¿Qué es la optimización continua en Devic para agentes?",
+    "¿Cómo monitorizo y mejoro el rendimiento de un agente ya desplegado?",
+    "¿Qué métricas/trazabilidad proporciona Devic para los agentes y cómo las uso para optimizar?"
+  ]
+  key_terms: ["optimización continua Devic", "agent continuous optimization Devic", "monitorización agente Devic", "métricas agente Devic", "trazabilidad Devic agentes"]
+  prerequisites: ["Tener al menos un agente desplegado en Devic", "Tener configurados los logs y métricas de ejecución del agente"]
+  steps: |
+    1) Navega al módulo “Optimización continua” dentro del agente en el dashboard de Devic.  
+    2) Revisa el panel de trazabilidad: métricas de uso del agente, llamadas a tools, éxito/error, latencia, coste de tokens.  
+    3) Identifica áreas de mejora: herramientas que fallan frecuentemente, prompts que generan respuestas poco eficaces, tareas con alto coste.  
+    4) Ajusta los parámetros operativos: prompt, herramientas vinculadas, flujos lógicos, timeout, fallback, límite de tokens.  
+    5) Implementa cambios en el agente, vuelve a desplegar y supervisa los efectos en las métricas. Este ciclo debe repetirse para mantener rendimiento óptimo.  
+  api_surface: |
+    Esta página describe el proceso de mejora continua; no expone APIs específicas, sino paneles y métricas de Devic para agentes ya operativos.  
+  constraints: |
+    La optimización sólo es posible con agentes en producción o en modo activo; métricas históricas pueden tener retenciones limitadas según el plan de Devic; las herramientas vinculadas al agente deben seguir activas.  
+  examples: |
+    Ejemplo: “Tengo un agente ‘AsistenteTickets’ que en la última semana presentó 12% de errores por timeout en la tool ‘CrearTicket’. En la sección optimización continua del agente reviso los logs, veo que el timeout es de 45 s; lo cambio a 30 s, reduzco el número de tokens máximos y vuelvo a desplegar. A la semana siguiente la tasa de error baja al 5% y la latencia media de cada llamada se reduce en 20 %.”  
+  related: ["Logs de Optimización continua", "Human in the Loop", "Tareas de Optimización continua", "Evaluaciones automáticas", "Costes de agentes"]
+- title: Logs de Optimización continua de agentes  
+  url: https://docs.devic.ai/devic/agents/continuous-optimization/logs  
+  one_liner: Consulta los registros técnicos y de ejecución de tus agentes en Devic para depurar, auditar y mejorar su comportamiento.  
+  answers: [
+    "¿Dónde ver los logs de un agente desplegado en Devic?",
+    "¿Qué tipo de información contienen los logs de optimización continua del agente?",
+    "¿Cómo interpretar los errores frecuentes que aparecen en los logs y qué acciones debo tomar?"
+  ]  
+  key_terms: ["logs agente Devic", "registros ejecución agente Devic", "monitorización logs Devic", "errores agente Devic", "depurar agente Devic"]  
+  prerequisites: ["Tener un agente desplegado en Devic", "Haber habilitado el módulo de optimización continua para dicho agente"]  
+  steps: |
+    1) Accede al panel de “Optimización continua” para el agente específico en Devic.  
+    2) Navega a la pestaña “Logs” o “Registros” para ver las entradas recientes de ejecución: solicitudes, herramientas invocadas, estados de éxito/fallo, latencia, errores.  
+    3) Aplica filtros o parámetros de búsqueda (por ejemplo: fecha, tool, tipo de error) para localizar patrones concretos.  
+    4) Examina los detalles de cada registro: identifica la herramienta o función invocada, los parámetros usados, el tiempo de respuesta, el status code y el mensaje de error si lo hay.  
+    5) Ante errores frecuentes o latencias elevadas, identifica la herramienta concreta, revisa su configuración, actualiza parámetros (timeout, retries, fallback) y re-lanza pruebas.  
+    6) Documenta los cambios y vuelve a consultar los logs para confirmar que el problema se ha resuelto y la métrica ha mejorado.  
+  api_surface: |
+    Esta página muestra la interfaz de visualización de logs en Devic para agentes; no describe un endpoint técnico externo.  
+  constraints: |
+    Los logs muestran solo la actividad desde que el agente fue desplegado y la optimización continua habilitada; la retención histórica y profundidad de los logs pueden depender del plan contratado en Devic. Cambios en configuración pueden requerir tiempo hasta verse reflejados en los registros.  
+  examples: |
+    Ejemplo: “En el agente ‘SoporteAutomático’ encuentro en los logs 27 llamadas a la tool ‘CrearTicket’ con status ‘timeout’ en un periodo de 2 horas. Investigando descubro que el endpoint respondía en >60 s. Ajusto el timeout a 30 s, habilito retry x2. Al día siguiente, los logs muestran 0 timeouts y latencia media de 18 s.”  
+  related: ["Optimización continua de agentes", "Tareas de Optimización continua", "Evaluaciones automáticas", "Costes de agentes"]
+- title: Human in the Loop (Optimización continua de agentes)  
+  url: https://docs.devic.ai/devic/agents/continuous-optimization/human-in-the-loop  
+  one_liner: Integra validación humana en los flujos de tus agentes de Devic para supervisar, aprobar o corregir decisiones críticas.  
+  answers: [
+    "¿Cómo habilito un flujo de Human in the Loop para un agente en Devic?",
+    "¿Qué casos de uso requieren que los humanos revisen las acciones de un agente?",
+    "¿Cuáles son las métricas o auditorías claves cuando utilizo Human in the Loop con un agente Devic?"
+  ]  
+  key_terms: ["human in the loop Devic", "HITL agente Devic", "supervisión humana agente Devic", "validación humana flujo agente Devic"]  
+  prerequisites: ["Tener un agente desplegado en Devic", "Tener habilitado el módulo de optimización continua para el agente", "Tener configurado un canal humano de revisión/aprobación"]  
+  steps: |
+    1) Entra en el panel de “Optimización continua” para el agente en Devic y selecciona la pestaña “Human in the Loop” o “Revisión humana”.  
+    2) Define qué tipos de decisiones del agente requieren supervisión humana (por ejemplo: acción con impacto financiero, borrado de datos, aprobación de excepción).  
+    3) Configura el canal o persona humana que actuará como revisor: usuario, equipo, rol, tiempo de revisión, criterios de aprobación.  
+    4) Activa la lógica de flujos del agente para que, tras proponer una acción, se pause y genere un “requiere aprobación humana” antes de ejecutar la acción real.  
+    5) Monitorea los resultados en el panel: revisiones pendientes, aprobadas, rechazadas, tiempos de supervisión, impacto sobre la latencia y coste operacional.  
+    6) Ajusta los criterios y workflows de HITL: reduce decisiones humanas innecesarias, documenta casos recurrentes, optimiza el equilibrio entre autonomía del agente y control humano.  
+  api_surface: |
+    La configuración crea un “punto de interrupción” en el flujo del agente donde se espera entrada o validación humana. No se describen endpoints específicos en esta página de usuario final.  
+  constraints: |
+    El uso de Human in the Loop puede incrementar latencia, coste de revisión y complejidad operativa. Solo aplica cuando hay riesgos o impacto alto; no todas las acciones de un agente deben pasar por revisión humana.  
+  examples: |
+    Ejemplo: “Tengo un agente ‘GestiónDePagos’ en Devic. Para pagos mayores a 10.000 €, configuro que el agente pida aprobación humana antes de ejecutar la tool de transferencia. En la pestaña HITL veo: 5 aprobaciones pendientes, 4 aprobadas, 1 rechazada. Ajusto el umbral a 5.000 € porque quiero reducir latencia pero mantener control.”  
+  related: ["Optimización continua de agentes", "Logs de Optimización continua", "Tareas de Optimización continua", "Evaluaciones automáticas", "Costes de agentes"]
+- title: Tareas de Optimización continua de agentes  
+  url: https://docs.devic.ai/devic/agents/continuous-optimization/tasks  
+  one_liner: Define y gestiona tareas de mejora periódica para tus agentes en Devic, con revisiones planificadas y acciones automáticas.  
+  answers: [
+    "¿Cómo creo y programo tareas de optimización para un agente en Devic?",
+    "¿Qué tipo de tareas debo revisar periódicamente para mantener un agente eficiente?",
+    "¿Cómo automatizo acciones de mejora (por ejemplo ajustes de prompt, limpiar datos) como parte de estas tareas?"
+  ]  
+  key_terms: ["tareas optimización continua Devic", "task agent Devic optimización", "mejora agente Devic tareas", "mantenimiento agente Devic"]  
+  prerequisites: ["Tener un agente operando en producción en Devic", "Haber definido métricas de rendimiento o KPIs del agente"]  
+  steps: |
+    1) Entra al módulo “Optimización continua” del agente en Devic y selecciona “Tareas” o “Tasks”.  
+    2) Haz clic en “Crear tarea” o “Schedule task” para definir una nueva revisión periódica (por ejemplo: semanal, mensual).  
+    3) Define el objetivo de la tarea: revisa logs, análisis de latencia, tasa de éxito de herramientas, ajuste de prompt, etc.  
+    4) Asigna responsables (humano o equipo), frecuencia de ejecución, entregables esperados, criterios de éxito o rechazo.  
+    5) Establece acciones automáticas o alertas: por ejemplo, si latencia > X ms → enviar alerta al equipo; si errores > Y% → activar versión del prompt v1.1.  
+    6) Tras ejecución, documenta los resultados, realiza los ajustes necesarios y marca la tarea como completada; registra métricas post-optimización para comparación.  
+  api_surface: |
+    Esta página describe la funcionalidad de gestión de tareas dentro de la plataforma Devic; no se muestran endpoints técnicos en esta sección de usuario final.  
+  constraints: |
+    Las tareas solo aplican a agentes que ya están en producción y cuyas métricas son recogidas. No todos los planes de Devic pueden permitir automatización de tareas programadas o alertas avanzadas.  
+  examples: |
+    Ejemplo: “Programa una tarea mensual para el agente ‘SoporteAutomático’: revisar número de llamadas a la tool ‘CrearTicket’, latencia media, fallback activados. Si detecta más de 100 llamadas fallidas, generar automáticamente un nuevo prompt versión v1.1 y reenviar a equipo de revisión.”  
+  related: ["Logs de Optimización continua de agentes", "Human in the Loop", "Evaluaciones automáticas de agentes", "Costes de agente"]
+- title: Evaluaciones automáticas de agentes  
+  url: https://docs.devic.ai/devic/agents/continuous-optimization/evaluations  
+  one_liner: Automatiza la evaluación del rendimiento de tus agentes en Devic mediante métricas, comparativas y criterios de éxito/fallo.  
+  answers: [
+    "¿Qué son las evaluaciones automáticas dentro del módulo de optimización continua de agentes en Devic?",
+    "¿Cómo configuro evaluaciones periódicas para medir la eficacia de un agente?",
+    "¿Qué métricas o resultados puedo obtener de las evaluaciones automáticas y cómo usarlas para mejorar mi agente?"
+  ]  
+  key_terms: ["evaluaciones automáticas Devic", "agent continuous optimization evaluations Devic", "métricas agente Devic", "evaluación performance agente Devic", "benchmark agente Devic"]  
+  prerequisites: ["Tener un agente desplegado y en producción en Devic", "Haber habilitado el módulo de optimización continua para dicho agente"]  
+  steps: |
+    1) Dentro del panel de “Optimización continua” del agente en Devic, selecciona la pestaña “Evaluaciones automáticas”.  
+    2) Define el tipo de evaluación que quieres automatizar: prueba de herramientas vinculadas, tasa de éxito de respuestas, latencia, fallback, coste de tokens, etc.  
+    3) Programa la frecuencia de la evaluación (semanal, mensual) y configura los criterios de éxito/fallo (por ejemplo: latencia < 500 ms, tasa de error < 2%).  
+    4) Ejecuta la evaluación automática o espera a que se complete en el periodo programado. Devic generará un informe o dashboard con los resultados de cada métrica.  
+    5) Analiza los resultados: identifica qué áreas del agente están por debajo del umbral (tools con alta latencia, prompts con baja eficacia, fallos repetidos).  
+    6) Basándote en las conclusiones, planifica acciones de mejora (ajuste de prompt, cambio de herramienta, mejorar datos de entrenamiento) y repite el ciclo de evaluación para medir el impacto.  
+  api_surface: |
+    Esta página describe funcionalidad interna de la plataforma Devic para generar y visualizar evaluaciones automáticas; no expone endpoints externos de usuario final.  
+  constraints: |
+    Las evaluaciones solo pueden ejecutarse si el agente está en producción y tiene flujo de uso suficiente para generar datos significativos. Las métricas pueden depender del plan de Devic y los periodos de evaluación pueden variar. Los informes automáticos pueden tardar según volumen de datos.  
+  examples: |
+    Ejemplo: “El agente ‘SoporteFacturas’ tiene configurada una evaluación mensual de su tasa de error de herramientas: objetivo < 3%. En el último informe se detectó 5% de error. Como resultado, se generó una nueva versión del prompt v1.2 y se asignó un task de optimización para la próxima semana. Al mes siguiente la tasa baja al 1.8%.”  
+  related: ["Optimización continua de agentes", "Logs de Optimización continua", "Tareas de Optimización continua", "Human in the Loop", "Costes de agentes"]
+- title: Costes de agentes  
+  url: https://docs.devic.ai/devic/agents/continuous-optimization/costs  
+  one_liner: Entiende y gestiona los costes asociados al funcionamiento de tus agentes en Devic, para optimizar presupuesto y rendimiento.  
+  answers: [
+    "¿Qué costes genera un agente en Devic?",
+    "¿Cómo monitorizo y reduzco el coste operativo de un agente en Devic?",
+    "¿Qué impactos en coste debo tener en cuenta al usar herramientas, prompts, y modelos de lenguaje en un agente Devic?"
+  ]  
+  key_terms: ["costes agente Devic", "coste operativo Devic agente", "optimización costes agente Devic", "facturación agente Devic", "tokens coste agente Devic"]  
+  prerequisites: ["Tener un agente desplegado en Devic", "Tener métricas de uso activas (solicitudes, herramientas invocadas, tokens consumidos)"]  
+  steps: |
+    1) Accede al panel “Optimización continua” del agente en Devic y selecciona la pestaña “Costes”.  
+    2) Observa el desglose de costes: número de solicitudes, tokens utilizados, llamadas a herramientas externas (MCPs), latencia/peticiones fallidas, uso de modelos premium.  
+    3) Identifica los factores más costosos: modelo de lenguaje de alto coste, herramientas frecuentemente invocadas, prompts largos o redundantes.  
+    4) Ajusta la configuración para reducir coste: cambiar a modelo más rentable, optimizar prompt (menos tokens), limitar número de llamadas a herramientas, activar caching o reuse de contexto.  
+    5) Programa revisiones periódicas de coste: asigna presupuesto, alertas cuando se supere umbral X, y tareas de optimización para reducir coste mensualmente.  
+  api_surface: |
+    Esta página describe la funcionalidad de seguimiento de costes dentro de Devic para agentes; no expone endpoints públicos específicos.  
+  constraints: |
+    La visibilidad y nivel de detalle de los costes pueden depender del plan de Devic contratado; algunos costes indirectos (como mantenimiento de infraestructura o servicios externos vinculados) pueden no estar completamente visibles. Cambiar modelo o herramienta puede afectar latencia o calidad, así que la reducción de coste debe equilibrarse con rendimiento.  
+  examples: |
+    Ejemplo: “El agente ‘SoporteAutomático’ consumió 450 000 tokens este mes, tuvo 1 200 llamadas a herramientas externas, lo que generó un coste de € 2 300. Identifiqué que el modelo era GPT-4 y muchas llamadas repetidas. Cambié a GPT-3.5 para preguntas simples y habilité caché de respuestas frecuentes. Al mes siguiente el coste bajó a € 1 000 con mismo volumen de usuarios.”  
+  related: ["Optimización continua de agentes", "Tareas de Optimización continua", "Evaluaciones automáticas de agentes", "Logs de Optimización continua"]
+- title: Otras opciones de agentes  
+  url: https://docs.devic.ai/devic/agents/other-options  
+  one_liner: Explora opciones avanzadas y escenarios alternativos para utilizar agentes en Devic más allá del flujo estándar de creación-despliegue.  
+  answers: [
+    "¿Qué opciones adicionales existen para agentes en Devic más allá del despliegue típico?",
+    "¿Cómo puedo usar un agente de Devic en distintos canales o integraciones personalizadas?",
+    "¿Qué consideraciones debo tener en cuenta para escenarios especiales (multiusuario, embebido, productos SaaS) con agentes de Devic?"
+  ]
+  key_terms: ["other options agentes Devic", "escenarios avanzados agente Devic", "integraciones alternativas agente Devic", "canales múltiples agente Devic", "embebido agente Devic SaaS"]
+  prerequisites: ["Haber desplegado al menos un agente en Devic", "Conocer los pasos básicos de configuración, herramientas y despliegue de agentes"]
+  steps: |
+    1) Accede en el panel de Agentes de Devic a la sección “Other options” o “Otras opciones”.  
+    2) Revisa los escenarios alternativos que se presentan: uso del agente en widgets embebidos, en productos SaaS, en flujos multiusuario, en entornos internos u organizacionales.  
+    3) Explora los canales de distribución posibles: chat web, integración con API, widget embebido, integración directa en aplicación móvil o SaaS.  
+    4) Evalúa requisitos adicionales para estos escenarios: permisos de usuario, autenticación externa, escalabilidad, monitorización multi-canal.  
+    5) Configura tu agente para el escenario elegido: adapta el prompt al canal, ajusta contextos de usuario, define seguridad/privacidad y publica según visibilidad (privado, equipo, público).  
+    6) Prueba el agente en el nuevo escenario: realiza interacción en el canal escogido, verifica que las herramientas funcionan correctamente, que la experiencia de usuario es adecuada y que los logs/metrics están operativos.  
+  api_surface: |
+    Esta página describe opciones de implementación más amplias para agentes en Devic; no se detallan directamente endpoints técnicos, pues depende de la integración final con el canal seleccionado.  
+  constraints: |
+    Las opciones alternativas pueden requerir configuración adicional, permisos ampliados, ajustes de infraestructura, mayor latencia o costes; algunos escenarios podrían estar disponibles sólo en planes avanzados de Devic. Asegúrate de validar visibilidad de agente, escala esperada y políticas de seguridad para el canal externo.  
+  examples: |
+    Ejemplo: “Quiero que mi agente ‘ChatSoporte’ esté embebido en el panel de mi producto SaaS. En Other options selecciono integración web widget, asigno visibilidad a ‘Mi Producto Equipo’, configuro autenticación de usuario interno, publico. Luego mis usuarios acceden al chat desde el panel sin salir del producto.”  
+  related: ["Deploy your first agent", "Prompt del agente", "Tools de Agentes", "Asistentes index"]
+- title: Ejecución vía API de agentes
+  url: https://docs.devic.ai/devic/agents/api-execution
+  one_liner: Muestra cómo invocar un agente de Devic mediante su API para integrarlo con aplicaciones externas o automatizar flujos.
+  answers: [
+    "¿Cómo puedo ejecutar un agente de Devic por medio de su API?",
+    "¿Qué endpoint debo usar para crear una ejecución (thread) de un agente en Devic?",
+    "¿Qué parámetros y autorización requiere la llamada API de un agente en Devic?"
+  ]
+  key_terms: ["api ejecución agente Devic", "invocar agente Devic via API", "POST /api/v1/agents/{agent_id}/threads", "integración agente Devic", "automatizar agente Devic"]
+  prerequisites: ["Tener un agente publicado en Devic", "Obtener el agent_id del agente y una API token válida"]
+  steps: |
+    1) Obtén el agent_id de tu agente en el panel de Devic (“Agent API Documentation”).  
+    2) Realiza una solicitud HTTP POST al endpoint: `https://api.devic.ai/api/v1/agents/{agent_id}/threads`.  
+    3) En la cabecera añade ‘Authorization: Bearer YOUR_API_TOKEN’ y ‘Content-Type: application/json’.  
+    4) En el cuerpo del JSON incluye campos clave: por ejemplo `{ "message": "Procesa el informe mensual de ventas", "state": "queued" }`.  
+    5) Envía la petición, recibe la respuesta con datos del thread creado y el estado inicial; luego monitoriza el estado hasta que finalice.  
+    6) Integra este llamado dentro de tu aplicación o flujo externo, asegurando que gestionas errores, latencia y estado de ejecución de la conversación/hilo.  
+  api_surface: |
+    Endpoint principal: `POST https://api.devic.ai/api/v1/agents/{agent_id}/threads`  
+    Parámetros relevantes:  
+      - `agent_id`: string (identificador único del agente)  
+      - `Authorization`: Bearer token (string)  
+      - Cuerpo JSON:  
+          • `message`: string (mensaje inicial o prompt)  
+          • `state`: string (por ejemplo “queued” u otro estado aceptado)  
+          • Opcionales: otros parámetros del agente (timeout, contexto anterior, etc.).  
+    Respuesta: JSON con identificador del thread, estado, timestamps y otros metadatos.  
+  constraints: |
+    Solo puedes invocar agentes vía API si están publicados y tienen configurada la visibilidad API. El token debe tener permisos adecuados. Algunas funciones (como contexto extenso o herramientas muy costosas) pueden estar limitadas según el plan de Devic. La latencia de la respuesta dependerá del modelo, del agente y del endpoint externo.  
+  examples: |
+    Ejemplo en JavaScript (fetch):  
+      ```js
+      const response = await fetch('https://api.devic.ai/api/v1/agents/YOUR_AGENT_ID/threads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer YOUR_API_TOKEN'
+        },
+        body: JSON.stringify({
+          message: 'Procesa el informe mensual de ventas',
+          state: 'queued'
+        })
+      });
+      const data = await response.json();
+      console.log(data);
+      ```  
+  related: ["Agentes Qué son", "Deploy your first agent", "Prompt del agente", "Tools de Agentes"]
+- title: Asistentes – Qué son  
+  url: https://docs.devic.ai/devic/assistants/index  
+  one_liner: Explica qué son los asistentes en Devic, cómo funcionan y en qué se diferencian de los agentes.  
+  answers: [
+    "¿Qué es un asistente en Devic?",
+    "¿En qué se diferencia un asistente de un agente en Devic?",
+    "¿Cuándo debo usar un asistente en lugar de un agente?"
+  ]  
+  key_terms: ["asistentes Devic", "assistant Devic", "qué son los asistentes Devic", "agentes vs asistentes Devic", "plataforma Devic asistente"]  
+  prerequisites: ["Haber leído la Introducción a Devic"]  
+  steps: |
+    1) Reconoce que un asistente en Devic es un componente conversacional orientado a la interacción con el usuario final, en contraste con un agente que actúa más autónomamente y ejecuta flujos de acción.  
+    2) Comprende los elementos clave de un asistente: prompt base, contexto de usuario, herramientas vinculadas, canal de entrega (chat web, app, widget).  
+    3) Evalúa cuándo usar un asistente: para atención al cliente, FAQ dinámicas, chat en producto, soporte interno, etc.  
+    4) Observa los escenarios de uso donde un asistente sobresale: diálogo amigable, guía paso-a-paso, empoderamiento al usuario final.  
+  api_surface: |
+    No se listan endpoints específicos en esta página; es una definición conceptual del módulo “Asistentes” en Devic.  
+  constraints: |
+    Esta página sirve como panorama general. Para detalles operativos (despliegue, prompt, herramientas, API) se debe consultar las páginas “Deploy your first assistant”, “Prompt del asistente”, “Tools del asistente”, etc.  
+  examples: |
+    Ejemplo: “Quiero ofrecer un chat de soporte dentro de mi SaaS. Creo un asistente en Devic llamado ‘AyudaUsuario’, defino su prompt base, vinculo la tool ‘BuscarFAQ’ de mi conector ‘Soporte-MCP’, y luego lanzo el widget embebido en mi producto. Los usuarios escriben sus dudas y el asistente les responde de forma personalizada.”  
+  related: ["Asistentes Deploy your first assistant", "Asistentes Prompt", "Asistentes Tools", "Asistentes RAG", "Asistentes API-execution"]
+- title: Deploy your first assistant  
+  url: https://docs.devic.ai/devic/assistants/deploy-your-first-assistant  
+  one_liner: Guía paso a paso para lanzar tu primer asistente en Devic, desde la configuración hasta su integración cliente final.  
+  answers: [
+    "¿Cómo creo y despliego mi primer asistente en Devic?",
+    "¿Qué decisiones debo tomar previamente (modelo, canal, tools, prompt) para lanzar un asistente?",
+    "¿Cómo pruebo y publico el asistente para que tus usuarios finales lo usen?"
+  ]
+  key_terms: ["desplegar asistente Devic", "publicar asistente Devic", "primer asistente Devic", "deploy assistant Devic", "asistente producción Devic"]
+  prerequisites: ["Haber leído qué es un asistente en Devic", "Tener definido al menos un prompt base y una herramienta o MCP vinculada"]
+  steps: |
+    1) En el panel de “Asistentes” de Devic, selecciona “Crear nuevo asistente” o abre un borrador existente.  
+    2) Define los parámetros clave del asistente: nombre, modelo de lenguaje usado, canal de integración (chat web, widget, API, app), prompt base y contexto de usuario.  
+    3) Asocia las herramientas que el asistente va a utilizar (por ejemplo via MCPs o built-in tools) y establece los permisos de cada herramienta para este asistente.  
+    4) Configura los ajustes de comportamiento: tokens máximos, temperatura, límite de conversación, fallback o mensaje para cuando ninguna herramienta pueda ayudar.  
+    5) Realiza pruebas con usuarios reales o escenarios simulados: verifica que el asistente responde correctamente, invoca las herramientas adecuadas, gestiona el contexto del usuario y tiene buen funcionamiento.  
+    6) Publica el asistente: selecciona visibilidad (privado, equipo, público), el canal de destino, instala el widget o integra la API en tu app/servicio y monitoriza su comportamiento inicial.  
+  api_surface: |
+    No se detallan endpoints específicos en esta página; el enfoque está en el proceso de configuración y despliegue del asistente dentro de la plataforma Devic.  
+  constraints: |
+    El asistente solo puede funcionar correctamente si las herramientas vinculadas están activas y publicadas, el modelo de lenguaje está configurado con clave API, y el canal de integración soporta la interacción esperada. Cambios posteriores al despliegue (como cambiar canal o modelo) pueden requerir re-publicación o impacto en usuarios activos.  
+  examples: |
+    Ejemplo: “Creo un asistente ‘ChatSoporte’ en Devic que utiliza GPT-4, vincula la tool ‘BuscarFAQ’ de mi conector ‘Soporte-MCP’. Realizo pruebas internas con preguntas típicas de usuarios. Luego publico el asistente como widget en mi SaaS. Mis clientes ahora pueden escribir sus dudas y recibir respuesta instantánea.”  
+  related: ["Asistentes Qué son", "Asistentes Prompt", "Asistentes Tools", "Asistentes RAG", "Asistentes API-execution"]
+- title: Prompt del asistente  
+  url: https://docs.devic.ai/devic/assistants/prompt  
+  one_liner: Aprende a diseñar, versionar y optimizar el prompt para un asistente en Devic, para guiar eficazmente su comportamiento y sus respuestas.  
+  answers: [
+    "¿Cómo defino el prompt base de un asistente en Devic?",
+    "¿Qué estructura debe tener un prompt bien diseñado para un asistente Devic?",
+    "¿Cuándo y cómo actualizar o versionar el prompt de un asistente en Devic?"
+  ]  
+  key_terms: ["prompt asistente Devic", "diseño prompt Devic", "optimizar prompt asistente", "versionar prompt Devic", "prompt engineering Devic asistentes"]  
+  prerequisites: ["Haber leído qué es un asistente en Devic", "Tener definido al menos un caso de uso — ¿qué va a hacer el asistente?"]  
+  steps: |
+    1) Abre la configuración del asistente en Devic y localiza la sección “Prompt” o “Plantilla de conversación”.  
+    2) Define los elementos clave del prompt: Rol (qué es el asistente), Contexto (qué información tiene disponible), Objetivo (qué debe lograr), Comportamiento (tono, estilo, restricciones).  
+    3) Añade variables dinámicas si es necesario (por ejemplo `{{nombre_usuario}}`, `{{empresa}}`) para personalizar la interacción.  
+    4) Realiza pruebas con usuarios o escenarios reales: revisa cómo responde el asistente, identifica respuestas incoherentes o imprecisas, y ajusta el prompt en consecuencia.  
+    5) Versiona tu prompt (por ejemplo v1.0, v1.1) para poder volver a una versión anterior si un cambio empeora los resultados.  
+    6) Monitorea métricas de rendimiento del asistente: tasa de satisfacción, comprensión correcta, número de clarificaciones requeridas; usa esta información para decidir cuándo actualizar el prompt.  
+  api_surface: |
+    Aunque esta página se centra en el diseño conceptual del prompt, el prompt resultante es lo que el modelo de lenguaje consume internamente cada vez que el asistente recibe una interacción. No se detallan endpoints externos específicos.  
+  constraints: |
+    Un prompt mal diseñado (demasiado largo, ambiguo, sin contexto) puede degradar significativamente la calidad de las respuestas del asistente. Cambios frecuentes sin prueba pueden provocar regresiones. Asegúrate de que los datos y herramientas referenciadas por el prompt están disponibles y actualizados.  
+  examples: |
+    Ejemplo: “Prompt v1.0 – ‘Eres un asistente de soporte técnico para la plataforma X. Tu tarea es ayudar al usuario {{nombre_usuario}} a resolver incidencias en menos de 10 minutos. Puedes usar las herramientas de base de datos y búsqueda. Usa un tono profesional y empático. Siempre confirma el ID de cliente antes de realizar acciones.’”  
+  related: ["Asistentes Qué son", "Asistentes Deploy your first assistant", "Asistentes Tools", "Asistentes RAG", "Asistentes API-execution"]
+- title: Tools de Asistentes  
+  url: https://docs.devic.ai/devic/assistants/tools  
+  one_liner: Asigna y gestiona las herramientas (MCPs o built-in tools) que un asistente Devic puede invocar durante la conversación con el usuario final.  
+  answers: [
+    "¿Cómo asigno una herramienta a un asistente en Devic?",
+    "¿Qué tipos de herramientas puede usar un asistente (conectores MCP, herramientas integradas)?",
+    "¿Cómo configuro los permisos de una tool para que el asistente la utilice correctamente?"
+  ]
+  key_terms: ["herramientas asistente Devic", "tools asistente Devic", "MCPs para asistentes Devic", "asignar tool asistente Devic", "built-in tools asistente Devic"]
+  prerequisites: ["Haber creado un asistente en Devic", "Tener al menos una herramienta disponible (MCP o built-in)"]
+  steps: |
+    1) Abre la configuración del asistente en Devic y dirígete a la sección “Tools” o “Herramientas”.  
+    2) Haz clic en “Añadir herramienta” y selecciona la herramienta de la lista (puede venir de un conector MCP o de las built-in tools).  
+    3) Define el alias interno que usará el asistente, asigna los permisos de acceso y determina los parámetros que podrá enviar al usar la herramienta.  
+    4) Vincula la herramienta al flujo conversacional del asistente: inserta en el prompt o en las reglas de conversación cuándo y cómo debe invocar esa tool.  
+    5) Realiza una prueba de conversación: el usuario hace una pregunta o petición, el asistente reconoce que debe usar la herramienta, la invoca y devuelve la respuesta combinando la herramienta con su propio razonamiento.  
+    6) Monitoriza en producción: revisa logs para detectar errores en la llamada a la tool, latencia elevada o resultados inesperados, y ajusta la configuración de la herramienta o del prompt si es necesario.  
+  api_surface: |
+    No se listan endpoints específicos en esta página; la funcionalidad describe la interfaz de configuración en Devic para asignar tools a un asistente.  
+  constraints: |
+    La herramienta debe estar publicada y visible para que un asistente la utilice. Un asistente no puede invocar herramientas que no están configuradas, asignadas o permitidas. Cambiar el alias o parámetros de una herramienta tras el despliegue puede requerir una nueva versión del asistente o reiniciar la conversación.  
+  examples: |
+    Ejemplo: “Tengo un asistente ‘FAQChat’ en Devic. En Tools selecciono la herramienta ‘BuscarPreguntasFrecuentes’ de mi conector ‘Soporte-MCP’. Le asigno alias ‘searchFAQ’, permito parámetro pregunta:string. Luego en la conversación un usuario escribe ‘¿Cómo puedo reembolsar mi suscripción?’ → el asistente invoca la tool ‘searchFAQ’ y devuelve la respuesta correcta con enlace de soporte.”  
+  related: ["Asistentes Deploy your first assistant", "Asistentes Prompt", "Asistentes RAG", "MCPs – Qué son"]
+- title: RAG para Asistentes  
+  url: https://docs.devic.ai/devic/assistants/rag  
+  one_liner: Muestra cómo los asistentes en Devic utilizan la técnica de Retrieval-Augmented Generation (RAG) para responder con conocimiento actualizado consultando fuentes externas antes de generar la respuesta.  
+  answers: [
+    "¿Qué es RAG en el contexto de un asistente Devic?",
+    "¿Cómo configuro un asistente en Devic para que use RAG (consulta de documentos + generación de respuesta)?",
+    "¿Qué requisitos debe cumplir la fuente de datos para que el asistente pueda hacer RAG correctamente?"
+  ]  
+  key_terms: ["RAG Devic asistentes", "Retrieval-Augmented Generation asistente Devic", "asistente RAG Devic", "usar RAG con asistente Devic", "knowledge retrieval asistente Devic"]  
+  prerequisites: ["Haber leído qué es un asistente en Devic", "Tener definida una fuente de conocimiento indexada o accesible (documentos, base de datos, vector store)"]  
+  steps: |
+    1) En la configuración del asistente en Devic, habilita la opción “RAG” o “Knowledge Retrieval”.  
+    2) Define la fuente de conocimiento: por ejemplo, documento, base de datos o API externa que tras su consulta alimentará el contexto del asistente.  
+    3) Configura los parámetros de recuperación: número de documentos o hits a recuperar, tamaño de contexto, estrategia de re-ranking o filtrado de relevancia.  
+    4) Vincula la herramienta de recuperación al flujo del asistente: antes de generar la respuesta, la herramienta consulta la fuente y entrega contexto que el modelo utilizará.  
+    5) Realiza pruebas de usuario: haz preguntas reales y observa si el asistente recupera información relevante y la incorpora de forma coherente en la respuesta.  
+    6) Evalúa rendimiento: comprueba tasa de relevancia de la información recuperada, latencia, tasa de fallback (cuando no encuentra fuente). Ajusta los parámetros si es necesario.  
+  api_surface: |
+    Aunque la página es conceptual, el patrón RAG implica típicamente:  
+      - `retrieve(query: string, top_k: number) → documents[]`  
+      - `generate(context + user_query) → response`  
+  constraints: |
+    La fuente de conocimiento debe estar correctamente indexada y accesible; si los documentos son desactualizados o la latencia de recuperación es alta, la calidad de la respuesta disminuirá. Usar RAG incrementa tokens usados y latencia, lo que puede impactar coste. Asegúrate que las herramientas y data cumplen políticas de seguridad y privacidad.  
+  examples: |
+    Ejemplo: “Tengo un asistente ‘SoporteLegal’ en Devic. Habilito RAG, conecto mi base de documentos legales internos y configuro top_k=3. Un usuario pregunta: ‘¿Cuál es la cláusula de cancelación en el contrato X?’ → el asistente recupera los 3 documentos relevantes, los incluye en el prompt, y genera una respuesta que cita los artículos correctos.”  
+  related: ["Prompt del asistente", "Tools de Asistentes", "Deploy your first assistant", "API-execution de Asistentes"]
+- title: Consola conversacional del asistente  
+  url: https://docs.devic.ai/devic/assistants/conversation-console  
+  one_liner: Usa la consola de conversación de Devic para probar, depurar y analizar tu asistente antes de desplegarlo al usuario final.  
+  answers: [
+    "¿Cómo accedo y uso la consola de conversación para un asistente en Devic?",
+    "¿Qué funcionalidades ofrece la consola (pruebas, logs, métricas) para un asistente?",
+    "¿Cómo depuro problemas de interacción del asistente mediante la consola de conversación?"
+  ]  
+  key_terms: ["consola conversacional Devic", "chat tester Devic asistente", "debug asistente Devic", "prueba asistente Devic consola"]  
+  prerequisites: ["Haber creado un asistente en Devic", "Tener configurado al menos el prompt base y una herramienta asignada"]  
+  steps: |
+    1) En el panel de Asistentes en Devic, selecciona el asistente que quieres probar y abre la sección “Consola conversacional”.  
+    2) Introduce una interacción de prueba como lo haría un usuario final: escribe una pregunta, mensaje o comando.  
+    3) Observa la respuesta del asistente, si invoca correctamente las herramientas vinculadas y qué contexto utiliza.  
+    4) Examina los logs de la conversación: los mensajes de entrada, salida, tool-calls, latencia, errores o fallos de comprensión.  
+    5) Ajusta el diseño del prompt, las herramientas, los parámetros del asistente o añade casos de fallback según lo observado.  
+    6) Realiza múltiples iteraciones de prueba hasta que la experiencia de conversación es robusta, coherente y libre de errores antes de público.  
+  api_surface: |
+    No se detallan endpoints externos en esta página; se trata de la interfaz de prueba interna de Devic para asistentes.  
+  constraints: |
+    Las pruebas desde la consola están pensadas para entorno de desarrollo y pueden no representar exactamente el comportamiento en producción (usuarios, escalabilidad, canal real). Algunos errores solo surgirán en despliegue real: latencia, concurrencia, datos reales del usuario.  
+  examples: |
+    Ejemplo: “En el asistente ‘ChatSoporte’, abro la consola conversacional dentro de Devic. Escribo: ‘¿Cómo renuevo mi suscripción?’ — el asistente responde, invoca la herramienta ‘RenovarSub’ y devuelve el flujo completo. Veo en los logs que la tool tardó 2,3 s y produjo una respuesta correcta. Luego identifico que un fallo de timeout de 10 s fue demasiado largo, lo reduje a 5 s, volví a probar y todo resultó más ágil.”  
+  related: ["Prompt del asistente", "Deploy your first assistant", "Tools de Asistentes", "RAG para Asistentes"]
+- title: Otras opciones de asistentes  
+  url: https://docs.devic.ai/devic/assistants/other-options  
+  one_liner: Explora escenarios y configuraciones avanzadas para asistentes en Devic más allá del flujo habitual de creación-despliegue.  
+  answers: [
+    "¿Qué escenarios alternativos existen para desplegar un asistente en Devic?",
+    "¿Cómo integrar un asistente en canales no convencionales (app, widget, embebido) con Devic?",
+    "¿Qué consideraciones de seguridad, multicanal o escala deben tenerse cuando se usan ‘otras opciones’ de asistentes?"
+  ]
+  key_terms: ["other options asistentes Devic", "escenarios avanzados asistente Devic", "integraciones múltiples asistente Devic", "widget asistente Devic", "canal alternativo asistente Devic"]
+  prerequisites: ["Haber creado y publicado al menos un asistente en Devic", "Tener claro el caso de uso y canal de interfaz deseado (widget web, app móvil, embebido)"]
+  steps: |
+    1) En el panel de “Asistentes” de Devic selecciona tu asistente y abre la sección “Other options” o “Otras opciones”.  
+    2) Revisa los escenarios disponibles: embebido en widget web, integración en app móvil, multiusuario interno, canal externo, SaaS embebido.  
+    3) Define el canal deseado para el asistente y ajusta la configuración correspondiente: visibilidad (privado, equipo, público), autenticación de usuario, integración con branding o DOM del cliente.  
+    4) Configura los permisos, los parámetros de usuario final, el contexto de conversación y las herramientas adaptadas al canal elegido.  
+    5) Publica el asistente en el canal elegido, integra el widget o la API en el entorno de destino y realiza pruebas de experiencia de usuario.  
+    6) Supervisa métricas de uso, log de interacciones y latencia en ese canal alternativo, ajustando flujo, prompt o herramientas según los resultados del entorno real.  
+  api_surface: |
+    Esta página describe opciones de implementación ampliadas para asistentes de Devic; no se listan endpoints específicos ya que dependerán del canal de destino y configuración de integración.  
+  constraints: |
+    Los escenarios alternativos pueden requerir configuración extra, mayor complejidad, permisos ampliados y considerar aspectos de escalabilidad, seguridad y coste. Algunas opciones pueden estar disponibles sólo en planes avanzados de Devic. Asegúrate de validar visibilidad, cuota de usuarios, branding, autenticación y cumplimiento de políticas antes de publicar.  
+  examples: |
+    Ejemplo: “Tengo un asistente ‘ChatSoporte’ en Devic. Quiero embedirlo dentro del panel de mi SaaS como widget. En Other options selecciono integración web widget, configuro visibilidad ‘Equipo’, asigno autenticación vía SSO, publico el widget y lo coloco en mi producto. Los usuarios ahora acceden al chat sin salir del entorno principal.”  
+  related: ["Deploy your first assistant", "Prompt del asistente", "Tools de Asistentes", "Consola conversacional del asistente"]
+- title: Ejecución vía API de asistentes  
+  url: https://docs.devic.ai/devic/assistants/api-execution  
+  one_liner: Aprende cómo invocar asistentes de Devic mediante la API para integrarlos con tus aplicaciones o flujos personalizados.  
+  answers: [
+    "¿Cómo puedo ejecutar un asistente de Devic por medio de su API?",
+    "¿Cuál es el endpoint para enviar mensajes a un asistente Devic?",
+    "¿Cómo continuar una conversación existente con un asistente Devic vía API?"
+  ]  
+  key_terms: ["api ejecución asistente Devic", "invocar asistente Devic vía API", "POST /api/v1/assistants/{assistant_id}/messages", "chatUuid Devic", "integración asistente Devic API"]  
+  prerequisites: ["Tener un asistente publicado en Devic", "Obtener el assistant_id del asistente y una API token válida"]  
+  steps: |
+    1) Obtén el `assistant_id` de tu asistente publicado desde el panel de Devic (“Get Code” o sección similar).  
+    2) Realiza una solicitud HTTP POST al endpoint: `https://api.devic.ai/api/v1/assistants/{assistant_id}/messages`.  
+    3) En la cabecera de la solicitud incluye: `Authorization: Bearer YOUR_API_TOKEN` y `Content-Type: application/json`.  
+    4) En el cuerpo JSON envía algo como:  
+       ```json
+       { "message": "Hola, ¿puedes ayudarme con el reporte técnico?", "chatUuid": null }
+       ```  
+       Si `chatUuid` es `null`, se creará una nueva conversación; si incluyes un `chatUuid` existente, se continúa la sesión.  
+    5) Recibe la respuesta en JSON con campos como `chatUuid`, `message`, `tokens_used`, `timestamp`.  
+    6) Integra este flujo en tu aplicación (backend, microservicio, frontend) para que el asistente pueda ser invocado programáticamente y retina la conversación/hilo según tus necesidades.  
+  api_surface: |
+    Endpoint principal: `POST https://api.devic.ai/api/v1/assistants/{assistant_id}/messages`  
+    Parámetros relevantes:  
+      - `assistant_id`: string (identificador del asistente)  
+      - `Authorization`: Bearer token (string)  
+      - Cuerpo JSON:  
+          • `message`: string (mensaje del usuario)  
+          • `chatUuid`: string|null (identificador de conversación)  
+    Respuesta típica:  
+      ```json
+      {
+        "chatUuid": "e1f9d83b-7c9f-4d6b-8c1b-43b214f093e2",
+        "message": "Claro, puedo ayudarte con el reporte técnico. ¿Qué parte deseas revisar?",
+        "tokens_used": 845,
+        "timestamp": "2025-10-29T14:58:25Z"
+      }
+      ```  
+  constraints: |
+    Solo puedes invocar asistentes vía API si están publicados y tienen visibilidad API habilitada. El token debe tener permisos adecuados. Algunas funciones de conversación prolongada, contexto extenso o herramientas muy costosas pueden estar limitadas según plan de Devic. Además, mantener el `chatUuid` correcto es clave para conservar contexto entre mensajes.  
+  examples: |
+    Ejemplo en JavaScript (fetch):  
+      ```js
+      const response = await fetch('https://api.devic.ai/api/v1/assistants/YOUR_ASSISTANT_ID/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer YOUR_API_TOKEN'
+        },
+        body: JSON.stringify({
+          message: 'Hola, ¿puedes ayudarme con el reporte técnico?',
+          chatUuid: null
+        })
+      });
+      const data = await response.json();
+      console.log(data);
+      ```  
+  related: ["Asistentes Qué son", "Asistentes Deploy your first assistant", "Asistentes Prompt", "Asistentes Tools"]
+- title: Bases de datos (BD) – Qué es  
+  url: https://docs.devic.ai/devic/databases/index  
+  one_liner: Gestiona y explora bases de datos nativas en Devic totalmente integradas con agentes y asistentes para impulsar flujos de IA-native.  
+  answers: [
+    "¿Qué capacidades de base de datos ofrece Devic para agentes/asistentes?",
+    "¿Cómo conecto o creo una base de datos dentro de Devic?",
+    "¿Qué ventajas tiene usar la base de datos nativa de Devic frente a otra solución externa?"
+  ]
+  key_terms: ["bases de datos Devic", "database Devic nativa", "vector store Devic", "conectar base de datos Devic", "DB nativa agentes Devic"]
+  prerequisites: ["Haber leído la Introducción a Devic", "Tener acceso al módulo de Bases de datos en Devic"]
+  steps: |
+    1) En la plataforma Devic, ve a la sección “Bases de datos” en el menú principal.  
+    2) Haz clic en “Crear nueva base de datos” o explora las bases ya existentes en tu proyecto.  
+    3) Define el nombre, tipo (estructura, vectorial o relacional integrada), permisos de acceso y conectividad a tus agentes/asistentes.  
+    4) Carga o conecta tus datos: documentos, registros, tablas, API externas o vector store según el uso.  
+    5) Configura los esquemas, índices, filtros y la indexación semántica si aplica para agentes/asistentes que consultan esos datos.  
+    6) Asocia la base de datos a tus agentes/asistentes: desde su configuración de herramientas o prompt, selecciona la base como fuente de conocimiento o canal de datos.  
+  api_surface: |
+    Esta página de índice describe las capacidades generales de la base de datos nativa; para detalles técnicos consulta las sub-páginas (“Crear nueva base de datos”, “Ver y editar base de datos”).  
+  constraints: |
+    La base de datos nativa está integrada en Devic, lo que facilita conexión con agentes/asistentes, pero puede tener limitaciones en tipo de datos soportados, escalabilidad o exportación según el plan de Devic. Considera rendimiento, retención de datos y coste antes de reemplazar una solución externa.  
+  examples: |
+    Ejemplo: “Creo una base de datos ‘FAQ_Clientes’ en Devic, cargo un fichero CSV con preguntas frecuentes, activo búsqueda semántica, la asocio al asistente ‘ChatSoporte’, y a partir de ahora el asistente consulta esa base para responder preguntas del cliente.”  
+  related: ["Bases de datos Crear nueva base de datos", "Bases de datos Ver y editar base de datos", "Agentes index", "Asistentes index", "MCPs index"]
+- title: Crear nueva base de datos  
+  url: https://docs.devic.ai/devic/databases/create-new-database  
+  one_liner: Guía paso a paso para crear y configurar una nueva base de datos nativa en Devic, lista para uso con agentes y asistentes.  
+  answers: [
+    "¿Cómo creo una base de datos en Devic?",
+    "¿Qué opciones debo definir al crear una base de datos en Devic (tipo, permisos, esquema)?",
+    "¿Qué consideraciones debo tener al elegir entre base de datos relacional o vectorial en Devic?"
+  ]
+  key_terms: ["crear base de datos Devic", "database Devic nativa", "crear nueva db Devic", "vector store Devic", "configuración base de datos Devic"]
+  prerequisites: ["Tener una cuenta en Devic", "Acceso al módulo de Bases de datos en Devic", "Claridad sobre los datos que vas a integrar (documentos, tablas, vectoriales)"]
+  steps: |
+    1) En el dashboard de Devic, navega a la sección “Bases de datos” o “Databases”.  
+    2) Haz clic en “Crear nueva base de datos” o botón equivalente “New database”.  
+    3) Introduce los datos clave: nombre de la base, tipo (por ejemplo estructurada o vectorial), permisos de acceso, plan/uso estimado.  
+    4) Carga o importa tus datos iniciales: documentos, CSV, API, vector embeddings, según el uso previsto.  
+    5) Define el esquema o configuración de indexación: tablas, campos, filtros o embeddings si es vectorial, y ajusta permisos de lectura/escritura.  
+    6) Asocia esta base de datos a tus agentes o asistentes: desde la configuración de herramientas, prompt o flujo del asistente/agent selecciona esta base como fuente de datos o contexto de consulta.  
+  api_surface: |
+    Esta página describe la funcionalidad de creación de base de datos dentro de Devic; para detalles técnicos adicionales consulta la página de “Ver y editar base de datos”.  
+  constraints: |
+    La base de datos puede estar sujeta a límites del plan de Devic (capacidad, tokens, almacenamiento). Las bases vectoriales requieren indexación y pueden tardar en estar listas para consulta. Asegúrate de elegir el tipo correcto (estructurada vs vectorial) para tu caso de uso.  
+  examples: |
+    Ejemplo: “Voy a crear una base de datos llamada ‘FAQ_Clientes’. En Devic selecciono tipo ‘vectorial’, importo 2.000 documentos de preguntas frecuentes, activo indexación semántica, luego asocio esta base al asistente ‘ChatSoporte’. Ahora el asistente podrá hacer búsquedas en esa base para responder al usuario.”  
+  related: ["Bases de datos Qué es", "Bases de datos Ver y editar base de datos", "Agentes RAG", "Asistentes RAG"]
+- title: Ver y editar base de datos  
+  url: https://docs.devic.ai/devic/databases/view-and-edit-database  
+  one_liner: Examina, filtra, edita y administra los registros y esquemas de tus bases de datos nativas en Devic desde el panel integrado.  
+  answers: [
+    "¿Cómo visualizo los datos de una base de datos en Devic?",
+    "¿Cómo edito registros, reviso índices o modifico esquemas en la base de datos de Devic?",
+    "¿Qué precauciones debo tener al editar una base de datos en producción en Devic?"
+  ]  
+  key_terms: ["ver base de datos Devic", "editar base de datos Devic", "panel base de datos Devic", "gestionar registros base Devic", "modificar esquema base Devic"]  
+  prerequisites: ["Tener una base de datos ya creada en Devic", "Tener permisos de lectura/escritura en esa base de datos dentro de Devic"]  
+  steps: |
+    1) En tu proyecto Devic, ve a la sección “Bases de datos” y selecciona la base que quieres gestionar.  
+    2) Haz clic en “Ver/Editar” o la opción equivalente para abrir la interfaz de gestión de datos.  
+    3) En la vista de datos puedes aplicar filtros, ordenar columnas, buscar registros específicos, y navegar entre páginas de resultados.  
+    4) Para editar un registro: selecciona la fila, modifica uno o varios campos, y guarda los cambios; observa el efecto en el panel de métricas o en el agente/asistente que la usa.  
+    5) Si es necesario, modifica el esquema o la indexación: añade/borra columnas, cambia tipos de datos, ajusta índices o filtros, y guarda la nueva estructura.  
+    6) Verifica que los agentes/asistentes vinculados siguen funcionando correctamente después del cambio: realiza pruebas, revisa logs, latencias y errores.  
+  api_surface: |
+    Esta página describe la interfaz de gestión de la base de datos nativa de Devic; no se listan endpoints técnicos específicos de usuario.  
+  constraints: |
+    Editar registros o esquemas en bases de datos usadas por agentes/asistentes en producción puede causar interrupciones o inconsistencias. Asegúrate de tener backup o versión previa, de notificar a los responsables y de revisar compatibilidad de esquemas antes de cambios mayores. Algunos planes pueden limitar el número de modificaciones de esquema o registros por mes.  
+  examples: |
+    Ejemplo: “Tengo la base ‘FAQ_Clientes’ asociada al asistente ‘ChatSoporte’. En el panel de ver/editar base edito varios registros de preguntas frecuentes, cambio la categoría de 100 preguntas y actualizo el índice de búsqueda semántica. Luego pruebo el asistente: la búsqueda responde mejor y la latencia baja un 15 %.”  
+  related: ["Bases de datos Qué es", "Bases de datos Crear nueva base de datos", "Agentes RAG", "Asistentes RAG"]
+
