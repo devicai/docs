@@ -52,17 +52,20 @@ Busca información relevante dentro de bases de conocimiento internas.
 
 - **Tool:** `retrieve_from_rag_in_file`
 
+Esta tool solo sirve si se ha añadido al menos un documento.
+
 ---
 
 ## Update Knowledge
 
 Actualiza la base de conocimiento de los agentes y MCPs mediante operaciones de escritura o sincronización de información.
 
-- **Tool:** `update_memory`
-- **Descripción:** Actualiza la memoria RAG con el contenido proporcionado.
-- **Uso recomendado:**
-  - Mantener las fuentes de conocimiento actualizadas.
-  - Sincronizar información desde documentos o APIs externas.
+- **Tool:** `update_memory`  
+- **Descripción:** Cada agente mantiene su propio estado de memoria, el cual puede actualizar introduciendo nuevos fragmentos de texto (por ejemplo, descripciones, notas o resultados). Esta actualización afecta solo a su memoria interna —no modifica los documentos fuente—.  
+- **Uso recomendado:**  
+  - Añadir o actualizar conocimiento contextual del agente.  
+  - Sincronizar información desde documentos o APIs externas.  
+  - Permitir que el agente “aprenda” nuevos datos de manera incremental, manteniendo sus fuentes originales inalteradas.
 
 ---
 
@@ -73,15 +76,6 @@ Permite realizar búsquedas de información actualizada en la web.
 - **Tools disponibles:**
   - `search_web`
   - `web_extract`
-
----
-
-## Manage Tasks
-
-Crea, actualiza y organiza tareas dentro de flujos automatizados.
-
-- **Tools disponibles:**
-  - `create_task`, `update_task`, `create_multiple_tasks`
 
 ---
 
