@@ -1,0 +1,76 @@
+---
+title: "Moderation"
+description: "Bloquea contenido sensible, dañino o inapropiado antes de que llegue al modelo mediante el guardrail de moderación de Devic para tus asistentes."
+---
+
+El guardrail **Moderation** permite analizar el texto de entrada y bloquear cualquier contenido que sea considerado inseguro o fuera de las políticas definidas.  
+Su función es evitar que el asistente procese instrucciones que incluyan lenguaje tóxico, dañino, explícito, discriminatorio o que ponga en riesgo la integridad del sistema o de los usuarios.
+
+Este guardrail utiliza clasificadores especializados que determinan si el contenido enviado por el usuario pertenece a alguna categoría restringida.  
+Si se detecta una infracción, el mensaje se detiene y no se envía al modelo.
+
+![Interfaz de configuración de Moderation en Devic](/moderation.png)
+
+---
+
+## Qué detecta Moderation
+
+Moderation clasifica y filtra contenido en múltiples categorías de riesgo.  
+El usuario puede activar solo las categorías que considere necesarias según el caso de uso.
+
+### Categorías principales
+
+#### Sexual Content
+
+Contenido que involucra temas sexuales.
+
+Incluye:
+
+- sexual → Contenido sexual explícito o sugerente.  
+- sexual/minors → Contenido sexual que involucra menores de 18 años.
+
+---
+
+#### Hate & Harassment
+
+Contenido que involucra odio, discriminación o acoso.
+
+Incluye:
+
+- hate → Discurso de odio o discriminación.  
+- hate/threatening → Lenguaje que combina odio con violencia o daño grave.  
+- harassment → Contenido de intimidación o acoso.  
+- harassment/threatening → Acoso que incluye amenazas o violencia.
+
+---
+
+#### Self-Harm
+
+Contenido que involucra autolesiones o suicidio.
+
+Incluye:
+
+- self-harm → Contenido que promueve o representa autolesión.  
+- self-harm/intent → Expresiones en las que el usuario manifiesta intención de hacerse daño.
+
+![Interfaz de configuración de Moderation en Devic](/moderation_options.png)
+
+---
+
+## Cómo configurarlo en Devic
+
+1. Abre un asistente desde el panel lateral.  
+2. Accede al menú de opciones (⋮) en la parte superior derecha.  
+3. Selecciona **Guardrails**.  
+4. Pulsa **Add guardrail**.  
+5. Elige **Moderation** en la lista y actívalo.  
+6. Selecciona las categorías que deseas bloquear o usa los botones:  
+   - **All Categories** → activa todo.  
+   - **Only Most Critical** → activa solo riesgos severos.  
+   - **Clear** → desactiva todas las categorías.
+
+---
+
+<Card title="Siguiente: Jailbreak" icon="lock" href="./jailbreak">
+  Aprende cómo proteger a tus asistentes frente a intentos de romper sus límites de seguridad.
+</Card>
