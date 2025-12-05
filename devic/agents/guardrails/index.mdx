@@ -1,0 +1,20 @@
+---
+title: "Qué es"
+description: "Introducción a los guardrails de Devic: qué son, por qué son necesarios y cómo configurarlos en tus agentes."
+---
+
+Los **guardrails** son mecanismos de seguridad integrados en Devic que permiten controlar, filtrar y supervisar el comportamiento de los agentes de IA antes de que procesen las instrucciones del usuario.  
+Su objetivo es garantizar que los modelos actúen dentro de límites seguros, legales y adecuados para entornos productivos.
+
+En escenarios reales —especialmente en empresas que manejan datos sensibles, procesos regulados o información crítica— los guardrails son esenciales para evitar riesgos como:
+
+- Exposición involuntaria de datos personales o confidenciales.  
+- Generación de contenido tóxico, dañino o inapropiado.  
+- Manipulación del modelo mediante intentos de *jailbreak*.  
+- Respuestas fuera de contexto o alejadas del objetivo empresarial.  
+- Instrucciones inseguras que podrían activar herramientas o procesos de forma incorrecta.
+
+Devic permite añadir guardrails a cada agente, configurando una capa adicional de protección antes de que el mensaje del usuario llegue al modelo (LLM).
+
+![Acceso a la configuración de guardrails en el agente](/guardrails-access.png)
+
