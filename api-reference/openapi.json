@@ -1,132 +1,2086 @@
-openapi: 3.1.0
-info:
-  title: OpenAPI Plant Store
-  description: A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification
-  license:
-    name: MIT
-  version: 1.0.0
-servers:
-  - url: http://sandbox.mintlify.com
-security:
-  - bearerAuth: []
-paths:
-  /plants:
-    get:
-      description: Returns all plants from the system that the user has access to
-      parameters:
-        - name: limit
-          in: query
-          description: The maximum number of results to return
-          schema:
-            type: integer
-            format: int32
-      responses:
-        "200":
-          description: Plant response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Plant"
-        "400":
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    post:
-      description: Creates a new plant in the store
-      requestBody:
-        description: Plant to add to the store
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/NewPlant"
-        required: true
-      responses:
-        "200":
-          description: plant response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Plant"
-        "400":
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /plants/{id}:
-    delete:
-      description: Deletes a single plant based on the ID supplied
-      parameters:
-        - name: id
-          in: path
-          description: ID of plant to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        "204":
-          description: Plant deleted
-          content: {}
-        "400":
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-webhooks:
-  /plant/webhook:
-    post:
-      description: Information about a new plant added to the store
-      requestBody:
-        description: Plant added to the store
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/NewPlant"
-      responses:
-        "200":
-          description: Return a 200 status to indicate that the data was received successfully
-components:
-  schemas:
-    Plant:
-      required:
-        - name
-      type: object
-      properties:
-        name:
-          description: The name of the plant
-          type: string
-        tag:
-          description: Tag to specify the type
-          type: string
-    NewPlant:
-      allOf:
-        - $ref: "#/components/schemas/Plant"
-        - required:
-            - id
-          type: object
-          properties:
-            id:
-              description: Identification number of the plant
-              type: integer
-              format: int64
-    Error:
-      required:
-        - error
-        - message
-      type: object
-      properties:
-        error:
-          type: integer
-          format: int32
-        message:
-          type: string
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Devic.ai Public API",
+    "description": "Devic.ai is an AI platform that allows you to create, manage, and use AI agents for various tasks.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Devic.ai Support",
+      "url": "https://devic.ai"
+    },
+    "x-logo": {
+      "url": "https://devic.ai/logo.png",
+      "altText": "Devic.ai Logo"
+    },
+    "x-summary": "Public API for interacting with Devic.ai platform"
+  },
+  "tags": [
+    {
+      "name": "Agents",
+      "description": "Endpoints related to AI agents and their operations"
+    },
+    {
+      "name": "Assistants",
+      "description": "Endpoints for interacting with assistants and their specializations"
+    },
+    {
+      "name": "Health",
+      "description": "API health check endpoints"
+    },
+    {
+      "name": "Documentation",
+      "description": "Endpoints for retrieving markdown documentation"
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://api.devic.ai",
+      "description": "Production server"
+    },
+    {
+      "url": "https://staging-api.devic.ai",
+      "description": "Staging server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Use JWT token for authentication"
+      }
+    },
+    "schemas": {
+      "ThreadStatus": {
+        "type": "string",
+        "enum": [
+          "RUNNING",
+          "PAUSED",
+          "COMPLETED",
+          "FAILED",
+          "AWAITING_APPROVAL"
+        ],
+        "description": "Current status of the thread"
+      },
+      "ApprovalStatus": {
+        "type": "string",
+        "enum": [
+          "PENDING",
+          "APPROVED",
+          "REJECTED"
+        ],
+        "description": "Status of an execution awaiting approval"
+      },
+      "EvaluationStatus": {
+        "type": "string",
+        "enum": [
+          "PENDING",
+          "COMPLETED",
+          "FAILED"
+        ],
+        "description": "Status of an evaluation run"
+      },
+      "AgentThreadMessage": {
+        "type": "object",
+        "required": [
+          "role",
+          "content"
+        ],
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "user",
+              "assistant",
+              "system",
+              "tool"
+            ],
+            "description": "Role of the message sender"
+          },
+          "content": {
+            "type": "string",
+            "description": "Content of the message"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the tool or function (for tool messages)"
+          },
+          "tool_call_id": {
+            "type": "string",
+            "description": "Unique identifier for the tool call"
+          }
+        }
+      },
+      "AgentThread": {
+        "type": "object",
+        "required": [
+          "id",
+          "agentId",
+          "status",
+          "createdAt",
+          "messages"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the thread"
+          },
+          "agentId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the associated agent"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ThreadStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the thread was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the thread was last updated"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Custom metadata associated with the thread"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentThreadMessage"
+            },
+            "description": "Messages exchanged in the thread"
+          },
+          "cost": {
+            "type": "number",
+            "format": "float",
+            "description": "Total cost accumulated by this thread"
+          }
+        }
+      },
+      "CreateThreadRequest": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentThreadMessage"
+            },
+            "description": "Initial messages for the thread"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Custom metadata to associate with the thread"
+          },
+          "async": {
+            "type": "boolean",
+            "description": "Whether to execute the thread asynchronously",
+            "default": false
+          }
+        }
+      },
+      "UpdateThreadRequest": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/ThreadStatus"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Updated metadata for the thread"
+          }
+        }
+      },
+      "ApprovalRequest": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/ApprovalStatus"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Optional comment about the approval decision"
+          }
+        }
+      },
+      "EvaluationConfig": {
+        "type": "object",
+        "properties": {
+          "evaluatorModel": {
+            "type": "string",
+            "description": "Identifier for the model used to evaluate the agent"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether automatic evaluation is enabled for this agent",
+            "default": true
+          },
+          "threshold": {
+            "type": "number",
+            "format": "float",
+            "description": "Threshold score for flagging evaluations",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      },
+      "Evaluation": {
+        "type": "object",
+        "required": [
+          "id",
+          "threadId",
+          "score",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the evaluation"
+          },
+          "threadId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier for the evaluated thread"
+          },
+          "score": {
+            "type": "number",
+            "format": "float",
+            "description": "Evaluation score between 0 and 1"
+          },
+          "status": {
+            "$ref": "#/components/schemas/EvaluationStatus"
+          },
+          "feedback": {
+            "type": "string",
+            "description": "Detailed feedback or explanation of the evaluation"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of when the evaluation was created"
+          }
+        }
+      },
+      "CostSummary": {
+        "type": "object",
+        "properties": {
+          "totalCost": {
+            "type": "number",
+            "format": "float",
+            "description": "Total cost accumulated by the agent"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code (e.g., USD, EUR)"
+          },
+          "breakdown": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number",
+              "format": "float"
+            },
+            "description": "Cost breakdown by category"
+          }
+        }
+      },
+      "CostEntry": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date for this cost entry"
+          },
+          "cost": {
+            "type": "number",
+            "format": "float",
+            "description": "Cost incurred on this date"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code (e.g., USD, EUR)"
+          }
+        }
+      },
+      "AssistantSpecialization": {
+        "type": "object",
+        "required": [
+          "identifier",
+          "name",
+          "createdAt"
+        ],
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "description": "Unique identifier for the assistant specialization"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable name of the specialization"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of what the specialization does"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the specialization was created"
+          }
+        }
+      },
+      "ChatMessage": {
+        "type": "object",
+        "required": [
+          "role",
+          "content"
+        ],
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "user",
+              "assistant",
+              "system"
+            ],
+            "description": "Role of the message sender"
+          },
+          "content": {
+            "type": "string",
+            "description": "Content of the message"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the message was sent"
+          }
+        }
+      },
+      "ChatHistory": {
+        "type": "object",
+        "required": [
+          "chatUid",
+          "assistantIdentifier",
+          "createdAt",
+          "messages"
+        ],
+        "properties": {
+          "chatUid": {
+            "type": "string",
+            "description": "Unique identifier for the chat session"
+          },
+          "assistantIdentifier": {
+            "type": "string",
+            "description": "Identifier for the assistant specialization used"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the chat was created"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatMessage"
+            },
+            "description": "Messages exchanged in the chat"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Custom metadata associated with the chat"
+          }
+        }
+      },
+      "ProcessMessageRequest": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatMessage"
+            },
+            "description": "Messages to process, usually including the latest user message"
+          },
+          "chatUid": {
+            "type": "string",
+            "description": "Optional chat UID to continue an existing conversation"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Custom metadata for this interaction"
+          }
+        }
+      },
+      "FilterChatHistoriesRequest": {
+        "type": "object",
+        "properties": {
+          "assistantIdentifier": {
+            "type": "string",
+            "description": "Filter by assistant specialization identifier"
+          },
+          "fromDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Start date for filtering chat histories"
+          },
+          "toDate": {
+            "type": "string",
+            "format": "date",
+            "description": "End date for filtering chat histories"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Filter by metadata fields"
+          }
+        }
+      },
+      "HealthStatus": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok"
+            ],
+            "description": "Health status of the API"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the health status was checked"
+          }
+        }
+      },
+      "MarkdownDocument": {
+        "type": "object",
+        "required": [
+          "filename",
+          "content"
+        ],
+        "properties": {
+          "filename": {
+            "type": "string",
+            "description": "Name of the markdown file"
+          },
+          "content": {
+            "type": "string",
+            "description": "Markdown content"
+          }
+        }
+      },
+      "MarkdownIndexEntry": {
+        "type": "object",
+        "required": [
+          "filename",
+          "title"
+        ],
+        "properties": {
+          "filename": {
+            "type": "string",
+            "description": "Name of the markdown file"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the document"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short summary of the document"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "required": [
+          "error",
+          "message"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Additional details about the error"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/agents/{agentId}/threads": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Create a new thread for an agent",
+        "description": "Creates a new execution thread for the specified agent. Threads allow you to run agent tasks, manage their state, and track associated costs.",
+        "operationId": "createAgentThread",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agentId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the agent for which to create the thread",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Payload to create a new thread",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateThreadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Thread created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentThread"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Agent not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "List threads for an agent",
+        "description": "Retrieves a list of execution threads associated with the specified agent. This can be used for monitoring and debugging purposes.",
+        "operationId": "listAgentThreads",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agentId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the agent whose threads should be listed",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Filter threads by status",
+            "schema": {
+              "$ref": "#/components/schemas/ThreadStatus"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of threads to return (pagination)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Number of threads to skip (pagination offset)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0,
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of threads for the specified agent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgentThread"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Agent not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/agents/threads/{threadId}": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Get a thread by ID",
+        "description": "Retrieves detailed information about a specific thread, including its status, metadata, and message history.",
+        "operationId": "getAgentThreadById",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the thread to retrieve",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Thread details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentThread"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Thread not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Update a thread",
+        "description": "Updates the status or metadata of a specific thread. This can be used to pause, resume, or modify thread metadata.",
+        "operationId": "updateAgentThread",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the thread to update",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Fields to update in the thread",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateThreadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Thread updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentThread"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid update payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Thread not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/agents/threads/{threadId}/approval": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Handle thread approval",
+        "description": "Approves or rejects a thread execution that is awaiting approval. This is part of the human-in-the-loop workflow.",
+        "operationId": "handleThreadApproval",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the thread awaiting approval",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Approval decision and optional comment",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Approval decision processed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentThread"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid approval payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Thread not found or not awaiting approval"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/agents/threads/{threadId}/complete": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Mark a thread as completed",
+        "description": "Marks a thread as completed. This can be used to signal the end of an execution, especially in manual or custom workflows.",
+        "operationId": "completeThread",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the thread to complete",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Thread marked as completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentThread"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Thread not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/agents/threads/{threadId}/pause": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Pause a thread",
+        "description": "Pauses an ongoing thread. This can be useful to temporarily stop execution while waiting for external events.",
+        "operationId": "pauseThread",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the thread to pause",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Thread paused successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentThread"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Thread not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/agents/threads/{threadId}/resume": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Resume a paused thread",
+        "description": "Resumes a previously paused thread and continues its execution.",
+        "operationId": "resumeThread",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the thread to resume",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Thread resumed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentThread"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Thread not found or not paused"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/agents/threads/{threadId}/evaluate": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Trigger evaluation for a thread",
+        "description": "Triggers an evaluation run for the specified thread. This uses the evaluation configuration defined for the associated agent.",
+        "operationId": "evaluateThread",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the thread to evaluate",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Evaluation triggered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evaluation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Evaluation could not be triggered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Thread or agent not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/agents/threads/{threadId}/evaluation": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Get latest evaluation for a thread",
+        "description": "Retrieves the most recent evaluation result for the specified thread.",
+        "operationId": "getThreadEvaluation",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the thread whose latest evaluation should be retrieved",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Latest evaluation for the thread",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evaluation"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Thread or evaluation not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/agents/threads/{threadId}/evaluations": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "List evaluations for a thread",
+        "description": "Retrieves all evaluations associated with the specified thread, ordered by creation date.",
+        "operationId": "listThreadEvaluations",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the thread whose evaluations should be listed",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of evaluations for the thread",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Evaluation"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Thread not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/agents/threads/{threadId}/evaluations/{evaluationId}": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Get a specific evaluation by ID",
+        "description": "Retrieves detailed information about a specific evaluation, including score and feedback.",
+        "operationId": "getThreadEvaluationById",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the thread associated with the evaluation",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the evaluation to retrieve",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Evaluation details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evaluation"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Evaluation not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/agents/agents/{agentId}/evaluation-config": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Get evaluation configuration for an agent",
+        "description": "Retrieves the evaluation configuration associated with the specified agent.",
+        "operationId": "getAgentEvaluationConfig",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agentId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the agent whose evaluation config should be retrieved",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Evaluation configuration retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationConfig"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Agent not found or evaluation config not set"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Update evaluation configuration for an agent",
+        "description": "Creates or updates the evaluation configuration for the specified agent.",
+        "operationId": "updateAgentEvaluationConfig",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agentId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the agent whose evaluation config should be updated",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "New evaluation configuration for the agent",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluationConfig"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Evaluation configuration updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationConfig"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid configuration payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Agent not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/agents/agents/{agentId}/costs/daily": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Get daily cost breakdown for an agent",
+        "description": "Retrieves daily cost entries for the specified agent over a configurable time range.",
+        "operationId": "getAgentDailyCosts",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agentId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the agent whose daily costs should be retrieved",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "description": "Number of days to include in the cost breakdown",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 30,
+              "minimum": 1,
+              "maximum": 365
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Daily cost breakdown for the specified agent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CostEntry"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Agent not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/agents/agents/{agentId}/costs/monthly": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Get monthly cost breakdown for an agent",
+        "description": "Retrieves monthly cost entries for the specified agent over a configurable time range.",
+        "operationId": "getAgentMonthlyCosts",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agentId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the agent whose monthly costs should be retrieved",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "months",
+            "in": "query",
+            "required": false,
+            "description": "Number of months to include in the cost breakdown",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 12,
+              "minimum": 1,
+              "maximum": 60
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Monthly cost breakdown for the specified agent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CostEntry"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Agent not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/agents/agents/{agentId}/costs/summary": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Get cost summary for an agent",
+        "description": "Retrieves a summary of the total cost for the specified agent, including optional breakdown by category.",
+        "operationId": "getAgentCostSummary",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agentId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the agent whose cost summary should be retrieved",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cost summary for the specified agent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CostSummary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Agent not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/assistants": {
+      "get": {
+        "tags": [
+          "Assistants"
+        ],
+        "summary": "List assistant specializations",
+        "description": "Retrieves all available assistant specializations that you can interact with via the API.",
+        "operationId": "listAssistantSpecializations",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of assistant specializations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssistantSpecialization"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/assistants/{identifier}": {
+      "get": {
+        "tags": [
+          "Assistants"
+        ],
+        "summary": "Get assistant specialization by identifier",
+        "description": "Retrieves detailed information about a specific assistant specialization.",
+        "operationId": "getAssistantSpecialization",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifier of the assistant specialization to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assistant specialization details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssistantSpecialization"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Assistant specialization not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/assistants/{identifier}/messages": {
+      "post": {
+        "tags": [
+          "Assistants"
+        ],
+        "summary": "Process a message with an assistant specialization",
+        "description": "Sends messages to the specified assistant specialization and returns its response. You can provide a chatUid to continue an existing conversation.",
+        "operationId": "processAssistantMessage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifier of the assistant specialization to use",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Messages and optional chat context for the assistant",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessMessageRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Assistant response and updated chat context",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatHistory"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid message payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Assistant specialization not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/assistants/{identifier}/chats/{chatUid}": {
+      "get": {
+        "tags": [
+          "Assistants"
+        ],
+        "summary": "Get chat history by chat UID",
+        "description": "Retrieves the full message history for a specific chat with an assistant specialization.",
+        "operationId": "getChatHistoryByUid",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifier of the assistant specialization",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chatUid",
+            "in": "path",
+            "required": true,
+            "description": "Unique identifier of the chat session",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chat history retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatHistory"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Chat or assistant specialization not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/assistants/{identifier}/chats": {
+      "get": {
+        "tags": [
+          "Assistants"
+        ],
+        "summary": "List chat histories for a specific assistant specialization",
+        "description": "Retrieves chat histories associated with a particular assistant specialization.",
+        "operationId": "listChatHistoriesForAssistant",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifier of the assistant specialization",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of chat histories to return",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Number of chat histories to skip (pagination offset)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0,
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of chat histories for the assistant specialization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChatHistory"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Assistant specialization not found"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/assistants/chats": {
+      "post": {
+        "tags": [
+          "Assistants"
+        ],
+        "summary": "List chat histories with filters",
+        "description": "Retrieves chat histories across all assistant specializations, with support for filtering by date range, metadata, and assistant identifier.",
+        "operationId": "listChatHistoriesWithFilters",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "description": "Filter parameters for chat histories",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterChatHistoriesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of chat histories matching the filter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChatHistory"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid filter parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Health check",
+        "description": "Returns the health status of the API. Useful for monitoring and uptime checks.",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "API is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatus"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "API is unhealthy or experiencing issues",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/docs/{filename}": {
+      "get": {
+        "tags": [
+          "Documentation"
+        ],
+        "summary": "Get rendered markdown document",
+        "description": "Retrieves a specific markdown document by its filename and returns it rendered as HTML.",
+        "operationId": "getRenderedMarkdownDoc",
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "description": "Name of the markdown file (without extension)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rendered markdown document as HTML",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Markdown document not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/docs/{filename}.md": {
+      "get": {
+        "tags": [
+          "Documentation"
+        ],
+        "summary": "Get raw markdown document",
+        "description": "Retrieves the raw markdown content of a specific document by its filename.",
+        "operationId": "getRawMarkdownDoc",
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "description": "Name of the markdown file (without extension)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Raw markdown document content",
+            "content": {
+              "text/markdown": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarkdownDocument"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Markdown document not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/docs": {
+      "get": {
+        "tags": [
+          "Documentation"
+        ],
+        "summary": "Get documentation index",
+        "description": "Retrieves an index of available markdown documentation files with metadata such as title and summary.",
+        "operationId": "getDocumentationIndex",
+        "responses": {
+          "200": {
+            "description": "List of markdown documentation entries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MarkdownIndexEntry"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}
