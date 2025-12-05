@@ -1,33 +1,193 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "Introduction"
+description: "Overview, authentication and usage patterns for the Devic public API."
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+Welcome to the **Devic Public API**.
 
-## Welcome
+This API lets you integrate Devic’s AI capabilities directly into your products or internal systems: create and run **agents**, orchestrate **assistants**, measure **costs**, and evaluate behaviour automatically.
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+The API is designed for **automation**, **backend integrations**, and SaaS platforms that want to become truly **AI-native**.
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
+---
+
+## What you can do with the API
+
+<Columns cols={2}>
+  <Card title="Run agents programmatically" icon="robot">
+    Launch new executions for your agents, pause or resume them, complete runs and trigger evaluations.
+  </Card>
+
+  <Card title="Power conversational assistants" icon="comments">
+    Send messages, retrieve chat histories and integrate assistants directly inside your product.
+  </Card>
+
+  <Card title="Monitor quality with evaluations" icon="scale-balanced">
+    Use Devic’s evaluation engine to score outputs and receive structured feedback automatically.
+  </Card>
+
+  <Card title="FinOps and cost visibility" icon="chart-line">
+    Retrieve daily, monthly or aggregated cost data for each agent.
+  </Card>
+
+  <Card title="Docs as an API" icon="book-open">
+    Access your workspace documentation as rendered HTML or raw markdown.
+  </Card>
+
+  <Card title="Health checks" icon="heartbeat">
+    Verify API availability using a simple health endpoint.
+  </Card>
+</Columns>
+
+---
+
+## API surface at a glance
+
+The Devic API is divided into the following groups:
+
+### **Agents**
+- Create and list agent threads  
+- Pause, resume or complete executions  
+- Trigger evaluations  
+- Retrieve evaluation results  
+- Retrieve daily, monthly and summary costs  
+
+### **Assistants**
+- List available assistants  
+- Send messages and receive responses  
+- Retrieve chat histories  
+- Filter conversations across assistants  
+
+### **Documentation**
+- List available docs  
+- Retrieve rendered HTML or markdown  
+
+### **Health**
+- Simple availability check  
+
+<Card title="View OpenAPI specification" icon="layers" href="/openapi.json">
+  Download the OpenAPI specification used to generate this API reference.
 </Card>
+
+---
+
+## Environments and base URLs
+
+Devic exposes multiple environments so you can separate development and production traffic.
+
+### Production
+    https://api.devic.ai
+
+### Staging
+    https://staging-api.devic.ai
+
+Example full endpoint:
+
+    GET https://api.devic.ai/api/v1/agents/{agentId}/threads
+
+---
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+All Devic API requests use **Bearer tokens**.
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
-```
+Include your token in the `Authorization` header of every request:
+
+Header format:
+    
+    Authorization: Bearer YOUR_API_TOKEN
+
+Example request:
+
+    GET https://api.devic.ai/api/v1/agents/{agentId}/threads
+    Authorization: Bearer YOUR_API_TOKEN
+    Content-Type: application/json
+
+If your token is missing or invalid, the API will return **401 Unauthorized**.
+
+---
+
+## Typical flows
+
+### 1. Running an agent
+
+1. **Create a thread**
+    
+        POST /api/v1/agents/{agentId}/threads
+
+2. **Monitor or control the execution**
+
+        GET /api/v1/agents/threads/{threadId}
+        POST /api/v1/agents/threads/{threadId}/pause
+        POST /api/v1/agents/threads/{threadId}/resume
+        POST /api/v1/agents/threads/{threadId}/complete
+
+3. **Trigger or fetch evaluations**
+
+        POST /api/v1/agents/threads/{threadId}/evaluate
+        GET /api/v1/agents/threads/{threadId}/evaluations
+
+4. **Inspect costs**
+
+        GET /api/v1/agents/agents/{agentId}/costs/daily
+        GET /api/v1/agents/agents/{agentId}/costs/monthly
+        GET /api/v1/agents/agents/{agentId}/costs/summary
+
+<Card title="Start with agents" icon="robot" href="/api-reference/endpoint/post-api-v1-agents-agentid-threads">
+  Create your first execution thread programmatically.
+</Card>
+
+---
+
+### 2. Conversational assistants
+
+1. **List available assistants**
+
+        GET /api/v1/assistants
+
+2. **Send messages**
+
+        POST /api/v1/assistants/{identifier}/messages
+
+3. **Retrieve chat history**
+
+        GET /api/v1/assistants/{identifier}/chats/{chatUid}
+        GET /api/v1/assistants/{identifier}/chats
+        POST /api/v1/assistants/chats
+
+<Card title="Start with assistants" icon="comments" href="/api-reference/endpoint/post-api-v1-assistants-identifier-messages">
+  Learn how to send your first message to an assistant.
+</Card>
+
+---
+
+## Error handling
+
+Most endpoints return structured errors:
+
+    {
+      "error": "ERROR_CODE",
+      "message": "Human readable description",
+      "details": { ... }
+    }
+
+Common status codes:
+- 400 — Invalid input  
+- 401 — Missing or invalid token  
+- 404 — Resource not found  
+- 429 — Rate limit exceeded  
+- 500 — Internal server error  
+
+---
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Explore agents endpoints" icon="robot" href="/api-reference/endpoint/post-api-v1-agents-agentid-threads">
+    Start creating and controlling agent threads.
+  </Card>
+
+  <Card title="Explore assistant endpoints" icon="comments" href="/api-reference/endpoint/get-api-v1-assistants">
+    Build conversational experiences powered by Devic.
+  </Card>
+</Columns>
