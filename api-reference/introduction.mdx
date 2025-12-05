@@ -5,9 +5,9 @@ description: "Overview, authentication and usage patterns for the Devic public A
 
 Welcome to the **Devic Public API**.
 
-This API lets you integrate Devic's AI capabilities directly into your products or internal systems: create and run **agents**, orchestrate **assistants**, measure **costs**, and evaluate behaviour automatically.
+This API allows you to integrate Devic’s AI capabilities directly into your own applications and services: create and run **agents**, orchestrate **assistants**, measure **costs**, and evaluate performance using LLM-powered evaluations.
 
-The API is designed for **automation**, **backend integrations**, and SaaS platforms that want to become truly **AI-native**.
+The Devic API is ideal for backend automation, SaaS integrations and systems that need to operate AI workflows programmatically.
 
 ---
 
@@ -15,19 +15,19 @@ The API is designed for **automation**, **backend integrations**, and SaaS platf
 
 <Columns cols={2}>
   <Card title="Run agents programmatically" icon="robot">
-    Launch new executions for your agents, pause or resume them, complete runs and trigger evaluations.
+    Launch new executions, pause or resume them, complete runs, and trigger automated evaluations.
   </Card>
 
   <Card title="Power conversational assistants" icon="comments">
-    Send messages, retrieve chat histories and integrate assistants directly inside your product.
+    Send messages to assistants, retrieve chat histories and integrate them directly inside your product.
   </Card>
 
   <Card title="Monitor quality with evaluations" icon="scale-balanced">
-    Use Devic's evaluation engine to score outputs and receive structured feedback automatically.
+    Score outputs, audit behaviour and receive structured feedback using Devic’s evaluation engine.
   </Card>
 
   <Card title="FinOps and cost visibility" icon="chart-line">
-    Retrieve daily, monthly or aggregated cost data for each agent.
+    Retrieve daily, monthly and aggregated cost data for each agent.
   </Card>
 
   <Card title="Docs as an API" icon="book-open">
@@ -35,7 +35,7 @@ The API is designed for **automation**, **backend integrations**, and SaaS platf
   </Card>
 
   <Card title="Health checks" icon="heartbeat">
-    Verify API availability using a simple health endpoint.
+    Verify API availability using a dedicated health endpoint.
   </Card>
 </Columns>
 
@@ -54,7 +54,7 @@ The Devic API is divided into the following groups:
 
 ### **Assistants**
 - List available assistants  
-- Send messages and receive responses  
+- Send messages  
 - Retrieve chat histories  
 - Filter conversations across assistants  
 
@@ -63,7 +63,7 @@ The Devic API is divided into the following groups:
 - Retrieve rendered HTML or markdown  
 
 ### **Health**
-- Simple availability check  
+- Basic availability checks  
 
 <Card title="View OpenAPI specification" icon="layers" href="/openapi.json">
   Download the OpenAPI specification used to generate this API reference.
@@ -73,7 +73,7 @@ The Devic API is divided into the following groups:
 
 ## Environments and base URLs
 
-Devic exposes multiple environments so you can separate development and production traffic.
+Devic offers separate environments for development and production.
 
 ### Production
     https://api.devic.ai
@@ -89,12 +89,12 @@ Example full endpoint:
 
 ## Authentication
 
-All Devic API requests use **Bearer tokens**.
+All Devic API requests require a **Bearer token**.
 
-Include your token in the `Authorization` header of every request:
+Include your token in every request using the `Authorization` header:
 
 Header format:
-    
+
     Authorization: Bearer YOUR_API_TOKEN
 
 Example request:
@@ -103,16 +103,16 @@ Example request:
     Authorization: Bearer YOUR_API_TOKEN
     Content-Type: application/json
 
-If your token is missing or invalid, the API will return **401 Unauthorized**.
+Invalid or missing tokens return `401 Unauthorized`.
 
 ---
 
-## Typical flows
+## Typical workflows
 
 ### 1. Running an agent
 
 1. **Create a thread**
-    
+
         POST /api/v1/agents/{agentId}/threads
 
 2. **Monitor or control the execution**
@@ -141,7 +141,7 @@ If your token is missing or invalid, the API will return **401 Unauthorized**.
 
 ### 2. Conversational assistants
 
-1. **List available assistants**
+1. **List assistants**
 
         GET /api/v1/assistants
 
@@ -163,15 +163,18 @@ If your token is missing or invalid, the API will return **401 Unauthorized**.
 
 ## Error handling
 
-Most endpoints return structured errors:
+Most endpoints return structured error objects.
 
-    {
-      "error": "ERROR_CODE",
-      "message": "Human readable description",
-      "details": { ... }
-    }
+<pre>
+{`{
+  "error": "ERROR_CODE",
+  "message": "Human readable description",
+  "details": { }
+}`}
+</pre>
 
 Common status codes:
+
 - 400 — Invalid input  
 - 401 — Missing or invalid token  
 - 404 — Resource not found  
@@ -184,10 +187,10 @@ Common status codes:
 
 <Columns cols={2}>
   <Card title="Explore agents endpoints" icon="robot" href="/api-reference/endpoint/post-api-v1-agents-agentid-threads">
-    Start creating and controlling agent threads.
+    Start creating and controlling agent executions.
   </Card>
 
-  <Card title="Explore assistant endpoints" icon="comments" href="/api-reference/endpoint/get-api-v1-assistants">
-    Build conversational experiences powered by Devic.
+  <Card title="Explore assistants endpoints" icon="comments" href="/api-reference/endpoint/get-api-v1-assistants">
+    Build conversational AI experiences powered by Devic.
   </Card>
 </Columns>
