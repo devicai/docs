@@ -15,56 +15,6 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "Introduction",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Agents",
-            "pages": [
-              "api-reference/endpoint/post-api-v1-agents-agentid-threads",
-              "api-reference/endpoint/get-api-v1-agents-agentid-threads",
-              "api-reference/endpoint/get-api-v1-agents-threads-threadid",
-              "api-reference/endpoint/patch-api-v1-agents-threads-threadid",
-              "api-reference/endpoint/post-api-v1-agents-threads-threadid-approval",
-              "api-reference/endpoint/post-api-v1-agents-threads-threadid-complete",
-              "api-reference/endpoint/post-api-v1-agents-threads-threadid-pause",
-              "api-reference/endpoint/post-api-v1-agents-threads-threadid-resume",
-              "api-reference/endpoint/post-api-v1-agents-threads-threadid-evaluate",
-              "api-reference/endpoint/get-api-v1-agents-threads-threadid-evaluation",
-              "api-reference/endpoint/get-api-v1-agents-threads-threadid-evaluations",
-              "api-reference/endpoint/get-api-v1-agents-threads-threadid-evaluations-evaluationid",
-              "api-reference/endpoint/put-api-v1-agents-agents-agentid-evaluation-config",
-              "api-reference/endpoint/get-api-v1-agents-agents-agentid-evaluation-config",
-              "api-reference/endpoint/get-api-v1-agents-agents-agentid-costs-daily",
-              "api-reference/endpoint/get-api-v1-agents-agents-agentid-costs-monthly",
-              "api-reference/endpoint/get-api-v1-agents-agents-agentid-costs-summary"
-            ]
-          },
-          {
-            "group": "Assistants",
-            "pages": [
-              "api-reference/endpoint/get-api-v1-assistants",
-              "api-reference/endpoint/get-api-v1-assistants-identifier",
-              "api-reference/endpoint/post-api-v1-assistants-identifier-messages",
-              "api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid",
-              "api-reference/endpoint/get-api-v1-assistants-identifier-chats",
-              "api-reference/endpoint/post-api-v1-assistants-chats"
-            ]
-          },
-          {
-            "group": "Health",
-            "pages": [
-              "api-reference/endpoint/get-api-v1-health"
-            ]
-          }
-        ]
-      },
-      {
         "tab": "Devic",
         "groups": [
           {
@@ -171,7 +121,7 @@
                   "devic/assistants/guardrails/moderation",
                   "devic/assistants/guardrails/jailbreak",
                   "devic/assistants/guardrails/off_topic_prompts",
-                  "devic/assistants/guardrails/custom_prompt-check"
+                  "devic/assistants/guardrails/custom_prompt_check"
                 ]
               },
               "devic/assistants/api-execution"
@@ -188,9 +138,69 @@
             ]
           }
         ]
+      },
+
+      {
+        "tab": "API reference",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          },
+          {
+            "group": "Agents",
+            "pages": [
+              "api-reference/endpoint/post-api-v1-agents-agentid-threads",
+              "api-reference/endpoint/get-api-v1-agents-agentid-threads",
+              "api-reference/endpoint/get-api-v1-agents-threads-threadid",
+              "api-reference/endpoint/patch-api-v1-agents-threads-threadid",
+              "api-reference/endpoint/post-api-v1-agents-threads-threadid-approval",
+              "api-reference/endpoint/post-api-v1-agents-threads-threadid-complete",
+              "api-reference/endpoint/post-api-v1-agents-threads-threadid-pause",
+              "api-reference/endpoint/post-api-v1-agents-threads-threadid-resume",
+              "api-reference/endpoint/post-api-v1-agents-threads-threadid-evaluate",
+              "api-reference/endpoint/get-api-v1-agents-threads-threadid-evaluation",
+              "api-reference/endpoint/get-api-v1-agents-threads-threadid-evaluations",
+              "api-reference/endpoint/get-api-v1-agents-threads-threadid-evaluations-evaluationid",
+              "api-reference/endpoint/put-api-v1-agents-agents-agentid-evaluation-config",
+              "api-reference/endpoint/get-api-v1-agents-agents-agentid-evaluation-config",
+              "api-reference/endpoint/get-api-v1-agents-agents-agentid-costs-daily",
+              "api-reference/endpoint/get-api-v1-agents-agents-agentid-costs-monthly",
+              "api-reference/endpoint/get-api-v1-agents-agents-agentid-costs-summary"
+            ]
+          },
+          {
+            "group": "Assistants",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-assistants",
+              "api-reference/endpoint/get-api-v1-assistants-identifier",
+              "api-reference/endpoint/post-api-v1-assistants-identifier-messages",
+              "api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid",
+              "api-reference/endpoint/get-api-v1-assistants-identifier-chats",
+              "api-reference/endpoint/post-api-v1-assistants-chats"
+            ]
+          },
+          {
+            "group": "Documentation",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-docs",
+              "api-reference/endpoint/get-api-v1-docs-filename",
+              "api-reference/endpoint/get-api-v1-docs-filename-md"
+            ]
+          },
+          {
+            "group": "Health",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-health"
+            ]
+          }
+        ]
       }
     ]
   },
+
   "logo": {
     "light": "/logo/devic-light.svg",
     "dark": "/logo/devic-dark.svg",
