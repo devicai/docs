@@ -82,7 +82,6 @@
                 ]
               },
               "devic/agents/other-options",
-
               {
                 "group": "Guardrails",
                 "expanded": false,
@@ -95,7 +94,6 @@
                   "devic/agents/guardrails/custom_prompt_check"
                 ]
               },
-
               "devic/agents/api-execution"
             ]
           },
@@ -111,6 +109,18 @@
               "devic/assistants/rag",
               "devic/assistants/conversation-console",
               "devic/assistants/other-options",
+              {
+                "group": "Guardrails",
+                "expanded": false,
+                "pages": [
+                  "devic/assistants/guardrails/index",
+                  "devic/assistants/guardrails/pii",
+                  "devic/assistants/guardrails/moderation",
+                  "devic/assistants/guardrails/jailbreak",
+                  "devic/assistants/guardrails/off_topic_prompts",
+                  "devic/assistants/guardrails/custom_prompt_check"
+                ]
+              },
               "devic/assistants/api-execution"
             ]
           },
