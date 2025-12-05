@@ -15,13 +15,36 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "API reference",
+        "groups": [
+          {
+            "group": "API documentation",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          },
+          {
+            "group": "Endpoint examples",
+            "pages": [
+              "api-reference/endpoint/get",
+              "api-reference/endpoint/create",
+              "api-reference/endpoint/delete",
+              "api-reference/endpoint/webhook"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "Devic",
         "groups": [
           {
             "group": "Comenzar",
             "icon": "rocket",
             "expanded": true,
-            "pages": ["devic/introduction", "devic/quickstart"]
+            "pages": [
+              "devic/introduction",
+              "devic/quickstart"
+            ]
           },
           {
             "group": "MCPs",
@@ -81,6 +104,7 @@
                   "devic/agents/continuous-optimization/costs"
                 ]
               },
+              "devic/agents/other-options",
               {
                 "group": "Guardrails",
                 "expanded": false,
@@ -93,7 +117,6 @@
                   "devic/agents/guardrails/custom_prompt_check"
                 ]
               },
-              "devic/agents/other-options",
               "devic/agents/api-execution"
             ]
           },
@@ -135,25 +158,22 @@
             ]
           }
         ]
-      },
-      {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "API",
-            "icon": "code",
-            "expanded": true,
-            "pages": [
-              "api-reference/endpoint/introduction",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/webhook"
-            ]
-          }
-        ]
       }
-    ]
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Documentation",
+          "href": "https://mintlify.com/docs",
+          "icon": "book-open-cover"
+        },
+        {
+          "anchor": "Blog",
+          "href": "https://mintlify.com/blog",
+          "icon": "newspaper"
+        }
+      ]
+    }
   },
   "logo": {
     "light": "/logo/devic-light.svg",
