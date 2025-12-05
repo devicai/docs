@@ -57,14 +57,6 @@
             ]
           },
           {
-            "group": "Documentation",
-            "pages": [
-              "api-reference/endpoint/get-api-v1-docs",
-              "api-reference/endpoint/get-api-v1-docs-filename",
-              "api-reference/endpoint/get-api-v1-docs-filename-md"
-            ]
-          },
-          {
             "group": "Health",
             "pages": [
               "api-reference/endpoint/get-api-v1-health"
@@ -179,7 +171,7 @@
                   "devic/assistants/guardrails/moderation",
                   "devic/assistants/guardrails/jailbreak",
                   "devic/assistants/guardrails/off_topic_prompts",
-                  "devic/assistants/guardrails/custom_prompt_check"
+                  "devic/assistants/guardrails/custom_prompt-check"
                 ]
               },
               "devic/assistants/api-execution"
@@ -197,21 +189,7 @@
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/devic-light.svg",
