@@ -1,0 +1,58 @@
+---
+title: "Off Topic Prompts"
+description: "Evita que los asistentes respondan fuera del alcance definido mediante el guardrail Off Topic Prompts de Devic."
+---
+
+El guardrail **Off Topic Prompts** analiza si la entrada del usuario se mantiene dentro del contexto o alcance permitido del asistente.  
+Cuando detecta que el mensaje es *off-topic* con un nivel de confianza superior al umbral configurado, la instrucción se bloquea antes de que llegue al modelo.
+
+![Panel de configuración de Off Topic Prompts](/offtopic_options.png)
+
+---
+
+## Qué detecta Off Topic Prompts
+
+Evalúa si el contenido del usuario coincide con el ámbito temático definido por el administrador del asistente.
+
+Ejemplos de uso:
+
+- Mantener un asistente de soporte dentro del dominio técnico.
+- Evitar respuestas sobre temas no relacionados con el negocio.
+- Bloquear instrucciones que desvían al asistente hacia conversaciones personales o inapropiadas.
+
+---
+
+## Cómo funciona
+
+El LLM compara el mensaje del usuario con la descripción del ámbito permitido.  
+El sistema asigna un **confidence score** (0.0 – 1.0).  
+El guardrail se activa cuando:
+
+- El contenido es considerado *fuera de contexto*, **y**
+- El nivel de confianza ≥ umbral configurado.
+
+---
+
+## Parámetros configurables
+
+### Prompt permitido
+
+Texto que define el alcance temático válido para el asistente.  
+Ejemplo:
+
+You are a helpful assistant. Keep responses focused on the user's questions and avoid going off-topic.
+
+### Modelo
+
+Modelo LLM utilizado para evaluar si el contenido es off-topic.
+
+### Confidence Threshold
+
+Umbral mínimo (0.0 – 1.0) para activar el guardrail.  
+Valores típicos: `0.70 – 0.85`
+
+---
+
+<Card title="Siguiente: Custom Prompt Check" icon="search" href="./custom_prompt_check">
+  Aprende a definir reglas personalizadas para validar o bloquear instrucciones del usuario.
+</Card>
