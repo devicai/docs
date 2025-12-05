@@ -81,7 +81,6 @@
                   "devic/agents/continuous-optimization/costs"
                 ]
               },
-              "devic/agents/other-options",
               {
                 "group": "Guardrails",
                 "expanded": false,
@@ -94,6 +93,7 @@
                   "devic/agents/guardrails/custom_prompt_check"
                 ]
               },
+              "devic/agents/other-options",
               "devic/agents/api-execution"
             ]
           },
@@ -132,6 +132,23 @@
               "devic/databases/index",
               "devic/databases/create-new-database",
               "devic/databases/view-and-edit-database"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "API",
+            "icon": "code",
+            "expanded": true,
+            "pages": [
+              "api-reference/endpoint/introduction",
+              "api-reference/endpoint/create",
+              "api-reference/endpoint/delete",
+              "api-reference/endpoint/get",
+              "api-reference/endpoint/webhook"
             ]
           }
         ]
