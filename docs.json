@@ -72,7 +72,6 @@
           }
         ]
       },
-
       {
         "tab": "Devic",
         "groups": [
@@ -199,7 +198,6 @@
         ]
       }
     ],
-
     "global": {
       "anchors": [
         {
@@ -215,13 +213,11 @@
       ]
     }
   },
-
   "logo": {
     "light": "/logo/devic-light.svg",
     "dark": "/logo/devic-dark.svg",
     "height": "28px"
   },
-
   "navbar": {
     "links": [
       {
@@ -235,7 +231,6 @@
       "href": "https://app.devic.ai/"
     }
   },
-
   "contextual": {
     "options": [
       "copy",
@@ -248,7 +243,6 @@
       "vscode"
     ]
   },
-
   "footer": {
     "socials": {
       "x": "https://x.com/mintlify",
