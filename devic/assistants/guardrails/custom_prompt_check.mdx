@@ -1,0 +1,71 @@
+---
+title: "Custom Prompt Check"
+description: "Crea reglas personalizadas para controlar qué instrucciones puede procesar un asistente mediante el guardrail Custom Prompt Check de Devic."
+---
+
+El guardrail **Custom Prompt Check** permite definir reglas de moderación personalizadas usando lenguaje natural.  
+Su propósito es bloquear instrucciones que no cumplan los criterios que definas, asegurando que el asistente opere dentro del alcance previsto.
+
+Este guardrail utiliza un modelo LLM para evaluar cada entrada y determinar si coincide con las condiciones descritas en tu prompt de control.
+
+![Panel de configuración de Custom Prompt Check en Devic](/custom_propmt_options.jpg)
+
+---
+
+## Qué detecta Custom Prompt Check
+
+Custom Prompt Check compara el contenido del usuario con el prompt de reglas que definas.  
+Si el mensaje **no cumple las reglas** o se sale del contexto permitido, el guardrail lo bloquea antes de que llegue al modelo.
+
+### Ejemplos de uso
+
+- Asistentes de soporte: impedir preguntas fuera del ámbito técnico.
+- Asistentes comerciales: descartar consultas no relacionadas con productos o ventas.
+- Asistentes internos: restringir instrucciones que intenten activar procesos no permitidos.
+- Chatbots especializados: asegurar que solo respondan dentro de su dominio profesional.
+
+---
+
+## Cómo configurarlo en Devic
+
+Para activar Custom Prompt Check:
+
+1. Abre tu asistente en Devic.
+2. Ve al menú ⋮ de la esquina superior derecha.
+3. Selecciona **Guardrails**.
+4. Pulsa **Add guardrail**.
+5. Elige **Custom Prompt Check**.
+6. Escribe las reglas en el campo *Prompt*.
+7. Ajusta la configuración avanzada si lo deseas.
+8. Guarda los cambios.
+
+---
+
+## Prompt de ejemplo
+
+Puedes definir las condiciones donde el guardrail debe activarse:
+
+You are a customer support assistant. Raise the guardrail if questions aren’t focused on customer inquiries, product support, and service-related questions.
+
+---
+
+## Configuración avanzada
+
+### Modelo
+
+Permite seleccionar el modelo LLM encargado de analizar las entradas.  
+Devic recomienda usar **gpt-4.1-mini**, que ofrece buena precisión con bajo coste.
+
+### Umbral de confianza
+
+Define el nivel mínimo de confianza (0.0 a 1.0) necesario para activar el guardrail.  
+Un valor típico es **0.70**:
+
+- ≥ 0.70 → el mensaje incumple la regla y se bloquea.  
+- < 0.70 → el mensaje se permite pasar al asistente.
+
+---
+
+<Card title="Siguiente paso" icon="code" href="/devic/assistants/api-execution">
+  Descubre cómo lanzar y gestionar la ejecución de tus asistentes directamente mediante la API pública de Devic.
+</Card>
