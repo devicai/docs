@@ -1,49 +1,48 @@
 ---
-title: "Crear nueva base de datos"
-description: "Crea y configura una base de datos nativa dentro de Devic para almacenar información estructurada y conectarla con tus agentes y MCPs."
+title: "Create a New Database"
+description: "Create and configure a native database in Devic to store structured information and connect it with your agents and MCPs."
 ---
 
-## Descripción general
+## Overview
 
-Las bases de datos nativas en Devic permiten estructurar y gestionar información de forma flexible, sin depender de sistemas externos.\
-Desde la vista principal de **Databases**, puedes crear una nueva base en pocos pasos y definir su estructura inicial —nombre, entidades y campos personalizados—.
-
----
-
-## Crear una nueva base
-
-1. Haz clic en el botón **\+ Create New Table** en la esquina superior derecha del panel.
-2. En el cuadro **Create New Table**, completa los siguientes campos:
-   - **Table Name** _(obligatorio)_: nombre visible de la base, por ejemplo `Clientes` o `Pedidos`.
-   - **Description** _(opcional)_: breve texto descriptivo sobre el propósito de la base.
-   - **Entity Name (Singular)** _(obligatorio)_: nombre de la entidad individual (por ejemplo, `cliente`).
-   - **Entity Name (Plural)** _(obligatorio)_: nombre plural que representará la colección de registros (por ejemplo, `clientes`).
-3. Selecciona **Create Table** para confirmar.
-
-![Ventana de creación de base de datos](/create-new-database.png)
-
-## Configurar la base creada
-
-Una vez creada, se abrirá la vista de configuración de la tabla, donde podrás personalizar todos sus elementos.
-
-### Información básica
-
-- **Table Name:** permite editar el nombre principal de la base.
-- **Color:** asigna un color de referencia para identificarla visualmente en el panel.
-- **Entity Name (singular/plural):** modifica los nombres definidos durante la creación.
-- **Include table in smart search:** activa o desactiva la inclusión de la base en las búsquedas semánticas globales.
-
-![Configuración básica de la tabla](/create-database.png)
-
-
-## Control de acceso
-
-Al final de la página encontrarás la sección **Access Control**, destinada a la configuración de permisos sobre cada base.
-
-> _Nota: esta funcionalidad se encuentra actualmente en desarrollo (coming soon)._
+Native databases in Devic allow you to structure and manage information flexibly, without depending on external systems.\
+From the main **Databases** view, you can create a new database in just a few steps and define its initial structure — name, entities, and custom fields.
 
 ---
 
-<Card title="Siguiente paso" icon="eye" href="/devic/databases/view-and-edit-database">
-  Aprende cómo visualizar y editar registros dentro de una base de datos existente.
+## Create a New Database
+
+1. Click the **+ Create New Table** button in the upper-right corner of the panel.  
+2. In the **Create New Table** dialog, fill in the following fields:
+   - **Table Name** _(required)_: the visible name of the database, such as `Clients` or `Orders`.  
+   - **Description** _(optional)_: a brief summary of the purpose of the database.  
+   - **Entity Name (Singular)** _(required)_: the name of the individual entity (e.g., `client`).  
+   - **Entity Name (Plural)** _(required)_: the plural name representing the collection of records (e.g., `clients`).  
+3. Select **Create Table** to confirm.
+
+![Database creation window](/create-new-database.png)
+
+## Configure the Created Database
+
+Once created, the table configuration view will open, where you can customize all its elements.
+
+### Basic Information
+
+- **Table Name:** edit the main name of the database.  
+- **Color:** assign a reference color to identify it visually in the panel.  
+- **Entity Name (singular/plural):** modify the names defined during creation.  
+- **Include table in smart search:** enable or disable inclusion of the table in global semantic searches.
+
+![Basic table configuration](/create-database.png)
+
+## Access Control
+
+At the bottom of the page, you'll find the **Access Control** section, used to configure permissions for each database.
+
+> _Note: This functionality is currently under development (coming soon)._
+
+---
+
+<Card title="Next step" icon="eye" href="/devic/databases/view-and-edit-database">
+  Learn how to view and edit records inside an existing database.
 </Card>

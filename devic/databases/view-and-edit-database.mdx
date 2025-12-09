@@ -1,101 +1,101 @@
 ---
-title: "Ver y editar base de datos"
-description: "Explora, filtra y actualiza los registros de tus bases de datos en Devic. Accede a la búsqueda semántica, filtros avanzados y edición de estructura desde un único panel."
+title: "View and Edit Database"
+description: "Explore, filter, and update your database records in Devic. Access semantic search, advanced filters, and structure editing from a single panel."
 ---
 
-## Descripción general
+## Overview
 
-Cada base de datos en Devic cuenta con una vista dedicada donde puedes **consultar, filtrar y modificar registros** en tiempo real.\
-Esta interfaz centraliza toda la información almacenada y te permite mantener la coherencia de los datos sin salir de la plataforma.
-
----
-
-## Navegación principal
-
-Al acceder a una base de datos, encontrarás la tabla con todos los registros disponibles.\
-En la parte superior se muestran varias herramientas clave:
-
-- **Vector Search:** realiza búsquedas semánticas por significado en lugar de coincidencias exactas.
-- **Table Settings:** abre el panel lateral de configuración de la base (estructura, campos, colores, etc.).
-
-![Vista general de base de datos](/view-edit-table.png)
+Each database in Devic includes a dedicated view where you can **browse, filter, and modify records** in real time.\
+This interface centralizes all stored information and allows you to maintain data consistency without leaving the platform.
 
 ---
 
-## Filtros y búsqueda avanzada
+## Main Navigation
 
-Utiliza el módulo **Filters** para acotar la información mostrada:
+When accessing a database, you will see a table containing all available records.\
+At the top, several key tools are displayed:
 
-1. Selecciona un campo del menú desplegable (por ejemplo, _Referencia_ o _ID del cliente_).
-2. Introduce el valor que deseas buscar.
-3. Puedes añadir varios filtros simultáneamente con el botón **Add another filter**.
+- **Vector Search:** perform semantic searches based on meaning instead of exact matches.  
+- **Table Settings:** opens the side configuration panel for the database (structure, fields, colors, etc.).
 
-Esto permite segmentar los datos sin necesidad de consultas complejas, facilitando la exploración rápida de registros.
-
-![Ejemplo de filtros múltiples](/filters.png)
+![General database view](/view-edit-table.png)
 
 ---
 
-## Búsqueda semántica (Vector Search)
+## Filters and Advanced Search
 
-El motor de **Vector Search** permite realizar consultas en lenguaje natural sobre los campos personalizados.\
-Es ideal para buscar por contexto o significado.
+Use the **Filters** module to narrow down the displayed information:
 
-1. Haz clic en **Vector Search**.
-2. Escribe tu consulta, por ejemplo:
+1. Select a field from the dropdown menu (for example, _Reference_ or _Client ID_).  
+2. Enter the value you want to search for.  
+3. Add multiple filters at once using the **Add another filter** button.
 
-¿Cuántos pedidos se han hecho?
+This allows you to segment data without complex queries, making record exploration fast and intuitive.
 
-3. La plataforma interpretará la intención y devolverá los resultados más relevantes según el contenido de los registros.
-
-![Ejemplo de búsqueda semántica](/vector-search.png)
+![Example of multiple filters](/filters.png)
 
 ---
 
-## Configuración de la tabla
+## Semantic Search (Vector Search)
 
-El panel lateral de configuración - llamado Table Settings - permite modificar la estructura o el comportamiento de la base de datos:
+The **Vector Search** engine allows you to run natural language queries across custom fields.\
+It is ideal for context-based or meaning-based searches.
 
-- **Table Name y Color:** ajusta el nombre y color identificativo.
-- **Entity Name (singular/plural):** edita los nombres de entidad.
-- **Include table in smart search:** habilita o desactiva la inclusión en búsquedas semánticas globales.
-- **Custom Fields:** añade, edita o agrupa campos existentes.
+1. Click **Vector Search**.  
+2. Type your query, for example:
 
-![Configuración lateral de tabla](/tablesettings.png)
+How many orders have been placed?
 
----
+3. The platform will interpret the intent and return the most relevant results based on the record content.
 
-### Campos personalizados
-
-La sección **Custom Fields** define la estructura interna de la base.\
-Puedes agrupar campos y añadir tantos como necesites según el tipo de información que manejarás.
-
-- **New Group:** crea un grupo para organizar los campos por categoría (por ejemplo, _Datos generales_, _Información fiscal_, etc.).
-- **Add Field:** añade un nuevo campo dentro del grupo seleccionado.
-
-Cada campo incluye:
-
-- **Nombre del campo**
-- **Tipo de dato** (por ejemplo, _text_, _number_, _date_, _boolean_, etc.)
-- **Acciones rápidas** para editar ✏️ o eliminar 🗑️ el campo.
-
-![Gestión de campos personalizados](/custom-fields-table-settings-database.png)
+![Example of semantic search](/vector-search.png)
 
 ---
 
-## Próximos pasos
+## Table Configuration
+
+The side configuration panel — called **Table Settings** — lets you modify the structure or behavior of the database:
+
+- **Table Name & Color:** adjust the database's name and identifying color.  
+- **Entity Name (singular/plural):** edit entity names.  
+- **Include table in smart search:** enable or disable inclusion in global semantic search.  
+- **Custom Fields:** add, edit, or group existing fields.
+
+![Side table configuration panel](/tablesettings.png)
+
+---
+
+### Custom Fields
+
+The **Custom Fields** section defines the internal structure of the database.\
+You can group fields and add as many as needed depending on the type of information you will manage.
+
+- **New Group:** create a group to organize fields by category (e.g., _General Data_, _Tax Information_, etc.).  
+- **Add Field:** add a new field inside the selected group.
+
+Each field includes:
+
+- **Field name**  
+- **Data type** (e.g., _text_, _number_, _date_, _boolean_, etc.)  
+- **Quick actions** to edit ✏️ or delete 🗑️ the field.
+
+![Custom field management](/custom-fields-table-settings-database.png)
+
+---
+
+## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Guía rápida" icon="rocket" href="/devic/quickstart">
-    Configura tu entorno y lanza tus primeros agentes o asistentes en minutos con la guía de inicio rápido.
+  <Card title="Quickstart" icon="rocket" href="/devic/quickstart">
+    Set up your environment and launch your first agents or assistants in minutes with the quickstart guide.
   </Card>
-  <Card title="Agentes" icon="robot" href="/devic/agents">
-    Aprende cómo crear y automatizar procesos inteligentes mediante agentes autónomos en Devic.
+  <Card title="Agents" icon="robot" href="/devic/agents">
+    Learn how to build and automate intelligent processes through autonomous agents in Devic.
   </Card>
-  <Card title="Asistentes" icon="user" href="/devic/assistants">
-    Descubre cómo construir asistentes conversacionales con acceso a tus datos y herramientas.
+  <Card title="Assistants" icon="user" href="/devic/assistants">
+    Discover how to create conversational assistants with access to your data and tools.
   </Card>
   <Card title="MCPs" icon="wrench" href="/devic/mcps">
-    Explora cómo crear y conectar tus propias herramientas personalizadas mediante el estándar MCP.
+    Explore how to build and connect your own custom tools using the MCP standard.
   </Card>
 </CardGroup>
