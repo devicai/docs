@@ -1,64 +1,64 @@
 ---
-title: "Otras opciones"
-description: "Descubre las formas disponibles para ofrecer tus asistentes de Devic a usuarios finales: widgets web, integraciones externas y control avanzado de configuración."
+title: "Other Options"
+description: "Discover the available ways to offer your Devic assistants to end users: web widgets, external integrations, and advanced configuration controls."
 ---
 
-Además de ejecutarse desde la **consola de conversación interna**, los asistentes de **Devic** pueden ponerse a disposición de los usuarios finales a través de distintos métodos.\
-Estas opciones permiten integrar el asistente en aplicaciones web, portales de clientes o sistemas corporativos, manteniendo el control total sobre su comportamiento y estilo.
-
----
-
-## Opciones de despliegue
-
-Las principales alternativas para exponer un asistente son:
-
-| Opción                            | Descripción                                                                                              | Ideal para...                                     |
-| --------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| **Widget embebido (Chat Widget)** | Permite integrar el asistente directamente en una página web mediante un fragmento de código JavaScript. | Sitios web, portales de clientes, áreas privadas. |
-| **API Execution**                 | Invoca al asistente mediante peticiones HTTP a la API de Devic, ideal para integraciones programáticas.  | Aplicaciones internas o backend.                  |
-| **Consola de conversación**       | Entorno interno para probar y depurar el comportamiento del asistente.                                   | Equipos técnicos y desarrolladores.               |
+In addition to running inside the **internal conversation console**, **Devic assistants** can be made available to end users through several delivery methods.  
+These options let you integrate the assistant into web applications, customer portals, or corporate systems while maintaining full control over its behavior and style.
 
 ---
 
-## Configuración del Chat Widget
+## Deployment Options
 
-El **Chat Widget** es la forma más rápida de ofrecer tu asistente a los usuarios finales.\
-Se configura desde el menú de opciones del asistente, en el apartado **Advanced Settings → Chat Widget**.
+The main alternatives for exposing an assistant are:
 
-![Acceso a la configuración del widget](/access-advance-settings-widget-assistant.png)
+| Option                           | Description                                                                                               | Ideal for...                                      |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| **Embedded Widget (Chat Widget)** | Integrates the assistant directly into a webpage through a JavaScript snippet.                            | Websites, customer portals, private areas.        |
+| **API Execution**                | Invokes the assistant via HTTP requests to the Devic API, ideal for programmatic integrations.            | Internal apps or backend systems.                 |
+| **Conversation Console**         | Internal environment for testing and debugging assistant behavior.                                        | Technical teams and developers.                   |
+
+---
+
+## Chat Widget Configuration
+
+The **Chat Widget** is the fastest way to offer your assistant to end users.  
+It is configured from the assistant’s options menu, under **Advanced Settings → Chat Widget**.
+
+![Accessing widget configuration](/access-advance-settings-widget-assistant.png)
 
 ## 
 
-![Acceso a la configuración del widget](/chat-widget-front.png)
+![Widget configuration panel](/chat-widget-front.png)
 
-Allí podrás habilitarlo y definir los dominios autorizados desde los que podrá usarse.
+There you can enable it and define the allowed domains from which it can be used.
 
-### Campos principales
+### Main Fields
 
-| Campo                   | Descripción                                                                      |
-| ----------------------- | -------------------------------------------------------------------------------- |
-| **Enabled**             | Activa el uso del asistente a través del widget.                                 |
-| **Allowed Sources**     | Lista de dominios (con `http` o `https`) desde los que puede cargarse el widget. |
-| **Welcome Message**     | Mensaje inicial que verá el usuario al abrir el chat.                            |
-| **Style Configuration** | Personaliza el tamaño, color y estilo visual del widget.                         |
+| Field                   | Description                                                                       |
+| ----------------------- | --------------------------------------------------------------------------------- |
+| **Enabled**             | Activates the assistant for use through the widget.                               |
+| **Allowed Sources**     | List of domains (using `http` or `https`) from which the widget can be loaded.    |
+| **Welcome Message**     | Initial message displayed when the chat is opened.                                |
+| **Style Configuration** | Customize widget size, color, and visual appearance.                              |
 
 ---
 
-## Inserción del widget en tu web
+## Embedding the Widget on Your Website
 
-Una vez habilitado, Devic genera automáticamente el **fragmento de código JavaScript** que puedes copiar y pegar en tu sitio web.\
-Este fragmento inicializa el asistente y define su comportamiento dentro de la página.
+Once enabled, Devic automatically generates the **JavaScript snippet** you can copy and paste into your website.  
+This snippet initializes the assistant and defines its behavior on the page.
 
-Por motivos de compatibilidad con el formato Markdown, no se muestran las etiquetas `<script>` reales, ya que podrían romper el renderizado.\
-A continuación se muestra una versión simplificada y segura del código:
+Due to Markdown compatibility, actual `<script>` tags are not shown here, as they could break rendering.  
+Below is a simplified and safe version of the code:
 
 ```js
-// Fragmento de ejemplo para inicializar el widget de Devic
+// Example snippet to initialize the Devic chat widget
 const config = {
   containerId: "suntropyai-chat-widget",
   assistantId: "68d8e28195e45739d8ca41",
-  context: {}, // Opcional: información que quieras pasar al asistente
-  options: { defaultSize: "small" } // Tamaño inicial del widget
+  context: {}, // Optional: information you want to pass to the assistant
+  options: { defaultSize: "small" } // Initial widget size
 };
 
 const container = document.createElement("div");
@@ -66,59 +66,59 @@ container.id = config.containerId;
 document.body.appendChild(container);
 window.initChatWidget(config);
 
-// (El código real finaliza con </script>, omitido aquí por motivos de compatibilidad con Markdown)
+// (The real code ends with </script>, omitted here for Markdown compatibility)
 ```
 
 ---
 
-## Personalización y control de acceso
+## Customization and Access Control
 
-Devic permite restringir el uso del widget a **dominios específicos** mediante el campo **Allowed Sources**.\
-Esto garantiza que el asistente solo pueda cargarse desde las direcciones autorizadas (por ejemplo, `https://tuempresa.com` o `*.intranet.local`).
+Devic allows restricting the use of the widget to **specific domains** through the **Allowed Sources** field.  
+This ensures that the assistant can only be loaded from authorized addresses (for example, `https://yourcompany.com` or `*.intranet.local`).
 
-También puedes ajustar el **formato de respuesta** del asistente mediante el apartado **Response Format**, usando definiciones JSON para estructurar la salida cuando sea necesario.
+You can also adjust the assistant’s **response format** using the **Response Format** section, defining JSON structures when needed.
 
-![Configuración avanzada del asistente con formato de respuesta](/advance-settings-assistant.png)
-
----
-
-## Supervisión del uso y costes
-
-Todas las ejecuciones realizadas a través del widget, la API o la consola se registran en el panel de **Cost Management**, disponible desde el mismo menú de opciones del asistente.
-
-En él podrás ver:
-
-- Coste total y promedio diario.
-- Número de conversaciones ejecutadas.
-- Tokens de entrada y salida por día.
-
-![Panel de Cost Management del asistente](/cost-management-assistant.png)
+![Advanced assistant settings with response format](/advance-settings-assistant.png)
 
 ---
 
-## Buenas prácticas
+## Usage and Cost Monitoring
 
-- **Restringe los dominios permitidos** para evitar uso no autorizado del widget.
-- **Define un mensaje de bienvenida claro** para guiar la interacción inicial.
-- **Valida el comportamiento** del asistente en la **consola de conversación** antes de publicarlo.
-- **Supervisa el coste** y optimiza prompts o modelos según el volumen de uso.
-- **Usa API Execution** cuando necesites control total del flujo o integración con tu backend
+All executions performed through the widget, API, or console are recorded in the **Cost Management** panel, available from the assistant’s options menu.
 
----
+There you can view:
 
-## En resumen
+- Total and average daily cost  
+- Number of conversations executed  
+- Input and output tokens per day  
 
-| Elemento            | Propósito                                                   |
-| ------------------- | ----------------------------------------------------------- |
-| **Chat Widget**     | Integración visual y directa en webs o portales.            |
-| **Allowed Sources** | Limita los dominios desde los que puede cargarse el widget. |
-| **Response Format** | Define estructuras personalizadas de salida JSON.           |
-| **Cost Management** | Supervisa costes, tokens y volumen de conversación.         |
+![Assistant Cost Management panel](/cost-management-assistant.png)
 
 ---
 
-## Próximos pasos
+## Best Practices
 
-<Card title="Siguiente paso" icon="shield" href="/devic/assistants/guardrails">
-  Explora todos los guardrails disponibles y aprende cómo reforzar la seguridad y el control en tus asistentes.
+- **Restrict allowed domains** to prevent unauthorized widget usage.  
+- **Set a clear welcome message** to guide the initial interaction.  
+- **Validate the assistant’s behavior** in the **conversation console** before publishing.  
+- **Monitor cost** and optimize prompts or models as usage grows.  
+- **Use API Execution** when you need full control of the flow or backend integration.
+
+---
+
+## Summary
+
+| Element              | Purpose                                                    |
+| -------------------- | ---------------------------------------------------------- |
+| **Chat Widget**      | Visual, direct integration into websites or portals.       |
+| **Allowed Sources**  | Restricts the domains from which the widget can be loaded. |
+| **Response Format**  | Defines custom JSON output structures.                     |
+| **Cost Management**  | Monitors cost, tokens, and conversation volume.            |
+
+---
+
+## Next Steps
+
+<Card title="Next Step" icon="shield" href="/devic/assistants/guardrails">
+  Explore all available guardrails and learn how to strengthen safety and control in your assistants.
 </Card>

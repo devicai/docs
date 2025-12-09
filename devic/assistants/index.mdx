@@ -1,101 +1,101 @@
 ---
-title: "En qué consiste"
-description: "Qué son los asistentes en Devic, cómo funcionan y en qué se diferencian de los agentes autónomos."
+title: "What It Is"
+description: "What assistants are in Devic, how they work, and how they differ from autonomous agents."
 ---
 
-# Asistentes
+# Assistants
 
-Los **asistentes en Devic** son interfaces conversacionales que **interactúan en tiempo real con usuarios** (personas o sistemas) para resolver dudas, ejecutar acciones y ofrecer resultados dentro del mismo hilo de conversación.
+**Assistants in Devic** are conversational interfaces that **interact in real time with users** (people or systems) to solve questions, execute actions, and deliver results within the same conversation thread.
 
-Se apoyan en tres bloques principales:
+They rely on three main building blocks:
 
-- **Un modelo LLM** — el motor de comprensión y generación.
-- **Un prompt (System Instruction)** — el contexto, las reglas y la voz del asistente.
-- **Un conjunto de herramientas (tools)** — las acciones que puede invocar durante la conversación.
+- **An LLM model** — the understanding and generation engine.  
+- **A prompt (System Instruction)** — the assistant’s context, rules, and voice.  
+- **A set of tools** — the actions it can invoke during the conversation.
 
-![Panel de asistentes](/assistan-general-view.png)
-
----
-
-## Cómo los entendemos en Devic
-
-A diferencia de los **agentes**, cuyo ciclo es autónomo y orientado a completar una tarea de principio a fin, los **asistentes** están optimizados para **diálogo continuo**: escuchan mensajes, **razonan y responden al instante**, pudiendo además ejecutar tools cuando es necesario (buscar en RAG, enviar un email, consultar una base de datos, etc.).
-
-El resultado es una experiencia **interactiva y guiada por el usuario**, con capacidad de acción bajo demanda.
+![Assistants panel](/assistan-general-view.png)
 
 ---
 
-## Estructura funcional
+## How We Understand Them in Devic
 
-Un asistente combina:
+Unlike **agents**, whose cycle is autonomous and aimed at completing a task from start to finish, **assistants** are optimized for **continuous dialogue**: they listen to messages, **reason and respond instantly**, and can also execute tools when needed (query RAG, send an email, query a database, etc.).
 
-| Elemento                        | Descripción                                                                                 |
-| ------------------------------- | ------------------------------------------------------------------------------------------- |
-| **Prompt (System Instruction)** | Define su propósito, estilo, límites y políticas de respuesta.                              |
-| **LLM**                         | Interpreta el mensaje, razona y redacta la respuesta.                                       |
-| **Tools**                       | Acceden a datos o ejecutan acciones (RAG, emails, bases de datos, hojas de cálculo, MCPs…). |
-| **RAG (opcional)**              | Fuente documental para citar y contextualizar respuestas con información de tu dominio.     |
-
-Esta combinación permite que el asistente **responda con precisión**, y, cuando lo requiera, **actúe** mediante tools sin salir del chat.
+The result is an **interactive, user-driven experience** with on-demand action capabilities.
 
 ---
 
-## Interacción con los asistentes
+## Functional Structure
 
-La interacción con los asistentes es **sincrónica y continua**: cada mensaje del usuario puede desencadenar razonamiento y llamadas a tools, devolviendo una respuesta inmediata.
+An assistant combines:
 
-### Canales habituales de uso
+| Element                        | Description                                                                                   |
+| ------------------------------ | --------------------------------------------------------------------------------------------- |
+| **Prompt (System Instruction)** | Defines its purpose, style, limits, and response policies.                                    |
+| **LLM**                        | Interprets the message, reasons, and drafts the response.                                     |
+| **Tools**                      | Access data or execute actions (RAG, emails, databases, spreadsheets, MCPs, etc.).           |
+| **RAG (optional)**            | Document source used to ground and contextualize responses with your domain information.      |
 
-- **Widget web** embebido en tu aplicación o portal.
-- **API** para integrarlo en otros flujos conversacionales o productos.
-
----
-
-## Ejemplo conceptual
-
-Un asistente de soporte puede:
-
-1. Leer la pregunta del usuario sobre un procedimiento.
-2. Consultar **RAG** para encontrar el apartado relevante del manual.
-3. Responder con los pasos y, si procede, **enviar un PDF** o abrir una **tarea** asociada.
-4. Mantener el contexto para las siguientes repreguntas del usuario dentro del mismo hilo.
-
-Durante el proceso, **el asistente decide** si necesita una tool (p. ej., “Search knowledge”, “Databases” o “Send email”) y cómo combinarla con su respuesta.
+This combination allows the assistant to **answer accurately** and, when needed, **take action** through tools without leaving the chat.
 
 ---
 
-## En resumen
+## Interaction with Assistants
 
-| Característica     | Asistentes en Devic                                      |
-| ------------------ | -------------------------------------------------------- |
-| **Interacción**    | Conversación en tiempo real y continua.                  |
-| **Objetivo**       | Resolver dudas y ejecutar acciones dentro del hilo.      |
-| **Comportamiento** | Guiado por el usuario; puede invocar tools bajo demanda. |
-| **Diseño**         | Conversacional, con contexto persistente por hilo.       |
-| **Componentes**    | Prompt + LLM + Tools (+ RAG opcional).                   |
+Interaction with assistants is **synchronous and continuous**: each user message can trigger reasoning and tool calls, returning an immediate response.
+
+### Common Usage Channels
+
+- **Web widget** embedded in your app or portal.  
+- **API** to integrate it into other conversational flows or products.
+
+---
+
+## Conceptual Example
+
+A support assistant can:
+
+1. Read the user’s question about a procedure.  
+2. Query **RAG** to find the relevant section of the manual.  
+3. Reply with the steps and, if appropriate, **send a PDF** or open a related **task**.  
+4. Maintain context for follow-up questions within the same thread.
+
+During the process, **the assistant decides** whether it needs a tool (e.g., “Search knowledge”, “Databases”, or “Send email”) and how to combine it with its response.
+
+---
+
+## In Summary
+
+| Feature           | Assistants in Devic                                      |
+| ----------------- | -------------------------------------------------------- |
+| **Interaction**   | Real-time, continuous conversation.                      |
+| **Goal**          | Solve questions and execute actions within the thread.   |
+| **Behavior**      | User-driven; can invoke tools on demand.                 |
+| **Design**        | Conversational, with per-thread persistent context.      |
+| **Components**    | Prompt + LLM + Tools (+ optional RAG).                   |
 
 ---
 
 <Note>
-  Los asistentes son ideales para **atención al usuario, soporte interno, help desks y front-ends conversacionales**.\
-  Al combinar conversación con tools y RAG, ofrecen respuestas precisas y pueden **actuar** sin abandonar el chat.
+  Assistants are ideal for **user support, internal help desks, and conversational front-ends**.\
+  By combining conversation with tools and RAG, they deliver precise answers and can **act** without leaving the chat.
 </Note>
 
 ---
 
-## Próximos pasos
+## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Despliega tu primer asistente" icon="boxes" href="/devic/assistants/deploy-your-first-assistant">
-    Crea un asistente paso a paso: prompt, modelo, tools y RAG.
+  <Card title="Deploy Your First Assistant" icon="boxes" href="/devic/assistants/deploy-your-first-assistant">
+    Create an assistant step by step: prompt, model, tools, and RAG.
   </Card>
-  <Card title="Prompt del asistente" icon="terminal" href="/devic/assistants/prompt">
-    Define la voz, el alcance y las reglas del asistente.
+  <Card title="Assistant Prompt" icon="terminal" href="/devic/assistants/prompt">
+    Define the assistant’s voice, scope, and rules.
   </Card>
   <Card title="Tools" icon="wrench" href="/devic/assistants/tools">
-    Conecta herramientas nativas y MCPs para que el asistente pueda actuar.
+    Connect native tools and MCPs so the assistant can take action.
   </Card>
   <Card title="RAG" icon="book" href="/devic/assistants/rag">
-    Añade documentos para contextualizar respuestas con contenido de tu dominio.
+    Add documents to contextualize responses with your domain content.
   </Card>
 </CardGroup>

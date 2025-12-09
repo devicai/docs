@@ -1,131 +1,131 @@
 ---
-title: "Prompt del asistente"
-description: "Aprende a diseñar, versionar y optimizar el prompt de tu asistente en Devic."
+title: "Assistant Prompt"
+description: "Learn how to design, version, and optimize your assistant’s prompt in Devic."
 ---
 
-El **prompt** es el núcleo funcional de cada asistente en Devic.\
-Define su comportamiento, el tono de comunicación, los objetivos que debe alcanzar y las reglas bajo las cuales debe responder a los usuarios.\
-En otras palabras, el prompt traduce la intención del desarrollador en un conjunto de directrices que guían la interacción conversacional.
-
----
-
-## Qué es el prompt
-
-El prompt contiene las instrucciones que el modelo de lenguaje (LLM) sigue durante la conversación con el usuario.\
-Aquí se define cómo debe razonar, qué información debe priorizar y cómo debe estructurar sus respuestas.
-
-A diferencia de un simple texto descriptivo, el prompt en Devic actúa como el sistema cognitivo del asistente, combinando **contexto**, **reglas de comportamiento**, **fuentes de conocimiento** y **objetivos conversacionales**.
-
-**Ejemplo**
-
-Eres un asistente de soporte técnico especializado en la plataforma SuntropyAI.\
-Tu función es ayudar a los usuarios a resolver incidencias, dudas o preguntas relacionadas con el uso de la aplicación.\
-En tus respuestas debes:
-
-- Usar un tono profesional y empático.
-- Priorizar información relevante de la base de conocimiento o documentos adjuntos.
-- Evitar respuestas especulativas.
-- Referenciar el documento fuente si existe.
-- Indicar al usuario qué pasos seguir para resolver su problema.
-
-![Ejemplo de prompt dentro del editor del asistente](/prompt-assistant.png)
+The **prompt** is the functional core of every assistant in Devic.\
+It defines its behavior, communication style, the objectives it must achieve, and the rules under which it should respond to users.\
+In other words, the prompt translates the developer’s intent into a set of guidelines that drive conversational interaction.
 
 ---
 
-## Cómo estructurar un buen prompt
+## What the Prompt Is
 
-Un prompt bien diseñado mejora significativamente la precisión, consistencia y utilidad de las respuestas del asistente.\
-A continuación se muestra una estructura recomendada:
+The prompt contains the instructions that the language model (LLM) follows during its conversation with the user.\
+Here you define how it should reason, what information to prioritize, and how to structure its responses.
 
-| Sección                | Descripción                                                | Ejemplo                                                                                        |
-| ---------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| **Rol**                | Define quién es el asistente y cuál es su función.         | Eres un asistente de soporte especializado en Globalsuite.                                     |
-| **Contexto**           | Describe el entorno o las fuentes de información.          | Tienes acceso a la base de conocimiento, documentos PDF y herramientas de búsqueda contextual. |
-| **Objetivo**           | Define lo que el asistente debe lograr.                    | Tu tarea es responder de forma precisa a las dudas técnicas de los usuarios.                   |
-| **Comportamiento**     | Indica el estilo de respuesta y las reglas de interacción. | Usa un tono profesional, incluye pasos claros y evita especular.                               |
-| **Criterios de éxito** | Explica cuándo se considera que la tarea está completada.  | El usuario confirma que su duda fue resuelta o comprende la acción siguiente.                  |
+Unlike simple descriptive text, the prompt in Devic acts as the assistant’s cognitive system, combining **context**, **behavioral rules**, **knowledge sources**, and **conversational objectives**.
 
-**Recomendación:** utiliza frases claras y un flujo conversacional natural.\
-Los asistentes funcionan mejor con prompts que combinan **estructura, contexto y flexibilidad lingüística**.
+**Example**
 
----
+You are a technical support assistant specialized in the SuntropyAI platform.\
+Your role is to help users resolve issues, questions, or doubts related to the application.\
+In your responses, you must:
 
-## Variables dinámicas
+- Use a professional and empathetic tone.  
+- Prioritize relevant information from the knowledge base or attached documents.  
+- Avoid speculative answers.  
+- Reference the source document if one exists.  
+- Indicate the steps the user should follow to resolve their issue.
 
-Los prompts de asistentes en Devic pueden incluir **placeholders dinámicos**, como `{{nombre_usuario}}`, `{{empresa}}` o `{{rol}}`, que se sustituyen automáticamente durante la interacción.\
-Esto permite adaptar el comportamiento del asistente a cada contexto o usuario.
-
-**Ejemplo**
-
-Hola `{{nombre_usuario}}`, soy tu asistente de soporte en `{{empresa}}`.\
-Estoy aquí para ayudarte con cualquier incidencia o duda técnica.
-
-![Comparativa de versiones mostrando placeholder dinámico](/dynamic-variables.png)
+![Example prompt inside the assistant editor](/prompt-assistant.png)
 
 ---
 
-## Histórico y versionado
+## How to Structure a Good Prompt
 
-Cada cambio en el prompt del asistente se guarda automáticamente como una **nueva versión**.\
-Devic mantiene un registro completo que te permite consultar, comparar y restaurar versiones anteriores en cualquier momento.
+A well-designed prompt significantly improves the assistant’s accuracy, consistency, and usefulness.\
+Below is a recommended structure:
 
-El historial está disponible desde la parte superior del editor mediante la opción **History**.
+| Section               | Description                                              | Example                                                                                       |
+| --------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| **Role**              | Defines who the assistant is and what its function is.   | You are a support assistant specialized in Globalsuite.                                       |
+| **Context**           | Describes the environment or information sources.        | You have access to the knowledge base, PDF documents, and contextual search tools.            |
+| **Objective**         | Defines what the assistant must achieve.                 | Your task is to respond accurately to users’ technical questions.                             |
+| **Behavior**          | Indicates response style and interaction rules.          | Use a professional tone, include clear steps, and avoid speculation.                          |
+| **Success Criteria**  | Explains when the task is considered complete.           | The user confirms their issue is resolved or understands the next action.                     |
 
-![Historial de versiones del prompt](/prompt-version-assistant.png)
-
----
-
-## Comparación de versiones
-
-La vista **Diff** permite comparar dos versiones del prompt, línea por línea.\
-Las diferencias se visualizan así:
-
-- **Verde:** texto añadido
-- **Rojo:** texto eliminado
-- **Sin color:** texto sin cambios
-
-![Vista de comparación de versiones](/prompt-version-differences.png)
-
-Esta función es ideal para auditar ajustes, revisar la evolución del comportamiento del asistente o validar modificaciones en tono y estilo.
+**Recommendation:** use clear sentences and a natural conversational flow.\
+Assistants perform best with prompts that combine **structure, context, and linguistic flexibility**.
 
 ---
 
-## Mejores prácticas
+## Dynamic Variables
 
-- Define con claridad el **rol** y el **alcance** del asistente.
-- Mantén un **tono consistente** (formal, técnico, empático, educativo…).
-- Incluye **variables dinámicas** cuando sea necesario.
-- Evita instrucciones ambiguas o redundantes.
-- Documenta cambios en cada versión para mejorar la trazabilidad.
-- Revisa regularmente las respuestas para ajustar el comportamiento.
+Assistant prompts in Devic can include **dynamic placeholders**, such as `{{nombre_usuario}}`, `{{empresa}}`, or `{{rol}}`, which are automatically replaced during the interaction.\
+This allows the assistant’s behavior to be tailored to each context or user.
 
----
+**Example**
 
-## Cuándo actualizar el prompt
+Hello `{{nombre_usuario}}`, I am your support assistant at `{{empresa}}`.\
+I’m here to help you with any incident or technical question.
 
-Deberías crear una nueva versión del prompt del asistente cuando:
-
-- Cambia el alcance o los objetivos del asistente.
-- Se añaden o eliminan herramientas (por ejemplo, búsqueda, bases de datos, o envío de emails).
-- Se modifican las fuentes de conocimiento.
-- Se detectan errores o respuestas inadecuadas.
-- Se ajusta el tono o el estilo conversacional.
+![Version comparison showing dynamic placeholder](/dynamic-variables.png)
 
 ---
 
-## Próximos pasos
+## Prompt History and Versioning
+
+Every change to the assistant’s prompt is automatically saved as a **new version**.\
+Devic keeps a complete record that allows you to view, compare, and restore previous versions at any time.
+
+The history is available at the top of the editor through the **History** option.
+
+![Prompt version history](/prompt-version-assistant.png)
+
+---
+
+## Version Comparison
+
+The **Diff** view lets you compare two versions of the prompt line by line.\
+Differences are displayed as follows:
+
+- **Green:** added text  
+- **Red:** removed text  
+- **No color:** unchanged text  
+
+![Version comparison view](/prompt-version-differences.png)
+
+This feature is ideal for auditing adjustments, reviewing the evolution of the assistant’s behavior, or validating updates to tone and style.
+
+---
+
+## Best Practices
+
+- Clearly define the assistant’s **role** and **scope**.  
+- Maintain a **consistent tone** (formal, technical, empathetic, educational…).  
+- Include **dynamic variables** when needed.  
+- Avoid ambiguous or redundant instructions.  
+- Document changes in each version to improve traceability.  
+- Regularly review answers to fine-tune behavior.
+
+---
+
+## When to Update the Prompt
+
+You should create a new version of the assistant’s prompt when:
+
+- The assistant’s scope or objectives change.  
+- Tools are added or removed (e.g., search, databases, email sending).  
+- Knowledge sources are modified.  
+- Errors or inadequate responses are detected.  
+- Tone or conversational style is adjusted.
+
+---
+
+## Next Steps
 
 <CardGroup cols={2}>
   <Card title="Tools" icon="wrench" href="/devic/assistants/tools">
-    Conecta herramientas nativas y MCPs para que el asistente pueda actuar.
+    Connect native tools and MCPs so the assistant can take action.
   </Card>
   <Card title="RAG" icon="book" href="/devic/assistants/rag">
-    Añade documentos para contextualizar respuestas con contenido de tu dominio.
+    Add documents to contextualize responses with domain-specific content.
   </Card>
-  <Card title="Consola conversacional" icon="message" href="/devic/assistants/conversation-console">
-    Aprende a probar, depurar y conversar directamente con tus asistentes desde la consola integrada.
+  <Card title="Conversation Console" icon="message" href="/devic/assistants/conversation-console">
+    Learn how to test, debug, and interact directly with your assistants through the integrated console.
   </Card>
-  <Card title="Otras opciones" icon="ellipsis" href="/devic/assistants/other-options">
-    Explora configuraciones avanzadas como ajustes contextuales, memorias o comportamientos especializados.
+  <Card title="Other Options" icon="ellipsis" href="/devic/assistants/other-options">
+    Explore advanced configurations such as contextual settings, memory, or specialized behaviors.
   </Card>
 </CardGroup>

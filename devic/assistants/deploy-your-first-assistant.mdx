@@ -1,161 +1,151 @@
 ---
-title: "Despliega tu primer asistente"
-description: "Guía paso a paso para crear y configurar tu primer asistente en Devic: modelo, prompt, herramientas y conocimiento."
+title: "Deploy Your First Assistant"
+description: "Step-by-step guide to creating and configuring your first assistant in Devic: model, prompt, tools, and knowledge."
 ---
 
-Los **asistentes** son la forma más directa de interactuar con los modelos dentro de **Devic**.\
-A diferencia de los agentes —que actúan de forma autónoma hasta completar un proceso—, los asistentes están diseñados para **responder en tiempo real** a las consultas del usuario, integrando razonamiento, herramientas y conocimiento.
+**Assistants** are the most direct way to interact with models inside **Devic**.\
+Unlike agents —which operate autonomously until completing a process— assistants are designed to **respond in real time** to user queries, combining reasoning, tools, and knowledge.
 
-En esta guía aprenderás a crear tu primer asistente y a configurar los elementos que lo hacen funcional: el **modelo (LLM)**, el **prompt**, las **tools** y el **RAG (conocimiento)**.
-
----
-
-## Qué es un asistente en Devic
-
-Un asistente es una entidad conversacional que **responde directamente al usuario** dentro de la plataforma o a través de canales conectados.\
-Puede razonar, consultar fuentes de conocimiento, ejecutar acciones mediante tools y mantener el contexto de conversación dentro de un hilo.
-
-Cada asistente combina:
-
-- Un **modelo de lenguaje (LLM)**, que interpreta y genera las respuestas.
-- Un **prompt**, que define su rol, tono y límites de actuación.
-- Un conjunto de **tools**, que le permiten realizar acciones concretas.
-- Un espacio de **RAG**, donde almacena información documental o de referencia.
+In this guide, you’ll learn how to create your first assistant and configure the components that make it functional: the **model (LLM)**, **prompt**, **tools**, and **RAG (knowledge)**.
 
 ---
 
-## Paso 1: Crear un nuevo asistente
+## What Is an Assistant in Devic?
 
-Desde el panel lateral de Devic, abre la sección **Assistants** y selecciona **\+ Custom**.\
-Asigna un **nombre** y una **descripción** que indiquen claramente su propósito.
+An assistant is a conversational entity that **responds directly to the user** inside the platform or through connected channels.\
+It can reason, consult knowledge sources, execute actions via tools, and maintain conversation context within a thread.
 
-| Campo           | Descripción                                                                                                          |
-| --------------- | -------------------------------------------------------------------------------------------------------------------- |
-| **Nombre**      | Identificador principal del asistente. Usa un nombre representativo, como _Soporte Técnico_ o _Asistente Comercial_. |
-| **Descripción** | Explica brevemente la finalidad o el contexto del asistente. Es visible para los miembros del proyecto.              |
+Each assistant combines:
 
-**Ejemplo:**
-
-> “Asistente especializado en soporte técnico para usuarios de Globalsuite. Atiende consultas y facilita documentación relevante.”
+- A **language model (LLM)** that interprets and generates responses.  
+- A **prompt** that defines its role, tone, and limits.  
+- A set of **tools** that allow it to perform specific actions.  
+- A **RAG space** where it stores documentation or reference information.
 
 ---
 
-## Paso 2: Definir el prompt
+## Step 1: Create a New Assistant
 
-El **prompt** (System Instruction) es el núcleo del comportamiento del asistente.\
-Define quién es, qué puede hacer y cómo debe comunicarse con el usuario.
+From the Devic sidebar, open the **Assistants** section and select **+ Custom**.\
+Assign a **name** and **description** that clearly represent its purpose.
 
-Un buen prompt debe incluir:
+| Field           | Description                                                                                                       |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------- |
+| **Name**         | Main identifier of the assistant. Use a representative name like _Technical Support_ or _Sales Assistant_.       |
+| **Description**  | Briefly explains the purpose or context of the assistant. Visible to project members.                            |
 
-- Su **rol** y objetivo principal.
-- El **tono** y estilo de comunicación.
-- Las **reglas de comportamiento** y límites.
-- Instrucciones sobre **qué hacer y qué evitar**.
+**Example:**
 
-**Ejemplo de prompt:**
-
-> Eres Alexandria, una profesional de la asistencia técnica especialista en Globalsuite.\
-> Tu función es aclarar los pasos y dudas sobre el proceso o uso de la plataforma.\
-> Puedes consultar documentos en la base de conocimiento y ofrecer respuestas contextualizadas.\
-> No generes respuestas de las que no tengas información confirmada en la base o los documentos adjuntos.
-
-![Ejemplo de prompt del asistente](/prompt-assistant.png)
+> “Assistant specialized in technical support for Globalsuite users. Answers inquiries and provides relevant documentation.”
 
 ---
 
-## Paso 3: Seleccionar el modelo (LLM)
+## Step 2: Define the Prompt
 
-El **modelo** es el motor que impulsa el razonamiento del asistente.\
-Devic permite elegir entre distintos proveedores y modelos según tus necesidades de precisión, velocidad o coste.
+The **prompt** (System Instruction) is the core of the assistant’s behavior.\
+It defines who the assistant is, what it can do, and how it should communicate with the user.
 
-### Proveedores disponibles
+A good prompt should include:
 
-- **OpenAI** — Modelos GPT-4 y GPT-4o.
-- **Anthropic** — Modelos Claude 3, ideales para razonamiento avanzado.
-- **DeepSeek** — Alternativa eficiente con menor coste.
-- **XAi** — Modelos Grok, de propósito general.
-- **Modelos On-Premise** — Para entornos privados o con requisitos de compliance.
+- Its **role** and main objective.  
+- The **tone** and communication style.  
+- **Behavioral rules** and boundaries.  
+- Instructions on **what to do and what to avoid**.
 
-**Consejo:**\
-Selecciona el modelo que mejor equilibre **coste, latencia y calidad de respuesta** según tu caso de uso.
+**Prompt example:**
 
-![Ejemplo de seleccion de modelo](/choose-your-favourite-model.png)
+> You are Alexandria, a technical support professional specialized in Globalsuite.\
+> Your role is to clarify steps and resolve questions about the platform’s processes or usage.\
+> You may consult documents in the knowledge base and provide contextualized responses.\
+> Do not generate answers that cannot be confirmed using the provided knowledge base or attached documents.
 
-## Paso 4: Añadir Tools
-
-Las **tools** amplían las capacidades del asistente, permitiéndole realizar acciones durante la conversación.\
-Entre las más habituales se incluyen:
-
-| Tool                              | Descripción                                               |
-| --------------------------------- | --------------------------------------------------------- |
-| **Search Knowledge**              | Consulta documentos cargados en el RAG.                   |
-| **Send Email**                    | Envía correos desde el contexto de la conversación.       |
-| **Databases**                     | Permite acceder o modificar registros almacenados.        |
-| **Spreadsheet Tools**             | Lee o escribe datos en hojas de cálculo.                  |
-| **MCPs (Model Context Protocol)** | Conecta herramientas o servicios externos personalizados. |
-
-![Ejemplo de tools configuradas en un asistente](/add-tools-assistant.png)
-
-**Recomendación:**\
-Activa solo las tools necesarias para el rol del asistente.\
-Por ejemplo, un asistente de soporte podría usar `Search Knowledge`, `Send Email` y `Databases`.
+![Assistant prompt example](/prompt-assistant.png)
 
 ---
 
-## Paso 5: Añadir conocimiento (RAG)
+## Step 3: Choose the Model (LLM)
 
-El **RAG (Retrieval Augmented Generation)** dota al asistente de memoria contextual, permitiéndole acceder a información documental mientras conversa.
+The **model** is the engine that powers the assistant’s reasoning.\
+Devic allows you to choose between multiple providers and models depending on your needs for accuracy, speed, or cost.
 
-Para añadir conocimiento:
+### Available Providers
 
-1. Desplázate a la sección **Knowledge** del asistente.
-2. Pulsa **Add document** y selecciona los archivos que quieras subir.
-3. Los formatos compatibles incluyen `.pdf`, `.docx`, `.txt` y `.csv`.
+- **OpenAI** — GPT-4 and GPT-4o models.  
+- **Anthropic** — Claude 3 models, ideal for advanced reasoning.  
+- **DeepSeek** — An efficient, lower-cost alternative.  
+- **XAi** — Grok models for general-purpose usage.  
+- **On-Premise Models** — For private or compliance-heavy environments.
 
-**Ejemplos de aplicación:**
+**Tip:**  
+Choose the model that best balances **cost, latency, and answer quality** for your use case.
 
-- Un asistente técnico consulta manuales o guías de instalación.
-- Un asistente de soporte revisa políticas internas o documentación de clientes.
-- Un asistente comercial busca fichas de producto o tarifas.
-
-![Ejemplo de documentos cargados en el RAG](/add-document-assistant.png)
-
----
-
-## Paso 6: Guardar y probar
-
-Una vez definidos el **prompt**, **modelo**, **tools** y **conocimiento**, pulsa **Save changes**.\
-El asistente quedará disponible para pruebas en la **consola de conversación** o para integrarse en otros canales (por ejemplo, web, email o API).
-
-En la consola podrás mantener conversaciones en tiempo real, validar su comportamiento y ajustar su prompt según las respuestas obtenidas.
+![Model selection example](/choose-your-favourite-model.png)
 
 ---
 
-## Resumen de componentes
+## Step 4: Add Tools
 
-| Elemento                        | Propósito                                                |
-| ------------------------------- | -------------------------------------------------------- |
-| **Nombre y descripción**        | Identifican al asistente y su propósito.                 |
-| **Prompt (System Instruction)** | Define el rol, tono y comportamiento.                    |
-| **Modelo (LLM)**                | Procesa, razona y genera las respuestas.                 |
-| **Tools**                       | Permiten ejecutar acciones dentro de la conversación.    |
-| **RAG**                         | Aporta información contextual desde documentos externos. |
+**Tools** extend the assistant’s capabilities, allowing it to perform actions during the conversation.\
+Common tools include:
+
+| Tool                              | Description                                        |
+| --------------------------------- | -------------------------------------------------- |
+| **Search Knowledge**              | Consults documents stored in the RAG.             |
+| **Send Email**                    | Sends emails within the conversation context.     |
+| **Databases**                     | Accesses or modifies stored records.              |
+| **Spreadsheet Tools**             | Reads or writes spreadsheet data.                 |
+| **MCPs (Model Context Protocol)** | Connects to custom external tools or services.    |
+
+![Example of tools configured in an assistant](/add-tools-assistant.png)
+
+**Recommendation:**  
+Enable only the tools required for the assistant’s role.  
+For example, a support assistant might use `Search Knowledge`, `Send Email`, and `Databases`.
 
 ---
 
-## Próximos pasos
+## Step 5: Add Knowledge (RAG)
+
+**RAG (Retrieval Augmented Generation)** gives the assistant contextual memory, allowing it to access documentation while conversing.
+
+To add knowledge:
+
+1. Go to the assistant’s **Knowledge** section.  
+2. Click **Add document** and select the files to upload.  
+3. Supported formats include `.pdf`, `.docx`, `.txt`, and `.csv`.
+
+**Example applications:**
+
+- A technical assistant consults manuals or installation guides.  
+- A support assistant reviews internal policies or client documentation.  
+- A sales assistant checks product sheets or pricing tables.
+
+![Example of documents uploaded to RAG](/add-document-assistant.png)
+
+---
+
+## Step 6: Save and Test
+
+Once you’ve defined the **prompt**, **model**, **tools**, and **knowledge**, click **Save changes**.\
+The assistant will then be available for testing in the **conversation console** or for integration into other channels (web, email, API, etc.).
+
+In the console, you can hold real-time conversations, validate its behavior, and refine its prompt based on the responses obtained.
+
+---
+
+## Summary of Components
+
+| Element                         | Purpose                                               |
+| ------------------------------- | ----------------------------------------------------- |
+| **Name and description**        | Identify the assistant and its purpose.              |
+| **Prompt (System Instruction)** | Defines role, tone, and behavior.                    |
+| **Model (LLM)**                 | Processes, reasons, and generates responses.         |
+| **Tools**                       | Allow the assistant to take actions during dialogue. |
+| **RAG**                         | Provides contextual knowledge from external docs.    |
+
+---
+
+## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Prompt del asistente" icon="terminal" href="/devic/assistants/prompt">
-    Define la voz, el alcance y las reglas del asistente.
-  </Card>
-  <Card title="Tools" icon="wrench" href="/devic/assistants/tools">
-    Conecta herramientas nativas y MCPs para que el asistente pueda actuar.
-  </Card>
-  <Card title="RAG" icon="book" href="/devic/assistants/rag">
-    Añade documentos para contextualizar respuestas con contenido de tu dominio.
-  </Card>
-  <Card title="Consola conversacional" icon="message" href="/devic/assistants/conversation-console">
-    Aprende a probar, depurar y conversar directamente con tus asistentes desde la consola integrada.
-  </Card>
-</CardGroup>
+  <Card title="Assistant Prompt"

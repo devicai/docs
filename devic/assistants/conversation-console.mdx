@@ -1,110 +1,110 @@
 ---
-title: "Consola conversacional"
-description: "Descubre cómo probar, depurar y analizar el comportamiento de tus asistentes en la consola de conversación de Devic."
+title: "Conversation Console"
+description: "Discover how to test, debug, and analyze the behavior of your assistants using Devic’s conversation console."
 ---
 
-Interactua directamente con un asistente dentro de Devic para **probar su comportamiento**, **ver las herramientas que utiliza** y **realizar tareas de depuración (troubleshooting)**.
+Interact directly with an assistant inside Devic to **test its behavior**, **see which tools it uses**, and **perform troubleshooting**.
 
-No se trata de la interfaz final del usuario o cliente —esa se gestiona desde un **endpoint API** o mediante un **widget embebido**, explicados en las secciones [API Execution](./api-execution) y [Other options](./other-options) respectivamente—.\
-Esta consola está pensada para **entornos de desarrollo y ajuste fino**.
-
----
-
-## Acceso a la consola
-
-Para acceder:
-
-1. Abre el asistente desde el panel lateral de Devic.
-2. Dirígete a la pestaña **Conversations**.
-3. Selecciona una conversación existente o crea una nueva.
-
-![Acceso a la consola de conversación del asistente](/conversation-console.png)
-
-Cada conversación muestra el **historial de mensajes** intercambiados entre el usuario y el asistente, junto con los detalles técnicos de cada interacción.
+This is not the final interface for end users or clients —that is handled through an **API endpoint** or an **embedded widget**, explained in the sections [API Execution](./api-execution) and [Other options](./other-options) respectively.\
+This console is designed for **development and fine-tuning environments**.
 
 ---
 
-## Interfaz principal
+## Accessing the Console
 
-La consola ofrece una vista completa de la conversación y de los eventos generados durante la misma.
+To access it:
 
-![Vista principal de la consola de conversación](/conversation-console-events.png)
+1. Open the assistant from Devic’s sidebar.  
+2. Navigate to the **Conversations** tab.  
+3. Select an existing conversation or create a new one.
 
-Desde aquí puedes:
+![Access to the assistant's conversation console](/conversation-console.png)
 
-- Enviar mensajes de prueba al asistente.
-- Observar cómo responde y qué herramientas utiliza.
-- Analizar en detalle los procesos internos del modelo.
-- Acceder al **Chat Log** para ver los eventos del sistema.
+Each conversation displays the **message history** exchanged between the user and the assistant, along with the technical details of each interaction.
+
+---
+
+## Main Interface
+
+The console provides a complete view of the conversation and all events generated during it.
+
+![Main view of the conversation console](/conversation-console-events.png)
+
+From here you can:
+
+- Send test messages to the assistant.  
+- Observe how it responds and which tools it uses.  
+- Analyze the model's internal processes in detail.  
+- Access the **Chat Log** to see system events.
 
 ---
 
 ## Tool Calls
 
-Cuando el asistente ejecuta una acción (por ejemplo, consultar una base de datos, buscar en la web o enviar un correo), Devic lo muestra mediante una **Tool Call Card**.\
-Estas tarjetas indican qué herramienta se ha invocado, con qué argumentos y cuál fue la respuesta.
+When the assistant performs an action (for example, querying a database, performing a web search, or sending an email), Devic displays it through a **Tool Call Card**.  
+These cards show which tool was invoked, with what arguments, and what the response was.
 
-![Ejemplo de tool calls ejecutadas por el asistente](/tool-call-assistant-detail.png)
+![Example of tool calls executed by the assistant](/tool-call-assistant-detail.png)
 
-Puedes expandir cada tarjeta para ver la información completa del evento, incluyendo los parámetros enviados y los resultados obtenidos.
+You can expand each card to see the full event information, including the arguments sent and the results returned.
 
 ---
 
-## Logs y depuración
+## Logs and Debugging
 
-La pestaña **Logs** ofrece una vista detallada de todos los eventos registrados durante la conversación, incluyendo las llamadas a la API del modelo, tool calls, respuestas parciales y errores.
+The **Logs** tab provides a detailed view of all events recorded during the conversation, including model API calls, tool calls, partial responses, and errors.
 
-![Vista del Chat Log con seguimiento de tool calls](/acces-logs-view-conversation-console.png)
+![Chat Log view with tool call tracking](/acces-logs-view-conversation-console.png)
 
 ## 
 
-![Vista del Chat Log con seguimiento de tool calls](/logs-assistant.png)
+![Chat Log view with tool call tracking](/logs-assistant.png)
 
-Desde esta vista puedes:
+From this view you can:
 
-- Filtrar por tipo de evento (`LOG`, `WARN`, `ERROR`, `DEBUG`).
-- Seguir el orden cronológico de ejecución.
-- Analizar tiempos de respuesta, mensajes internos y contenido procesado.
-- Visualizar los parámetros exactos de cada **tool call**.
+- Filter by event type (`LOG`, `WARN`, `ERROR`, `DEBUG`).  
+- Follow the chronological order of execution.  
+- Analyze response times, internal messages, and processed content.  
+- View the exact parameters of each **tool call**.
 
-Esto permite detectar fácilmente:
+This helps easily identify:
 
-- Por qué una tool no devolvió el resultado esperado.
-- Si el asistente está interpretando correctamente el prompt.
-- Cuándo interviene el modelo LLM y cuándo una herramienta externa.
-
----
-
-## Análisis de mensajes
-
-Puedes inspeccionar cada mensaje intercambiado (tanto del usuario como del asistente) para revisar su estructura JSON completa, incluyendo entradas, respuestas y metadatos.
-
-![Detalle del mensaje con respuesta de una tool](/log-assistant-detail.png)
-
-Esta función resulta esencial para comprender cómo el asistente:
-
-- Procesa el contexto recibido.
-- Decide qué herramienta usar.
-- Genera la respuesta final visible en la conversación.
+- Why a tool didn't return the expected result.  
+- Whether the assistant is correctly interpreting the prompt.  
+- When the LLM intervenes and when an external tool is used.
 
 ---
 
-## Buenas prácticas para troubleshooting
+## Message Analysis
 
-- **Revisa los Logs** tras cada prueba para identificar posibles errores en tool calls o en la configuración de MCPs.
-- **Valida los argumentos** enviados a cada herramienta antes de publicarlo en producción.
-- **Utiliza conversaciones cortas y directas** durante las pruebas iniciales.
-- **Evalúa el rendimiento**: revisa tiempos de respuesta y uso de tokens en cada ejecución.
+You can inspect every message exchanged (both from the user and the assistant) to review its full JSON structure, including inputs, outputs, and metadata.
+
+![Message detail with a tool response](/log-assistant-detail.png)
+
+This feature is essential to understand how the assistant:
+
+- Processes the received context.  
+- Decides which tool to use.  
+- Generates the final response shown in the conversation.
 
 ---
 
-## Próximos pasos
+## Troubleshooting Best Practices
+
+- **Review the Logs** after every test to identify possible errors in tool calls or MCP configurations.  
+- **Validate the arguments** sent to each tool before deploying to production.  
+- **Use short and direct conversations** during initial tests.  
+- **Evaluate performance**: monitor response times and token usage in each execution.
+
+---
+
+## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Otras opciones" icon="ellipsis" href="/devic/assistants/other-options">
-    Explora configuraciones avanzadas como ajustes contextuales, memorias o comportamientos especializados.
+  <Card title="Other Options" icon="ellipsis" href="/devic/assistants/other-options">
+    Explore advanced configurations such as contextual settings, memory, or specialized behaviors.
   </Card>
-  <Card title="Ejecución vía API" icon="code" href="/devic/assistants/api-execution">
-    Descubre cómo lanzar y gestionar interacciones con tus asistentes directamente mediante la API pública de Devic.
+  <Card title="API Execution" icon="code" href="/devic/assistants/api-execution">
+    Discover how to launch and manage interactions with your assistants directly through Devic’s public API.
   </Card>
 </CardGroup>

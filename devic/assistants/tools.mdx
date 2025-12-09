@@ -1,164 +1,164 @@
 ---
 title: "Tools"
-description: "Configura y gestiona las herramientas disponibles para tus asistentes en Devic: Built-in Tools, Mis MCPs y Code Snippets."
+description: "Configure and manage the tools available for your assistants in Devic: Built-in Tools, My MCPs, and Code Snippets."
 ---
 
-Las **Tools** definen las capacidades que un asistente puede utilizar durante una conversación.\
-Funcionan como **extensiones operativas**, que permiten al modelo **consultar información, ejecutar acciones o interactuar con sistemas externos** directamente desde el chat.
+**Tools** define the capabilities an assistant can use during a conversation.\
+They function as **operational extensions**, allowing the model to **retrieve information, execute actions, or interact with external systems** directly from the chat.
 
-Cada Tool amplía las posibilidades del asistente, haciéndolo más útil y autónomo dentro del contexto conversacional.
-
----
-
-## Vista general del panel de Tools
-
-En la configuración de un asistente, la sección **Tools** muestra todas las herramientas que tendrá disponibles durante sus interacciones con el usuario.
-
-![Panel de Tools en un asistente](/tools-assistant.png)
-
-Desde este panel puedes:
-
-- **Añadir nuevas Tools** con el botón **Add tools**.
-- **Configurar** los parámetros y autenticación de cada Tool.
-- **Eliminar** las que no sean necesarias.
+Each Tool expands the assistant’s possibilities, making it more useful and autonomous within the conversational context.
 
 ---
 
-## Añadir nuevas Tools
+## Overview of the Tools Panel
 
-Al pulsar **Add tools**, se abre el selector principal de herramientas disponibles.\
-Aquí podrás elegir entre tres pestañas:
+In an assistant’s configuration, the **Tools** section shows all the tools available during interactions with the user.
 
-- **Built-in Tools** → Herramientas integradas nativas de Devic.
-- **My MCPs** → Integraciones externas creadas por tu organización.
-- **Code Snippets** → Fragmentos de código reutilizables como mini-tools.
+![Tools panel in an assistant](/tools-assistant.png)
 
-![Selector de Tools del asistente](/add-tools-assistant.png)
+From this panel you can:
+
+- **Add new Tools** using the **Add tools** button.  
+- **Configure** parameters and authentication for each Tool.  
+- **Remove** the ones you don’t need.
+
+---
+
+## Adding New Tools
+
+Clicking **Add tools** opens the main selector of available tools.\
+Here you can choose among three tabs:
+
+- **Built-in Tools** → Native tools included in Devic.  
+- **My MCPs** → External integrations created within your organization.  
+- **Code Snippets** → Reusable code fragments acting as mini-tools.
+
+![Assistant tools selector](/add-tools-assistant.png)
 
 ## 
 
-![Selector de Tools del asistente](/add-tools-menu-assistant.png)
+![Assistant tools selector](/add-tools-menu-assistant.png)
 
 ---
 
 ## Built-in Tools
 
-Las **Built-in Tools** son herramientas nativas de Devic que no requieren configuración adicional.\
-Permiten al asistente realizar tareas habituales como:
+**Built-in Tools** are native Devic tools that require no additional configuration.\
+They allow the assistant to perform common tasks such as:
 
-- **Search Knowledge** — Buscar información en el RAG o base documental.
-- **Send Email** — Enviar correos electrónicos directamente desde la conversación.
-- **Read Emails** — Leer y analizar mensajes recibidos.
-- **Databases** — Consultar o actualizar registros en bases de datos.
-- **OCR** — Extraer texto de documentos o imágenes.
-- **Spreadsheet Tools** — Leer o editar datos en hojas de cálculo.
-- **Manage Tasks** — Crear y actualizar tareas.
-- **Files and Directories** — Acceder y gestionar archivos.
-- **PDF from Markdown / HTML** — Generar documentos PDF.
+- **Search Knowledge** — Search information in the RAG or document base.  
+- **Send Email** — Send emails directly from the conversation.  
+- **Read Emails** — Read and analyze incoming messages.  
+- **Databases** — Query or update records in databases.  
+- **OCR** — Extract text from documents or images.  
+- **Spreadsheet Tools** — Read or edit data in spreadsheets.  
+- **Manage Tasks** — Create and update tasks.  
+- **Files and Directories** — Access and manage files.  
+- **PDF from Markdown / HTML** — Generate PDF documents.
 
-![Listado de Built-in Tools](/built-in-tools-assistant.png)
+![Built-in tools list](/built-in-tools-assistant.png)
 
-Estas herramientas se mantienen actualizadas automáticamente y cubren los casos de uso más comunes.\
-Consulta la documentación completa en:\
-[**Listado de Built-in Tools**](../mcps/built-in-tools/tools-list)
+These tools are automatically maintained and cover the most common use cases.\
+See the full documentation at:\
+[**Built-in Tools List**](../mcps/built-in-tools/tools-list)
 
 ---
 
 ## My MCPs
 
-La pestaña **My MCPs** muestra los **servidores MCP (Model Context Protocol)** configurados dentro de tu organización.\
-Cada MCP puede contener varias herramientas que conectan al asistente con servicios externos, APIs corporativas o integraciones internas.
+The **My MCPs** tab shows the **MCP servers (Model Context Protocol)** configured within your organization.\
+Each MCP may include multiple tools connecting the assistant to external services, corporate APIs, or internal integrations.
 
-![Vista de My MCPs](/my-mcps-assistant.png)
+![My MCPs view](/my-mcps-assistant.png)
 
-Desde esta vista puedes:
+From this view you can:
 
-- Añadir herramientas desarrolladas por tu equipo.
-- Incluir integraciones públicas o compartidas.
-- Configurar credenciales, endpoints o parámetros de conexión.
+- Add tools developed by your team.  
+- Include public or shared integrations.  
+- Configure credentials, endpoints, or connection parameters.
 
-**Ejemplos de uso:**
+**Example Use Cases:**
 
-- Un asistente comercial puede usar un MCP de **Zoho CRM** para acceder a datos de clientes.
-- Un asistente técnico puede conectarse a una **API de incidencias internas** para registrar tickets.
-- Un asistente administrativo puede generar informes en **Google Drive o Sheets**.
+- A sales assistant may use a **Zoho CRM** MCP to access customer data.  
+- A technical assistant may connect to an **internal incident API** to register tickets.  
+- An administrative assistant may generate reports in **Google Drive or Sheets**.
 
-Consulta cómo crear y configurar tus propios MCPs en:\
-[**Mis MCPs**](../mcps/my-mcps/what-it-is)
+Learn how to create and configure your own MCPs at:\
+[**My MCPs**](../mcps/my-mcps/what-it-is)
 
 ---
 
-## MCPs de terceros (Importados)
+## Third-Party MCPs (Imported)
 
-Además de tus propios MCPs, puedes **importar MCPs externos** desde la pestaña **Imported MCPs**.\
-Esto te permite incorporar herramientas desarrolladas por terceros sin necesidad de configurarlas manualmente.
+In addition to your own MCPs, you can **import external MCPs** from the **Imported MCPs** tab.\
+This allows you to incorporate tools created by third parties without manual setup.
 
-![Vista de MCPs importados](/my-mcps-third-party-mcps.png)
+![Imported MCPs view](/my-mcps-third-party-mcps.png)
 
-Para añadir uno:
+To add one:
 
-1. Accede a la sección **Imported MCPs**.
-2. Pulsa **Import MCP**.
-3. Introduce la URL o archivo de configuración del MCP externo.
+1. Go to the **Imported MCPs** section.  
+2. Click **Import MCP**.  
+3. Enter the URL or configuration file of the external MCP.
 
-Una vez importado, el asistente podrá utilizar sus herramientas igual que cualquier otro MCP.\
-Esto es especialmente útil para añadir **integraciones públicas o colaborativas** creadas por la comunidad Devic o partners certificados.
+Once imported, the assistant can use its tools just like any other MCP.\
+This is especially useful for adding **public or community-built integrations** from Devic partners or certified providers.
 
 ---
 
 ## Code Snippets
 
-Los **Code Snippets** permiten crear pequeñas herramientas de código reutilizables sin necesidad de desarrollar un MCP completo.\
-Pueden usarse para ejecutar lógica simple, cálculos o transformaciones de datos directamente desde el asistente.
+**Code Snippets** let you create small reusable code tools without developing a full MCP.\
+They can be used to execute simple logic, calculations, or data transformations directly from the assistant.
 
-![Vista de Code Snippets](/code-snippets-assistant.png)
+![Code Snippets view](/code-snippets-assistant.png)
 
-Cada snippet puede incluir:
+Each snippet may include:
 
-- Código en **Python** u otros lenguajes soportados.
-- Parámetros personalizados.
-- Resultados que se integran en la conversación del asistente.
+- Code in **Python** or other supported languages.  
+- Custom parameters.  
+- Outputs that integrate into the assistant’s conversation.
 
-Puedes crear tu primer snippet desde el botón **Create First Snippet** o añadir nuevos mediante **New Snippet**.
-
----
-
-## Ejemplo de uso real
-
-En este ejemplo, el asistente **Alexandria** utiliza varias Tools durante su conversación con el usuario:
-
-- **Search Knowledge** → busca información relevante en los manuales cargados.
-- **Send Email** → envía un resumen o documentación al cliente.
-- **Databases** → actualiza el estado de incidencias registradas.
-- **Cliq MCP** → conecta con la API de Zoho para comunicarse con equipos internos.
-
-![Asistente configurado con múltiples Tools](/example-assistant.png)
+You can create your first snippet using **Create First Snippet** or add new ones via **New Snippet**.
 
 ---
 
-## Buenas prácticas
+## Real Example
 
-- Activa solo las Tools necesarias para el propósito del asistente.
-- Comprueba la autenticación de los MCPs antes de usarlos en producción.
-- Usa nombres descriptivos para identificar cada Tool fácilmente.
-- Aprovecha los **Snippets** para automatizar pequeñas tareas sin sobrecargar el asistente.
-- Evita redundancias: si una Tool ya ofrece una función, no la dupliques.
+In this example, the assistant **Alexandria** uses several Tools during its conversation with the user:
+
+- **Search Knowledge** → Retrieves relevant information from uploaded manuals.  
+- **Send Email** → Sends summaries or documentation to the client.  
+- **Databases** → Updates the status of logged incidents.  
+- **Cliq MCP** → Connects to Zoho’s API to coordinate with internal teams.
+
+![Assistant configured with multiple tools](/example-assistant.png)
 
 ---
 
-## Próximos pasos
+## Best Practices
+
+- Enable only the Tools required for the assistant’s purpose.  
+- Verify MCP authentication before using them in production environments.  
+- Use descriptive names to easily identify each Tool.  
+- Leverage **Snippets** to automate small tasks without overcomplicating the assistant.  
+- Avoid redundancy: if a Tool already covers a function, don’t duplicate it.
+
+---
+
+## Next Steps
 
 <CardGroup cols={2}>
   <Card title="RAG" icon="book" href="/devic/assistants/rag">
-    Añade documentos para contextualizar respuestas con contenido de tu dominio.
+    Add documents to contextualize responses with domain-specific content.
   </Card>
-  <Card title="Consola conversacional" icon="message" href="/devic/assistants/conversation-console">
-    Aprende a probar, depurar y conversar directamente con tus asistentes desde la consola integrada.
+  <Card title="Conversation Console" icon="message" href="/devic/assistants/conversation-console">
+    Learn how to test, debug, and converse with your assistants from the integrated console.
   </Card>
-  <Card title="Otras opciones" icon="ellipsis" href="/devic/assistants/other-options">
-    Explora configuraciones avanzadas como ajustes contextuales, memorias o comportamientos especializados.
+  <Card title="Other Options" icon="ellipsis" href="/devic/assistants/other-options">
+    Explore advanced settings such as contextual adjustments, memory, or specialized behaviors.
   </Card>
-  <Card title="Ejecución vía API" icon="code" href="/devic/assistants/api-execution">
-    Descubre cómo lanzar y gestionar interacciones con tus asistentes directamente mediante la API pública de Devic.
+  <Card title="API Execution" icon="code" href="/devic/assistants/api-execution">
+    Discover how to launch and manage interactions with your assistants using Devic’s public API.
   </Card>
 </CardGroup>
