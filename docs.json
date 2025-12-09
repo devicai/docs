@@ -18,7 +18,7 @@
         "tab": "Devic",
         "groups": [
           {
-            "group": "Comenzar",
+            "group": "Get Started",
             "icon": "rocket",
             "expanded": true,
             "pages": [
@@ -33,7 +33,7 @@
             "pages": [
               "devic/mcps/index",
               {
-                "group": "Mis MCPs",
+                "group": "My MCPs",
                 "expanded": false,
                 "pages": [
                   "devic/mcps/my-mcps/what-it-is",
@@ -47,7 +47,7 @@
                 ]
               },
               {
-                "group": "Importar MCPs de terceros",
+                "group": "Import Third-Party MCPs",
                 "pages": [
                   "devic/mcps/import-third-party-mcps/import-third-party-mcps"
                 ]
@@ -63,7 +63,7 @@
             ]
           },
           {
-            "group": "Agentes",
+            "group": "Agents",
             "icon": "robot",
             "expanded": true,
             "pages": [
@@ -73,7 +73,7 @@
               "devic/agents/tools",
               "devic/agents/rag",
               {
-                "group": "Optimización continua",
+                "group": "Continuous Optimization",
                 "expanded": false,
                 "pages": [
                   "devic/agents/continuous-optimization/index",
@@ -101,7 +101,7 @@
             ]
           },
           {
-            "group": "Asistentes",
+            "group": "Assistants",
             "icon": "comments",
             "expanded": true,
             "pages": [
@@ -128,7 +128,7 @@
             ]
           },
           {
-            "group": "Bases de datos (BD)",
+            "group": "Databases",
             "icon": "database",
             "expanded": true,
             "pages": [
@@ -139,7 +139,6 @@
           }
         ]
       },
-
       {
         "tab": "API reference",
         "groups": [
@@ -200,7 +199,6 @@
       }
     ]
   },
-
   "logo": {
     "light": "/logo/devic-light.svg",
     "dark": "/logo/devic-dark.svg",
