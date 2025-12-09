@@ -1,153 +1,153 @@
 ---
 title: "Tools"
-description: "Configura y gestiona las herramientas disponibles para tus agentes en Devic: Built-in Tools, Mis MCPs, Code Snippets y Sub-Agents."
+description: "Configure and manage the tools available for your agents in Devic: Built-in Tools, My MCPs, Code Snippets, and Sub-Agents."
 ---
 
-Las **Tools** definen las capacidades que un agente puede utilizar durante su ejecución.\
-Funcionan como **interfaces de acción**, permitiendo que el modelo interactúe con sistemas internos, servicios externos o recursos propios de la plataforma Devic.
+**Tools** define the capabilities an agent can use during execution.\
+They act as **action interfaces**, enabling the model to interact with internal systems, external services, or resources within the Devic platform.
 
-Cada Tool amplía el alcance del agente, permitiéndole realizar operaciones reales como enviar correos, consultar bases de datos, procesar documentos o conectar APIs mediante MCPs.
-
----
-
-## Vista general del panel de Tools
-
-En la configuración de cada agente, la sección **Tools** muestra todas las herramientas que tendrá disponibles durante las conversaciones o ejecuciones automáticas.
-
-![Panel de Tools en el agente](/built-in-tools-agent.png)
-
-Desde este panel puedes:
-
-- **Añadir nuevas Tools** con el botón **Add tools**.
-- **Configurar** parámetros y autenticación de cada Tool.
-- **Eliminar** herramientas innecesarias.
-- **Gestionar subagentes** como extensiones del agente principal.
+Each Tool expands the agent’s reach, allowing it to perform real operations such as sending emails, querying databases, processing documents, or connecting APIs through MCPs.
 
 ---
 
-## Añadir nuevas Tools
+## Overview of the Tools Panel
 
-Al pulsar **Add tools**, se abre el selector principal donde se agrupan todas las fuentes disponibles de herramientas.\
-Desde aquí puedes elegir entre **Built-in Tools**, **My MCPs**, **Code Snippets** o **Sub-Agents**.
+In each agent’s configuration, the **Tools** section displays all available tools for conversations or automated executions.
 
-![Añadir tools](/add-tools-agent.png)
+![Tools panel in the agent](/built-in-tools-agent.png)
+
+From this panel you can:
+
+- **Add new Tools** using the **Add tools** button.  
+- **Configure** parameters and authentication for each Tool.  
+- **Remove** unnecessary tools.  
+- **Manage sub-agents** as extensions of the main agent.
+
+---
+
+## Add New Tools
+
+When selecting **Add tools**, the main selector opens, grouping all available tool sources.\
+Here you can choose between **Built-in Tools**, **My MCPs**, **Code Snippets**, or **Sub-Agents**.
+
+![Add tools](/add-tools-agent.png)
 
 ## 
 
-![Selector de Tools](/tools-selector-agent.png)
+![Tools selector](/tools-selector-agent.png)
 
 ---
 
 ## Built-in Tools
 
-Las **Built-in Tools** son herramientas integradas de Devic, listas para usar sin configuración adicional.\
-Permiten realizar operaciones comunes como:
+**Built-in Tools** are Devic’s native tools, ready to use without additional configuration.\
+They enable common operations such as:
 
-- **Search Knowledge:** búsqueda en bases de conocimiento internas (RAG).
-- **Web Search:** búsqueda de información actualizada en la web.
-- **Spreadsheet Tools:** lectura y gestión de hojas de cálculo.
-- **Databases:** creación y consulta de tablas relacionales.
-- **Send Email / Read Emails:** envío y recepción de correos.
-- **OCR:** extracción de texto de documentos o imágenes.
-- **PDF from HTML / Markdown:** generación de PDFs.
-- **Manage Tasks, Files and Directories, Chart Images**, entre otras.
+- **Search Knowledge:** query internal knowledge bases (RAG).  
+- **Web Search:** search for up-to-date information online.  
+- **Spreadsheet Tools:** read and manage spreadsheets.  
+- **Databases:** create and query relational tables.  
+- **Send Email / Read Emails:** send or receive emails.  
+- **OCR:** extract text from documents or images.  
+- **PDF from HTML / Markdown:** generate PDFs.  
+- **Manage Tasks, Files and Directories, Chart Images**, among others.
 
-![Listado de Built-in Tools](/built-in-tools\(1\).png)
+![List of Built-in Tools](/built-in-tools\(1\).png)
 
-Estas herramientas están integradas nativamente en Devic y se mantienen actualizadas de forma automática.\
-Consulta la documentación completa en:\
-[**Listado de Built-in Tools**](../mcps/built-in-tools/tools-list)
+These tools are natively integrated into Devic and updated automatically.\
+View full documentation here:\
+[**List of Built-in Tools**](../mcps/built-in-tools/tools-list)
 
 ---
 
 ## My MCPs
 
-En la pestaña **My MCPs** se listan los servidores MCP creados dentro de tu organización.\
-Cada MCP representa un conjunto de herramientas derivadas de tus propias APIs o servicios internos, expuestos mediante el estándar **Model Context Protocol**.
+The **My MCPs** tab lists the MCP servers created within your organization.\
+Each MCP represents a set of tools derived from your own APIs or internal services, exposed via the **Model Context Protocol** standard.
 
-![Vista de Mis MCPs](/my-mcps-agent.png)
+![My MCPs view](/my-mcps-agent.png)
 
-Desde esta vista puedes:
+From this view you can:
 
-- Añadir herramientas creadas a partir de tus **APIs corporativas**.
-- Incluir integraciones externas importadas desde MCPs públicos.
-- Configurar la autenticación, endpoints y parámetros.
+- Add tools created from your **corporate APIs**.  
+- Include external integrations imported from public MCPs.  
+- Configure authentication, endpoints, and parameters.
 
-Ejemplo: un agente que genera informes puede usar un MCP de **Google Drive API** para crear y almacenar hojas de cálculo.
+Example: An agent that generates reports may use a **Google Drive API MCP** to create and store spreadsheets.
 
-Consulta cómo crear y configurar MCPs personalizados en:\
-[**Mis MCPs**](../mcps/my-mcps/what-it-is)
+Learn how to create and configure custom MCPs in:\
+[**My MCPs**](../mcps/my-mcps/what-it-is)
 
 ---
 
 ## Code Snippets
 
-Los **Code Snippets** son bloques de código reutilizables que pueden actuar como mini-tools personalizadas.\
-Permiten ejecutar lógica específica sin necesidad de desarrollar un MCP completo.
+**Code Snippets** are reusable code blocks that act as mini custom tools.\
+They allow you to execute specific logic without needing to develop a full MCP.
 
-![Panel de Code Snippets](/code-snippets-agent.png)
+![Code Snippets panel](/code-snippets-agent.png)
 
-Cada snippet puede contener:
+Each snippet can contain:
 
-- Código en **Python** u otros lenguajes soportados.
-- Parámetros de entrada definidos manualmente.
-- Funcionalidades personalizadas reutilizables entre agentes.
+- Code in **Python** or other supported languages.  
+- Manually defined input parameters.  
+- Reusable custom functionality across agents.
 
-Pueden crearse desde **Create First Snippet** o **New Snippet**, y se añaden al agente igual que cualquier otra Tool.
+You can create them using **Create First Snippet** or **New Snippet**, and add them to the agent just like any other Tool.
 
 ---
 
 ## Sub-Agents
 
-Los **Sub-Agents** son agentes auxiliares que el agente principal puede invocar durante su ejecución.\
-Funcionan como herramientas autónomas capaces de resolver subtareas específicas, compartiendo recursos y herramientas del entorno.
+**Sub-Agents** are auxiliary agents that the main agent can invoke during execution.\
+They operate as autonomous tools capable of solving specialized subtasks, sharing the same environment and available tools.
 
-![Pestaña de Sub-Agents](/sub-agents.png)
+![Sub-Agents tab](/sub-agents.png)
 
-Ejemplo:\
-Un agente de soporte puede tener un sub-agente especializado en **análisis de incidencias técnicas**, al que llama cuando necesita clasificar un ticket complejo.
+Example:  
+A support agent may have a sub-agent specializing in **technical incident analysis**, called whenever it needs to classify a complex ticket.
 
-Consulta más sobre su configuración en [**Subagentes**](../agents/other-options).
-
----
-
-## Ejemplo de uso real
-
-En este ejemplo, el agente **Prospección de Subvenciones** utiliza una combinación de Built-in Tools y MCPs personalizados para extraer y estructurar datos de resoluciones almacenadas en el RAG:
-
-- **Search Knowledge** → localiza la información base.
-- **Web Search** → amplía datos de contexto público.
-- **Spreadsheet Tools** → crea el reporte en Google Sheets.
-- **Google Drive API (MCP)** → guarda el archivo final en Drive.
-
-![Ejemplo de agente configurado con varias Tools](/agent-example.png)
+Learn more in [**Subagents**](../agents/other-options).
 
 ---
 
-## Buenas prácticas
+## Real Use Example
 
-- Añade únicamente las Tools necesarias para el objetivo del agente.
-- Mantén los MCPs sincronizados con sus APIs de origen.
-- Revisa la autenticación de cada MCP antes de publicarlo.
-- Utiliza nombres y descripciones claras para cada Tool.
-- Aprovecha los Code Snippets para automatizar tareas pequeñas.
-- Emplea Sub-Agents para modular agentes complejos.
+In this example, the **Grant Prospecting** agent uses a combination of Built-in Tools and custom MCPs to extract and structure data from resolutions stored in the RAG:
+
+- **Search Knowledge** → retrieves the base information.  
+- **Web Search** → expands results with public context.  
+- **Spreadsheet Tools** → creates the report in Google Sheets.  
+- **Google Drive API (MCP)** → saves the final file to Drive.
+
+![Example of an agent configured with multiple Tools](/agent-example.png)
 
 ---
 
-## Próximos pasos
+## Best Practices
+
+- Add only the tools needed for the agent’s objective.  
+- Keep MCPs synchronized with their source APIs.  
+- Review authentication settings before publishing each MCP.  
+- Use clear names and descriptions for every Tool.  
+- Leverage Code Snippets for small automation tasks.  
+- Use Sub-Agents to modularize complex agents.
+
+---
+
+## Next Steps
 
 <CardGroup cols={2}>
   <Card title="RAG" icon="database" href="/devic/agents/rag">
-    Aprende cómo integrar bases de conocimiento y búsqueda semántica mediante el sistema RAG nativo de Devic para ofrecer respuestas fundamentadas.
+    Learn how to integrate knowledge bases and semantic search using Devic’s native RAG system for grounded responses.
   </Card>
-  <Card title="Optimización continua" icon="gears" href="/devic/agents/continuous-optimization/index">
-    Mejora el rendimiento de tus agentes a través de evaluaciones automáticas, feedback humano y análisis iterativo de resultados.
+  <Card title="Continuous Optimization" icon="gears" href="/devic/agents/continuous-optimization/index">
+    Improve your agents' performance through automatic evaluations, human feedback, and iterative analysis.
   </Card>
-  <Card title="Otras opciones" icon="ellipsis" href="/devic/agents/other-options">
-    Explora configuraciones avanzadas como subagentes, ejecuciones programadas o estrategias de control contextual.
+  <Card title="Other Options" icon="ellipsis" href="/devic/agents/other-options">
+    Explore advanced configurations such as subagents, scheduled executions, or contextual control strategies.
   </Card>
-  <Card title="Ejecución vía API" icon="code" href="/devic/agents/api-execution">
-    Descubre cómo lanzar y gestionar la ejecución de tus agentes directamente mediante la API pública de Devic.
+  <Card title="API Execution" icon="code" href="/devic/agents/api-execution">
+    Learn how to launch and manage your agents’ executions directly through Devic’s public API.
   </Card>
 </CardGroup>

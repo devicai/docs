@@ -1,105 +1,105 @@
 ---
-title: "En qué consiste"
-description: "Descubre qué son los agentes en Devic, cómo funcionan y en qué se diferencian de los flujos tradicionales."
+title: "What It Is"
+description: "Discover what agents are in Devic, how they work, and how they differ from traditional flows."
 ---
 
-# Agentes
+# Agents
 
-Los **agentes en Devic** son entidades inteligentes capaces de **tomar decisiones autónomas** hasta lograr un objetivo concreto.\
-Se componen de cuatro elementos fundamentales:
+**Agents in Devic** are intelligent entities capable of **making autonomous decisions** until they achieve a specific goal.\
+They are composed of four fundamental elements:
 
-- **Un modelo LLM** — el razonador principal.
-- **Un prompt** — el contexto y las reglas de comportamiento.
-- **Un conjunto de herramientas (tools)** — las acciones que puede ejecutar.
-- **Una base de conocimiento (RAG)** — fuentes de información a las que el agente acude bajo demanda con **búsqueda semántica**.
+- **An LLM model** — the main reasoner.
+- **A prompt** — the context and behavior rules.
+- **A set of tools** — the actions it can execute.
+- **A knowledge base (RAG)** — information sources the agent queries on demand using **semantic search**.
 
-![Panel de agente](/agent-general-view.png)
+![Agent panel](/agent-general-view.png)
 
-## Cómo los entendemos en Devic
+## How We Understand Them in Devic
 
-A diferencia de otros entornos donde los agentes se representan como flujos o diagramas de cajas y flechas, en **Devic no concebimos los agentes como flujos predefinidos**.
+Unlike other environments where agents are represented as flows or box-and-arrow diagrams, in **Devic we do not conceive agents as predefined flows**.
 
-Un agente **no sigue un camino rígido**:\
-es el propio agente quien **decide qué pasos dar**, qué herramientas usar, cuándo consultar su conocimiento vía RAG y cuándo detenerse, **hasta conseguir el resultado esperado**.
+An agent **does not follow a rigid path**:\
+the agent itself **decides which steps to take**, which tools to use, when to query its knowledge via RAG, and when to stop, **until it achieves the expected result**.
 
-Esto permite que los agentes de Devic sean **autónomos, adaptativos y resolutivos**, reaccionando a los contextos o datos que encuentran durante su ejecución.
-
----
-
-## Estructura funcional
-
-Un agente combina:
-
-| Elemento                                 | Descripción                                                                                                                                                                 |
-| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Prompt**                               | Define su propósito, tono, instrucciones y límites.                                                                                                                         |
-| **LLM**                                  | Es el modelo base que analiza, razona y decide qué hacer.                                                                                                                   |
-| **Tools**                                | Capacidades ejecutivas del agente: consultar datos, enviar correos, crear tareas, leer documentos, etc.                                                                     |
-| **RAG (Retrieval-Augmented Generation)** | Conecta el agente con bases de conocimiento y bases de datos con Vector Search. El agente decide cuándo recuperar fragmentos relevantes y con qué fundamentar su respuesta. |
-
-Esta combinación hace posible que el agente **razone y actúe de forma autónoma**, sin requerir flujos secuenciales programados.
+This allows Devic agents to be **autonomous, adaptive, and solution-oriented**, reacting to the contexts or data they encounter during execution.
 
 ---
 
-## Interacción con los agentes
+## Functional Structure
 
-La interacción con los agentes **no es continua**, como ocurre con los **asistentes**.\
-Un agente **se ejecuta en respuesta a un disparador**, realiza sus acciones hasta completar la tarea y luego finaliza su ciclo.
+An agent combines:
 
-### Posibles disparadores de ejecución:
+| Element                                  | Description                                                                                                                                                                  |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Prompt**                               | Defines its purpose, tone, instructions, and limits.                                                                                                                         |
+| **LLM**                                  | The base model that analyzes, reasons, and decides what to do.                                                                                                               |
+| **Tools**                                | The agent’s executive capabilities: querying data, sending emails, creating tasks, reading documents, etc.                                                                   |
+| **RAG (Retrieval-Augmented Generation)** | Connects the agent with knowledge bases and databases using Vector Search. The agent decides when to retrieve relevant fragments and how to use them to support its answer. |
 
-- Ejecuciones **programadas periódicamente** (por ejemplo, cada día o semana).
-- **Webhooks** o eventos externos que lo activan automáticamente.
-- **Otras tools** o **agentes** que lanzan su ejecución.
-- **Acciones manuales** desde la interfaz o API de Devic.
-
----
-
-## Ejemplo conceptual
-
-Un agente puede configurarse para:
-
-1. Ejecutarse cada lunes por la mañana.
-2. Consultar la base de datos de ventas semanales (Vector Search).
-3. Generar un gráfico y un PDF resumen.
-4. Enviar el informe al equipo por correo.
-
-Durante este proceso, **el agente decide**:
-
-- Qué herramientas usar (consultar base de datos, recuperar conocimiento, generar gráfico, enviar email).
-- En qué orden emplearlas.
-- Cuándo dar por finalizada la tarea.
+This combination makes it possible for the agent to **reason and act autonomously**, without requiring pre-programmed sequential flows.
 
 ---
 
-## En resumen
+## Interaction with Agents
 
-| Característica     | Agentes en Devic                              |
-| ------------------ | --------------------------------------------- |
-| **Ejecución**      | Bajo demanda o programada.                    |
-| **Interacción**    | No continua (a diferencia de los asistentes). |
-| **Comportamiento** | Autónomo, orientado a resultados.             |
-| **Diseño**         | Basado en decisiones, no en flujos visuales.  |
-| **Componentes**    | Prompt + LLM + Tools + RAG.                   |
+Interaction with agents **is not continuous**, as it is with **assistants**.\
+An agent **runs in response to a trigger**, performs its actions until it completes the task, and then finishes its cycle.
+
+### Possible Execution Triggers:
+
+- **Scheduled periodic runs** (for example, every day or week).
+- **Webhooks** or external events that activate it automatically.
+- **Other tools** or **agents** that trigger its execution.
+- **Manual actions** from the Devic interface or API.
+
+---
+
+## Conceptual Example
+
+An agent can be configured to:
+
+1. Run every Monday morning.  
+2. Query the weekly sales database (Vector Search).  
+3. Generate a chart and a summary PDF.  
+4. Send the report to the team via email.
+
+During this process, **the agent decides**:
+
+- Which tools to use (query database, retrieve knowledge, generate chart, send email).  
+- In which order to use them.  
+- When the task should be considered complete.
+
+---
+
+## In Summary
+
+| Feature            | Agents in Devic                              |
+| ------------------ | -------------------------------------------- |
+| **Execution**      | On demand or scheduled.                      |
+| **Interaction**    | Not continuous (unlike assistants).          |
+| **Behavior**       | Autonomous, outcome-oriented.                |
+| **Design**         | Based on decisions, not visual flows.        |
+| **Components**     | Prompt + LLM + Tools + RAG.                  |
 
 ---
 
 <Note>
-  Los agentes son la pieza clave para automatizar procesos complejos de forma inteligente en Devic: **razonan, recuperan conocimiento con RAG y actúan por sí mismos hasta lograr el objetivo**.
+  Agents are the key component for intelligently automating complex processes in Devic: **they reason, retrieve knowledge with RAG, and act on their own until they achieve the goal**.
 </Note>
 
 ---
 
-## Próximos pasos
+## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Lanza tu primer agente" icon="boxes" href="/devic/agents/deploy-your-first-agent">
-    Aprende paso a paso cómo crear, configurar y poner en marcha tu primer agente dentro de Devic.
+  <Card title="Launch Your First Agent" icon="boxes" href="/devic/agents/deploy-your-first-agent">
+    Learn step by step how to create, configure, and launch your first agent in Devic.
   </Card>
-  <Card title="Prompt de agente" icon="terminal" href="/devic/agents/prompt">
-    Descubre cómo diseñar prompts efectivos que definan el comportamiento, tono y límites de tus agentes.
+  <Card title="Agent Prompt" icon="terminal" href="/devic/agents/prompt">
+    Discover how to design effective prompts that define the behavior, tone, and limits of your agents.
   </Card>
   <Card title="Tools" icon="wrench" href="/devic/agents/tools">
-    Conoce las herramientas que tus agentes pueden usar para interactuar con datos, servicios y otros MCPs.
+    Learn about the tools your agents can use to interact with data, services, and other MCPs.
   </Card>
 </CardGroup>

@@ -1,127 +1,130 @@
 ---
-title: "Prompt del agente"
-description: "Aprende a diseñar, versionar y optimizar el prompt de tu agente en Devic"
+title: "Agent Prompt"
+description: "Learn how to design, version, and optimize your agent’s prompt in Devic"
 ---
 
-El **prompt** es el núcleo funcional de cada agente en Devic.\
-Define su comportamiento, los objetivos que debe alcanzar y las reglas bajo las cuales debe operar.\
-En otras palabras, el prompt traduce la intención del usuario en instrucciones ejecutables para el modelo.
-
----
-
-## Qué es el prompt
-
-El prompt contiene las instrucciones que el modelo de lenguaje (LLM) sigue para ejecutar una tarea.\
-Aquí se define cómo debe razonar, qué pasos debe seguir y cuándo debe considerar que una tarea se ha completado correctamente.
-
-A diferencia de un simple texto descriptivo, el prompt en Devic actúa como el sistema cognitivo del agente, combinando contexto, reglas y objetivos para guiar sus decisiones.
-
-**Ejemplo**
-
-Eres un agente especializado en procesar pedidos.\
-Recibirás correos de clientes con solicitudes de compra dirigidas a `{{nombre_empresa}}`.\
-Consulta la tabla de clientes y busca el email del remitente entre los registros.\
-Una vez identificado el cliente, extrae los datos del pedido:
-
-- Dirección de entrega
-- Fecha del pedido
-- Referencias de producto
-- Número de unidades\
-  Registra la información en la base de datos correspondiente.
-
-## ![Ejemplo de prompt](/prompt-example.png)
-
-## Cómo estructurar un buen prompt
-
-Un prompt bien diseñado mejora significativamente la precisión y la autonomía del agente.\
-A continuación se muestra una estructura recomendada para definirlo de manera clara y eficaz:
-
-| Sección                | Descripción                                                         | Ejemplo                                                                                       |
-| ---------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| **Rol**                | Define quién es el agente y cuál es su función.                     | Eres un agente especializado en atención al cliente.                                          |
-| **Contexto**           | Proporciona información sobre el entorno o las limitaciones.        | Trabajas para la empresa `{{nombre_empresa}}` y recibes consultas por email.                  |
-| **Objetivo**           | Describe el resultado que debe conseguir.                           | Tu tarea es clasificar los correos en categorías y responder automáticamente.                 |
-| **Acciones**           | Indica los pasos concretos que debe seguir para lograr el objetivo. | Extrae la información del correo, verifica en la base de datos y responde según el resultado. |
-| **Criterios de éxito** | Define cuándo la tarea se considera completada.                     | La tarea se completa cuando el correo se clasifica correctamente y se envía la respuesta.     |
-
-**Recomendación:** utiliza frases breves, directas y sin ambigüedades.\
-Los agentes funcionan mejor con instrucciones explícitas y una estructura lógica clara.
+The **prompt** is the functional core of every agent in Devic.\
+It defines its behavior, the objectives it must achieve, and the rules under which it must operate.\
+In other words, the prompt translates user intent into executable instructions for the model.
 
 ---
 
-## Variables dinámicas
+## What the Prompt Is
 
-Los prompts en Devic pueden incluir **placeholders dinámicos**, como `{{nombre_empresa}}` o `{{usuario}}`, que se reemplazan automáticamente durante la ejecución del agente.\
-Esto permite crear prompts reutilizables y adaptables a diferentes contextos o entornos.
+The prompt contains the instructions that the language model (LLM) follows to perform a task.\
+It defines how the agent should reason, what steps it must follow, and when a task should be considered successfully completed.
+
+Unlike a simple descriptive text, the prompt in Devic acts as the agent’s cognitive system, combining context, rules, and goals to guide its decisions.
+
+**Example**
+
+You are an agent specialized in processing orders.\
+You will receive emails from customers with purchase requests addressed to `{{nombre_empresa}}`.\
+Consult the customer table and search for the sender’s email among the records.\
+Once the customer is identified, extract the order details:
+
+- Delivery address  
+- Order date  
+- Product references  
+- Number of units  
+
+Record the information in the corresponding database.
+
+## ![Prompt example](/prompt-example.png)
 
 ---
 
-## Histórico y versionado
+## How to Structure a Good Prompt
 
-Cada modificación del prompt se guarda automáticamente como una **nueva versión**.\
-Devic mantiene un registro completo de todas las versiones creadas, lo que permite consultar, comparar o restaurar versiones anteriores en cualquier momento.
+A well-designed prompt significantly improves the agent’s accuracy and autonomy.\
+Below is a recommended structure for defining it clearly and effectively:
 
-El historial se puede abrir desde la parte superior del editor, mediante la opción **History**.
+| Section               | Description                                                        | Example                                                                                      |
+| --------------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| **Role**              | Defines who the agent is and what its function is.                 | You are an agent specialized in customer support.                                            |
+| **Context**           | Provides information about the environment or constraints.         | You work for `{{nombre_empresa}}` and receive inquiries by email.                            |
+| **Goal**              | Describes the result the agent must achieve.                       | Your task is to classify emails into categories and reply automatically.                     |
+| **Actions**           | Specifies the concrete steps needed to accomplish the goal.        | Extract the information from the email, verify it in the database, and respond accordingly.  |
+| **Success Criteria**  | Defines when the task is considered complete.                      | The task is complete when the email is correctly classified and the response is sent.        |
 
-![Historial de versiones del prompt](/prompt-version.png)
+**Recommendation:** use short, direct, unambiguous sentences.\
+Agents perform better with explicit instructions and clear logical structure.
 
 ---
 
-## Comparación de versiones
+## Dynamic Variables
 
-La vista **Diff** permite comparar dos versiones del prompt de forma detallada, línea por línea.\
-Las diferencias se visualizan de la siguiente manera:
+Prompts in Devic can include **dynamic placeholders**, such as `{{nombre_empresa}}` or `{{usuario}}`, which are automatically replaced during the agent’s execution.\
+This allows prompts to be reusable and adaptable to different contexts or environments.
 
-- **Verde:** texto añadido
-- **Rojo:** texto eliminado
-- **Sin color:** texto sin cambios
+---
 
-![Menu de versiones](/prompt-version-menu.png)
+## History and Versioning
+
+Each modification of the prompt is automatically saved as a **new version**.\
+Devic keeps a complete record of all created versions, allowing you to review, compare, or restore any previous version at any time.
+
+The history can be opened from the top of the editor via the **History** option.
+
+![Prompt version history](/prompt-version.png)
+
+---
+
+## Version Comparison
+
+The **Diff** view allows you to compare two prompt versions in detail, line by line.\
+Differences are displayed as follows:
+
+- **Green:** added text  
+- **Red:** removed text  
+- **No color:** unchanged text  
+
+![Version menu](/prompt-version-menu.png)
 
 ## 
 
-![Vista de comparación de versiones](/prompt-dif.png)
+![Version comparison view](/prompt-dif.png)
 
-Esta función resulta especialmente útil para auditar cambios, revisar ajustes realizados por otros usuarios o controlar la evolución del comportamiento del agente.
-
----
-
-## Mejores prácticas
-
-- Mantén el **rol del agente** claro y coherente.
-- Utiliza **listas o pasos numerados** para estructurar las acciones.
-- Incluye **variables dinámicas** cuando sea necesario.
-- Evita instrucciones ambiguas o contradictorias.
-- Realiza cambios incrementales en lugar de reescrituras completas.
-- Documenta en el propio prompt los supuestos o excepciones relevantes.
+This function is especially useful for auditing changes, reviewing adjustments made by other users, or tracking the evolution of the agent’s behavior.
 
 ---
 
-## Cuándo actualizar el prompt
+## Best Practices
 
-Se recomienda crear una nueva versión del prompt cuando ocurra alguna de las siguientes situaciones:
-
-- Se modifica el **objetivo** o el **alcance** del agente.
-- Se añaden o eliminan **herramientas** (Tools).
-- Cambia la estructura de las **fuentes de datos**.
-- Se detectan **errores de interpretación** en la ejecución.
-- Se busca una mayor precisión o contexto en las respuestas.
+- Keep the agent’s **role** clear and consistent.  
+- Use **lists or numbered steps** to structure actions.  
+- Include **dynamic variables** when needed.  
+- Avoid ambiguous or contradictory instructions.  
+- Make incremental changes rather than rewriting the entire prompt.  
+- Document relevant assumptions or exceptions directly in the prompt.
 
 ---
 
-## Próximos pasos
+## When to Update the Prompt
+
+You should create a new prompt version when any of the following occurs:
+
+- The agent’s **goal** or **scope** changes.  
+- **Tools** are added or removed.  
+- The structure of **data sources** changes.  
+- You identify **interpretation errors** in execution.  
+- You aim for greater accuracy or better contextual responses.
+
+---
+
+## Next Steps
 
 <CardGroup cols={2}>
   <Card title="Tools" icon="wrench" href="/devic/agents/tools">
-    Conoce las herramientas disponibles que tus agentes pueden utilizar para ejecutar acciones, consultar datos o interactuar con MCPs.
+    Learn about the tools your agents can use to execute actions, query data, or interact with MCPs.
   </Card>
   <Card title="RAG" icon="database" href="/devic/agents/rag">
-    Aprende cómo integrar bases de conocimiento y búsqueda semántica para enriquecer las decisiones y respuestas de tus agentes.
+    Learn how to integrate knowledge bases and semantic search to enrich your agents’ decisions and responses.
   </Card>
-  <Card title="Optimización continua" icon="gears" href="/devic/agents/continuous-optimization/index">
-    Mejora el rendimiento de tus agentes mediante evaluación automática, feedback humano y ajustes iterativos de sus prompts y herramientas.
+  <Card title="Continuous Optimization" icon="gears" href="/devic/agents/continuous-optimization/index">
+    Improve your agents’ performance through automatic evaluation, human feedback, and iterative prompt/tool adjustments.
   </Card>
-  <Card title="Otras opciones" icon="ellipsis" href="/devic/agents/other-options">
-    Explora configuraciones avanzadas como subagentes, ejecuciones programadas o parámetros de control de contexto.
+  <Card title="Other Options" icon="ellipsis" href="/devic/agents/other-options">
+    Explore advanced configurations such as subagents, scheduled executions, or contextual control parameters.
   </Card>
 </CardGroup>

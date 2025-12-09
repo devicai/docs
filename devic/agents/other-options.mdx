@@ -1,100 +1,100 @@
 ---
-title: "Otras opciones"
-description: "Configura funciones avanzadas de los agentes en Devic, como ejecuciones periódicas, planificación de tareas, gestión de costes, canales, evaluaciones y subagentes especializados."
+title: "Other Options"
+description: "Configure advanced functions of Devic agents, such as periodic executions, task planning, cost management, channels, evaluations, and specialized subagents."
 ---
 
-Desde el menú **Other Options** de cada agente, Devic ofrece una serie de configuraciones avanzadas que permiten ajustar su comportamiento, rendimiento y control operativo.
+From the **Other Options** menu of each agent, Devic offers a set of advanced configurations that allow you to adjust its behavior, performance, and operational control.
 
-Estas opciones amplían la capacidad de los agentes más allá de su configuración básica, permitiendo programar ejecuciones automáticas, definir su interacción con otros sistemas o especializarlos en tareas concretas.
+These options extend the capabilities of agents beyond their basic setup, enabling automated scheduled executions, defining interactions with other systems, or specializing them for specific tasks.
 
-![Panel Other Options de un agente](/other-options-access.png)
-
----
-
-## Ejecuciones periódicas
-
-Permite programar al agente para que se **ejecute automáticamente** con una frecuencia determinada: diaria, semanal o personalizada.\
-De esta forma, el agente puede realizar tareas de mantenimiento, informes o supervisión sin intervención manual.
-
-![Configuración de ejecución periódica](/preiodic-execution.png)
+![Other Options panel of an agent](/other-options-access.png)
 
 ---
 
-## Pausar agente
+## Periodic Executions
 
-Suspende temporalmente las ejecuciones del agente.\
-Mientras está en pausa:
+Allows scheduling the agent to **run automatically** at a defined frequency: daily, weekly, or custom.\
+This way, the agent can perform maintenance tasks, generate reports, or carry out monitoring without manual intervention.
 
-- No se procesan nuevas entradas.
-- Las ejecuciones en cola se detienen.
-- No se disparan las ejecuciones programadas.
-
-Esta opción es útil para realizar ajustes o mantenimiento sin eliminar el agente.
-
-![Pausar agente](/pause-agent.png)
+![Periodic execution configuration](/preiodic-execution.png)
 
 ---
 
-## Planificador de tareas del agente
+## Pause Agent
 
-Permite definir **cómo debe ejecutar sus tareas** de manera controlada.\
-El usuario puede establecer una planificación específica que sirva como guía o secuencia, afinando el comportamiento del agente para obtener **mayor coherencia y rendimiento operativo**.
+Temporarily suspends the agent's executions.\
+While paused:
 
-![Planificador de tareas del agente](/agent-planning.png)
+- New inputs are not processed.  
+- Queued executions are halted.  
+- Scheduled executions do not trigger.
 
----
+This option is useful for making adjustments or performing maintenance without deleting the agent.
 
-## Configurar canales
-
-Configura los **canales de comunicación** del agente, como correo electrónico, para el envío y recepción de información durante las ejecuciones.\
-El agente puede recibir mensajes entrantes, iniciar nuevas ejecuciones desde correos y filtrar por remitente o asunto.
-
-![Configuración de canales del agente](/channel-configuration-agent.png)
+![Pause agent](/pause-agent.png)
 
 ---
 
-## Gestión de costes
+## Agent Task Planner
 
-Devic incorpora un panel de **Cost Management** que muestra el coste acumulado y detallado de las ejecuciones del agente.\
-Se incluyen métricas como coste total, promedio diario y coste por hilo de ejecución, junto a gráficos de evolución temporal.
+Allows defining **how the agent should execute its tasks** in a controlled manner.\
+The user can establish a specific plan that serves as a guide or sequence, refining the agent's behavior for **increased coherence and operational performance**.
 
-![Gestión de costes](/cost-management.png)
-
----
-
-## Configuración de evaluaciones
-
-En esta sección se definen las **evaluaciones automáticas** que califican el rendimiento del agente según criterios preestablecidos.\
-Además, el usuario puede **crear evaluaciones personalizadas** desde el panel _Evaluation Configuration_.
-
-![Panel de configuración de evaluaciones](/evaluation-configuration.png)
+![Agent task planner](/agent-planning.png)
 
 ---
 
-## Subagentes
+## Configure Channels
 
-Permite transformar un agente en un **subagente especializado** en una tarea o conjunto de tareas concretas.\
-Una vez habilitado, puede ser **invocado por otros agentes como una tool**, facilitando la división de procesos complejos en componentes especializados.
+Configures the agent's **communication channels**, such as email, for sending and receiving information during executions.\
+The agent can receive incoming messages, start new executions from emails, and filter by sender or subject.
 
-![Configuración de subagentes](/subagent-configuration.png)
+![Agent channel configuration](/channel-configuration-agent.png)
 
 ---
 
-## Sugerencias de mejora
+## Cost Management
 
-El sistema de **Improvement Suggestions** analiza el rendimiento del agente y propone acciones para mejorar su comportamiento, prompts o estrategias.\
-Estas recomendaciones se generan a partir de las evaluaciones previas y los registros de ejecución, contribuyendo a un proceso de **optimización continua**.
+Devic includes a **Cost Management** panel that shows the accumulated and detailed cost of the agent's executions.\
+It includes metrics such as total cost, daily average, and cost per execution thread, along with time-based graphs.
 
-![Panel de sugerencias de mejora](/propmpt-improvement-suggestions.png)
+![Cost management](/cost-management.png)
+
+---
+
+## Evaluation Configuration
+
+This section defines the **automatic evaluations** that score the agent’s performance according to predefined criteria.\
+Additionally, the user can **create custom evaluations** from the _Evaluation Configuration_ panel.
+
+![Evaluation configuration panel](/evaluation-configuration.png)
+
+---
+
+## Subagents
+
+Enables transforming an agent into a **specialized subagent** for a specific task or set of tasks.\
+Once enabled, it can be **invoked by other agents as a tool**, helping break down complex processes into specialized components.
+
+![Subagent configuration](/subagent-configuration.png)
+
+---
+
+## Improvement Suggestions
+
+The **Improvement Suggestions** system analyzes the agent’s performance and proposes actions to improve its behavior, prompts, or strategies.\
+These recommendations are generated based on previous evaluations and execution logs, contributing to a process of **continuous optimization**.
+
+![Improvement suggestions panel](/propmpt-improvement-suggestions.png)
 
 ---
 
 <Note>
-  Las opciones avanzadas de Devic permiten adaptar los agentes a entornos operativos complejos, combinando autonomía, trazabilidad y control sobre su comportamiento y coste.
+  Devic’s advanced options allow adapting agents to complex operational environments, combining autonomy, traceability, and control over their behavior and cost.
 </Note>
 
 ---
 
-<Card title="Siguiente paso" icon="shield" href="/devic/agents/guardrails">
-  Explora todos los guardrails disponibles y aprende cómo reforzar la seguridad y el control en tus agentes.
+<Card title="Next Step" icon="shield" href="/devic/agents/guardrails">
+  Explore all available guardrails and learn how to enhance security and control in your agents.
 </Card>

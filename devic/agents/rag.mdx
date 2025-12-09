@@ -1,101 +1,101 @@
 ---
 title: "RAG"
-description: "Amplía la capacidad de tus agentes en Devic mediante el uso de RAG para consultar información externa y contextualizar sus respuestas."
+description: "Enhance your agents in Devic by using RAG to retrieve external information and contextualize their responses."
 ---
 
-El **RAG (Retrieval Augmented Generation)** es el sistema que permite a los agentes en **Devic** acceder a información externa —como documentos, manuales, políticas o catálogos— y utilizarla durante su ejecución para generar respuestas más precisas y contextualizadas.
+**RAG (Retrieval Augmented Generation)** is the system that enables agents in **Devic** to access external information—such as documents, manuals, policies, or catalogs—and use it during execution to generate more precise and contextualized responses.
 
-Gracias al RAG, los agentes pueden trabajar con datos actualizados o específicos del dominio, sin depender únicamente del conocimiento preentrenado del modelo.
-
----
-
-## Cómo funciona
-
-De manera nativa, la plataforma incorpora un sistema **RAG** completamente integrado que permite al usuario añadir directamente documentos para enriquecer el contexto de los modelos.
-
-El proceso es **totalmente automático**:
-
-1. La plataforma analiza los documentos cargados y los **fragmenta en secciones o “chunks”** para facilitar su indexación y recuperación.
-2. Se generan **descripciones automáticas** de cada fragmento, que ayudan al agente a contextualizar mejor la información.
-3. Durante la ejecución, el agente decide **cuándo y cómo consultar** esos fragmentos, integrándolos dinámicamente en su contexto operativo.
-
-Este enfoque elimina la necesidad de entrenamientos adicionales o integraciones externas, permitiendo que los agentes trabajen con **conocimiento actualizado y específico** sin complejidad técnica añadida.
-
-![Funcionamiento del sistema RAG](/rag.png)
-
-Gracias al RAG, las organizaciones pueden dotar a sus agentes de una memoria extendida que refuerza su capacidad de razonamiento y mejora la precisión en tareas complejas.
+Thanks to RAG, agents can work with up-to-date or domain-specific data without relying solely on the model’s pretrained knowledge.
 
 ---
 
-## Configuración del RAG en un agente
+## How It Works
 
-Para añadir RAG a un agente:
+The platform includes a fully integrated **RAG system** that allows users to directly upload documents to enrich the model's context.
 
-1. Abre el agente desde el panel lateral de Devic.
-2. Desplázate hasta la sección **RAG**.
-3. Selecciona **Add document** y sube los archivos que formarán parte de la base de conocimiento.
+The process is **entirely automatic**:
 
-Los formatos admitidos incluyen:
+1. The platform analyzes the uploaded documents and **splits them into sections or “chunks”** for better indexing and retrieval.  
+2. It generates **automatic descriptions** for each fragment, helping the agent better contextualize the information.  
+3. During execution, the agent decides **when and how to query** these fragments, integrating them dynamically into its operational context.
 
-- `.pdf`
-- `.docx`
-- `.txt`
+This approach removes the need for additional training or external integrations, allowing agents to work with **updated and specific knowledge** without added technical complexity.
+
+![How the RAG system works](/rag.png)
+
+With RAG, organizations can give their agents an extended memory that strengthens reasoning capabilities and improves precision in complex tasks.
+
+---
+
+## Configuring RAG in an Agent
+
+To add RAG to an agent:
+
+1. Open the agent from the Devic sidebar.  
+2. Scroll to the **RAG** section.  
+3. Select **Add document** and upload the files that will form part of the knowledge base.
+
+Supported formats include:
+
+- `.pdf`  
+- `.docx`  
+- `.txt`  
 - `.csv`
 
-Cada archivo se procesa automáticamente y aparece listado en la interfaz del agente con su nombre y estado.
+Each file is processed automatically and displayed in the agent interface with its name and status.
 
 ---
 
-## Visualización y resumen de documentos
+## Document Preview and Summary
 
-Tras subir un documento, puedes consultar sus detalles desde el panel lateral derecho.\
-Devic mostrará los **metadatos** y un **resumen automático** del contenido.
+After uploading a document, you can view its details from the right-hand side panel.\
+Devic displays **metadata** and an **automatic summary** of the content.
 
-| Campo                  | Descripción                                                                 |
-| ---------------------- | --------------------------------------------------------------------------- |
-| **Name**               | Nombre del archivo cargado.                                                 |
-| **Size**               | Tamaño del documento.                                                       |
-| **Created / Modified** | Fechas de creación y última modificación.                                   |
-| **Summary**            | Resumen del contenido, inyectado automáticamente en el contexto del agente. |
+| Field                 | Description                                                            |
+| --------------------- | ---------------------------------------------------------------------- |
+| **Name**              | Name of the uploaded file.                                             |
+| **Size**              | File size.                                                             |
+| **Created / Modified**| Creation and last modification dates.                                  |
+| **Summary**           | Summary of the content, automatically injected into the agent context. |
 
-![Detalle del documento en el panel lateral](/rag-detail.png)
+![Document details in the side panel](/rag-detail.png)
 
-El campo **Summary** puede editarse manualmente para ajustar la descripción del documento.\
-Esto permite priorizar la información más relevante y optimizar las consultas del agente.
-
----
-
-## Buenas prácticas
-
-- Carga únicamente los documentos necesarios para el contexto del agente.
-- Evita archivos muy extensos o con información irrelevante.
-- Actualiza los resúmenes cuando cambie el contenido de los documentos.
-- Usa nombres descriptivos que faciliten la identificación.
-- Revisa periódicamente el conjunto de documentos para garantizar su vigencia.
+The **Summary** field can be manually edited to refine the document description.\
+This allows prioritizing the most relevant information and optimizing agent queries.
 
 ---
 
-## Casos de uso
+## Best Practices
 
-| Tipo de agente | Aplicación del RAG                                          |
-| -------------- | ----------------------------------------------------------- |
-| **Legal**      | Consulta contratos o legislación almacenada en PDFs.        |
-| **Comercial**  | Busca datos en catálogos, fichas de producto o tarifas.     |
-| **Técnico**    | Recupera información desde manuales o guías internas.       |
-| **Soporte**    | Accede a bases de conocimiento o documentación de clientes. |
+- Upload only the documents necessary for the agent's context.  
+- Avoid overly long files or irrelevant content.  
+- Update summaries when document content changes.  
+- Use descriptive names to improve identification.  
+- Review the document set periodically to ensure it remains up to date.
 
 ---
 
-## Próximos pasos
+## Use Cases
+
+| Agent Type   | RAG Application                                              |
+| ------------ | ------------------------------------------------------------- |
+| **Legal**    | Consults contracts or legal texts stored in PDFs.            |
+| **Sales**    | Looks up data in catalogs, product sheets, or price lists.   |
+| **Technical**| Retrieves content from manuals or internal guides.           |
+| **Support**  | Accesses knowledge bases or customer documentation.          |
+
+---
+
+## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Optimización continua" icon="gears" href="/devic/agents/continuous-optimization/index">
-    Mejora el rendimiento de tus agentes a través de evaluaciones automáticas, feedback humano y análisis iterativo de resultados.
+  <Card title="Continuous Optimization" icon="gears" href="/devic/agents/continuous-optimization/index">
+    Improve your agents' performance through automatic evaluations, human feedback, and iterative analysis.
   </Card>
-  <Card title="Otras opciones" icon="ellipsis" href="/devic/agents/other-options">
-    Explora configuraciones avanzadas como subagentes, ejecuciones programadas o estrategias de control contextual.
+  <Card title="Other Options" icon="ellipsis" href="/devic/agents/other-options">
+    Explore advanced configurations such as subagents, scheduled executions, or contextual control strategies.
   </Card>
-  <Card title="Ejecución vía API" icon="code" href="/devic/agents/api-execution">
-    Descubre cómo lanzar y gestionar la ejecución de tus agentes directamente mediante la API pública de Devic.
+  <Card title="API Execution" icon="code" href="/devic/agents/api-execution">
+    Learn how to launch and manage your agents' executions directly through Devic’s public API.
   </Card>
 </CardGroup>
