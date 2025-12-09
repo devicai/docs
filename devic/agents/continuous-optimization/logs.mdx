@@ -1,117 +1,117 @@
 ---
 title: "Logs"
-description: "Analiza y depura las ejecuciones de tus agentes mediante los registros técnicos y el timeline de eventos de Devic."
+description: "Analyze and debug your agents’ executions through Devic’s technical logs and event timeline."
 ---
 
-# Análisis de logs y trazabilidad de ejecución
+# Log Analysis and Execution Traceability
 
-Devic incorpora un sistema completo de **registro y trazabilidad** que permite inspeccionar el comportamiento interno de los agentes durante cada ejecución.\
-A través de los logs, es posible seguir paso a paso las acciones realizadas, las herramientas utilizadas, los mensajes intercambiados con el modelo y el estado de cada tarea.
+Devic incorporates a complete **logging and traceability** system that allows you to inspect the internal behavior of agents during each execution.\
+Through the logs, you can follow step by step the actions performed, the tools used, the messages exchanged with the model, and the state of each task.
 
-Este módulo facilita la **depuración, auditoría y optimización continua** del rendimiento de los agentes, ofreciendo visibilidad total sobre cada proceso.
+This module facilitates **debugging, auditing, and continuous optimization** of agent performance, providing full visibility into every process.
 
 ---
 
-## Acceso a los logs
+## Accessing Logs
 
-Desde el historial de ejecuciones del agente, cada entrada incluye opciones para **inspeccionar su registro técnico**.\
-Al seleccionarla, se abre el panel **Thread Log**, que muestra en tiempo real todos los eventos generados durante la ejecución.
+From the agent’s execution history, each entry includes options to **inspect its technical log**.\
+When selected, the **Thread Log** panel opens, showing in real time all events generated during the execution.
 
-![Panel principal de logs](/open-console-logs-agent.png)
+![Main logs panel](/open-console-logs-agent.png)
 
 ## 
 
-![Panel principal de logs](/logs-console.png)
+![Main logs panel](/logs-console.png)
 
-El panel de logs está dividido en tres niveles de información:
+The logs panel is divided into three information levels:
 
-| Nivel            | Descripción                                                                                   |
-| ---------------- | --------------------------------------------------------------------------------------------- |
-| **LOG / INFO**   | Mensajes informativos del proceso de ejecución.                                               |
-| **DEBUG**        | Detalles de bajo nivel sobre llamadas a herramientas, pasos internos y variables intermedias. |
-| **WARN / ERROR** | Incidencias o errores detectados durante el proceso.                                          |
+| Level            | Description                                                                                     |
+| ---------------- | ----------------------------------------------------------------------------------------------- |
+| **LOG / INFO**   | Informational messages about the execution process.                                             |
+| **DEBUG**        | Low-level details about tool calls, internal steps, and intermediate variables.                 |
+| **WARN / ERROR** | Incidents or errors detected during the process.                                                |
 
 ---
 
 ## Thread Log
 
-El **Thread Log** registra de forma estructurada la conversación técnica entre el agente, las herramientas y el modelo.\
-Cada evento queda documentado con su tipo, momento de ejecución y contenido.
+The **Thread Log** records in a structured way the technical conversation between the agent, the tools, and the model.\
+Each event is documented with its type, execution timestamp, and content.
 
-![Vista del Thread Log con eventos](/thread-logs-access.png)
-
-## 
-
-![Vista del Thread Log con eventos](/thread-logs.png)
-
-Entre la información disponible se incluye:
-
-- **Llamadas a herramientas** y argumentos utilizados.
-- **Respuestas del modelo (LLM Response)**.
-- **Mensajes internos del sistema** (inicio, planificación, finalización).
-- **Estados de tareas** y pasos completados.
-
----
-
-## Detalle de mensajes
-
-Seleccionar un evento concreto abre el panel **Assistant Message Details**, donde se muestran las herramientas llamadas por el agente, junto con el _payload_ y la respuesta generada.
-
-![Detalle de llamada a herramienta](/tool-message-detail.png)
-
-Esta vista permite verificar con precisión qué instrucción ejecutó el agente, qué datos procesó y cómo respondió cada herramienta.\
-Es especialmente útil para **auditar flujos complejos o depurar comportamientos inesperados**.
-
----
-
-## Timeline de eventos
-
-El **Thread Events Timeline** ofrece una representación visual y secuencial de toda la ejecución del agente, mostrando cómo se encadenan las acciones del usuario, el modelo y las herramientas.
-
-![Visualización del timeline de eventos](/flow-view-access.png)
+![Thread Log view with events](/thread-logs-access.png)
 
 ## 
 
-![Visualización del timeline de eventos](/timeline-logs.png)
+![Thread Log view with events](/thread-logs.png)
 
-Cada bloque del timeline representa un paso en el flujo de trabajo:
+Among the available information:
 
-| Elemento             | Descripción                                                                                          |
-| -------------------- | ---------------------------------------------------------------------------------------------------- |
-| **User**             | Mensaje o instrucción inicial enviada al agente.                                                     |
-| **Planning**         | Etapa de planificación interna antes de ejecutar acciones.                                           |
-| **Tool Call**        | Ejecución de una herramienta (por ejemplo, consulta RAG, actualización de tarea, generación de PDF). |
-| **Tool Response**    | Resultado devuelto por la herramienta.                                                               |
-| **Finish Execution** | Cierre del proceso, donde el agente concluye la tarea.                                               |
+- **Tool calls** and the arguments used.  
+- **Model responses (LLM Response)**.  
+- **Internal system messages** (start, planning, completion).  
+- **Task states** and completed steps.
 
 ---
 
-## Exportación y análisis externo
+## Message Details
 
-Los registros pueden **exportarse** para su análisis en herramientas externas o integrarse en sistemas corporativos de auditoría y observabilidad.\
-Esto garantiza la **trazabilidad completa** de los agentes y refuerza el control operativo en entornos de producción.
+Selecting a specific event opens the **Assistant Message Details** panel, where the tools called by the agent are displayed, along with their payload and the generated response.
+
+![Tool call detail](/tool-message-detail.png)
+
+This view allows you to precisely verify which instruction the agent executed, what data it processed, and how each tool responded.\
+It is especially useful for **auditing complex workflows or debugging unexpected behaviors**.
+
+---
+
+## Event Timeline
+
+The **Thread Events Timeline** offers a visual and sequential representation of the agent’s entire execution, showing how user actions, the model, and tools interact.
+
+![Event timeline visualization](/flow-view-access.png)
+
+## 
+
+![Event timeline visualization](/timeline-logs.png)
+
+Each block in the timeline represents a step in the workflow:
+
+| Element             | Description                                                                                               |
+| ------------------- | --------------------------------------------------------------------------------------------------------- |
+| **User**            | Initial message or instruction sent to the agent.                                                         |
+| **Planning**        | Internal planning stage before executing actions.                                                          |
+| **Tool Call**       | Execution of a tool (e.g., RAG query, task update, PDF generation).                                       |
+| **Tool Response**   | Result returned by the tool.                                                                              |
+| **Finish Execution** | Closing stage where the agent completes the task.                                                       |
+
+---
+
+## Export and External Analysis
+
+Logs can be **exported** for analysis in external tools or integrated into corporate auditing and observability systems.\
+This ensures **complete traceability** of the agents and reinforces operational control in production environments.
 
 ---
 
 <Note>
-  El sistema de logs de Devic no solo aporta visibilidad técnica, sino que constituye una herramienta esencial para la mejora continua y la validación del comportamiento de los agentes.
+  Devic’s logging system not only provides technical visibility but also serves as an essential tool for continuous improvement and validation of agent behavior.
 </Note>
 
 ---
 
-## Próximos pasos
+## Next Steps
 
 <CardGroup cols={2}>
   <Card title="Human in the Loop" icon="user-check" href="/devic/agents/continuous-optimization/human-in-the-loop">
-    Descubre cómo integrar validación humana en el flujo de tus agentes para aprobar, corregir o enriquecer decisiones antes de su ejecución final.
+    Discover how to integrate human validation into your agents’ flow to approve, correct, or enrich decisions before final execution.
   </Card>
-  <Card title="Tareas" icon="list-check" href="/devic/agents/continuous-optimization/tasks">
-    Gestiona tareas generadas por los agentes, supervisa su estado y controla su progreso dentro de cada ejecución.
+  <Card title="Tasks" icon="list-check" href="/devic/agents/continuous-optimization/tasks">
+    Manage tasks generated by the agents, monitor their status, and control their progress within each execution.
   </Card>
-  <Card title="Evaluaciones automáticas" icon="check-circle" href="/devic/agents/continuous-optimization/evaluations">
-    Configura métricas y evaluaciones automáticas para medir el rendimiento, precisión y consistencia de tus agentes.
+  <Card title="Automatic Evaluations" icon="check-circle" href="/devic/agents/continuous-optimization/evaluations">
+    Configure metrics and automatic evaluations to measure the performance, accuracy, and consistency of your agents.
   </Card>
-  <Card title="Costes" icon="coins" href="/devic/agents/continuous-optimization/costs">
-    Supervisa el consumo de tokens, analiza costes por ejecución y optimiza el uso de modelos y recursos.
+  <Card title="Costs" icon="coins" href="/devic/agents/continuous-optimization/costs">
+    Monitor token consumption, analyze execution costs, and optimize the use of models and resources.
   </Card>
 </CardGroup>

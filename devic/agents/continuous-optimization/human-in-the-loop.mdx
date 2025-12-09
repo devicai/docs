@@ -1,83 +1,83 @@
 ---
 title: "Human in the Loop"
-description: "Supervisa y aprueba decisiones de los agentes antes de su ejecución definitiva mediante el sistema de validación humana de Devic."
+description: "Supervise and approve agent decisions before final execution through Devic’s human validation system."
 ---
 
-# Validación humana en el ciclo de ejecución
+# Human Validation in the Execution Cycle
 
-Devic incorpora un sistema de **Human in the Loop (HITL)** que permite incluir al usuario en el flujo de ejecución del agente cuando se requiere **validación, corrección o aprobación manual** antes de continuar con un proceso automatizado.
+Devic incorporates a **Human in the Loop (HITL)** system that allows users to be included in the agent’s execution flow when **manual validation, correction, or approval** is required before continuing an automated process.
 
-Esta funcionalidad garantiza que las tareas críticas puedan revisarse y aprobarse por un responsable humano, manteniendo la trazabilidad y el control sobre la toma de decisiones del agente.
-
----
-
-## Estados de ejecución
-
-Cuando un agente requiere intervención humana, la ejecución pasa automáticamente al estado **“Waiting for Approval”**.  
-Desde el panel de ejecuciones es posible visualizar y filtrar las tareas en espera de aprobación, junto con su progreso y evaluación.
-
-![Vista de ejecuciones con tareas en espera de aprobación](/human-in-the-loop-view.png)
-
-Los estados disponibles incluyen:
-
-| Estado                   | Descripción                                                                 |
-| ------------------------ | --------------------------------------------------------------------------- |
-| **Queued**               | La ejecución ha sido creada y está en cola para comenzar.                   |
-| **Processing**           | El agente está actualmente procesando la tarea.                             |
-| **Completed**            | Ejecución finalizada correctamente.                                         |
-| **Failed**               | La ejecución ha fallado debido a un error o condición inesperada.           |
-| **Terminated**           | La ejecución fue detenida manualmente o por condiciones del sistema.        |
-| **Paused**               | Ejecución detenida temporalmente hasta recibir acción del usuario.          |
-| **Waiting for Approval** | Requiere revisión o aprobación humana antes de continuar.                   |
+This functionality ensures that critical tasks can be reviewed and approved by a human responsible, maintaining traceability and control over the agent’s decision-making.
 
 ---
 
-## Proceso de aprobación
+## Execution States
 
-Al hacer clic sobre una ejecución en estado **“Waiting for Approval”**, se abre la ventana de validación.  
-En ella, el agente presenta la **solicitud de aprobación** junto con los datos extraídos o las acciones que pretende ejecutar.
+When an agent requires human intervention, the execution automatically enters the **“Waiting for Approval”** state.  
+From the executions panel, you can view and filter tasks awaiting approval, along with their progress and evaluation.
 
-![Ventana de aprobación de agente](/waiting-for-approval.png)
+![View of executions with tasks waiting for approval](/human-in-the-loop-view.png)
 
-El usuario puede:
+The available states include:
 
-- **Aprobar** la acción para que el agente continúe automáticamente con el flujo.  
-- **Rechazar y finalizar** la ejecución, deteniendo el proceso.  
-- **Continuar con feedback**, añadiendo comentarios o correcciones que el agente deberá incorporar antes de seguir.
-
-El panel de aprobación muestra toda la información relevante que el agente ha recopilado hasta ese punto:  
-por ejemplo, datos de clientes, documentos analizados o referencias cruzadas.  
-De esta manera, el usuario puede revisar los resultados **en su contexto operativo**, sin necesidad de salir de la interfaz del agente.
+| State                  | Description                                                                  |
+| ---------------------- | ---------------------------------------------------------------------------- |
+| **Queued**             | The execution has been created and is queued to begin.                       |
+| **Processing**         | The agent is currently processing the task.                                  |
+| **Completed**          | Execution finished successfully.                                             |
+| **Failed**             | The execution failed due to an error or unexpected condition.                |
+| **Terminated**         | The execution was manually stopped or halted by system conditions.           |
+| **Paused**             | Execution temporarily paused until user action is received.                  |
+| **Waiting for Approval** | Requires human review or approval before continuing.                       |
 
 ---
 
-## Beneficios del enfoque Human in the Loop
+## Approval Process
 
-La validación humana integrada permite equilibrar **automatización y control**, ofreciendo:
+Clicking on an execution in the **“Waiting for Approval”** state opens the validation window.  
+There, the agent presents the **approval request** along with extracted data or the actions it intends to execute.
 
-- **Seguridad y precisión** en tareas sensibles o de alto impacto.  
-- **Trazabilidad completa** de las decisiones humanas dentro del flujo automatizado.  
-- **Aprendizaje iterativo**, al permitir que el agente incorpore feedback humano en futuras ejecuciones.  
-- **Cumplimiento normativo**, en procesos donde la intervención humana es obligatoria.
+![Agent approval window](/waiting-for-approval.png)
+
+The user can:
+
+- **Approve** the action so the agent can automatically continue the workflow.  
+- **Reject and finalize** the execution, stopping the process.  
+- **Continue with feedback**, adding comments or corrections that the agent must incorporate before proceeding.
+
+The approval panel displays all relevant information the agent has gathered up to that point:  
+for example, customer data, analyzed documents, or cross-referenced information.  
+This allows the user to review results **within their operational context**, without leaving the agent interface.
+
+---
+
+## Benefits of the Human in the Loop Approach
+
+Integrated human validation allows balancing **automation and control**, offering:
+
+- **Safety and accuracy** in sensitive or high-impact tasks.  
+- **Complete traceability** of human decisions within the automated workflow.  
+- **Iterative learning**, enabling the agent to incorporate human feedback in future executions.  
+- **Regulatory compliance**, in processes where human intervention is mandatory.
 
 ---
 
 <Note>
-El sistema HITL convierte cada aprobación o rechazo en parte del aprendizaje operativo del agente, contribuyendo a la mejora continua de su desempeño y fiabilidad.
+The HITL system turns each approval or rejection into part of the agent’s operational learning, contributing to continuous improvement of its performance and reliability.
 </Note>
 
 ---
 
-## Próximos pasos
+## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Tareas" icon="list-check" href="/devic/agents/continuous-optimization/tasks">
-    Gestiona tareas generadas por los agentes, supervisa su estado y controla su progreso dentro de cada ejecución.
+  <Card title="Tasks" icon="list-check" href="/devic/agents/continuous-optimization/tasks">
+    Manage tasks generated by agents, monitor their status, and control their progress within each execution.
   </Card>
-  <Card title="Evaluaciones automáticas" icon="check-circle" href="/devic/agents/continuous-optimization/evaluations">
-    Configura métricas y evaluaciones automáticas para medir el rendimiento, precisión y consistencia de tus agentes.
+  <Card title="Automatic Evaluations" icon="check-circle" href="/devic/agents/continuous-optimization/evaluations">
+    Configure metrics and automatic evaluations to measure the performance, accuracy, and consistency of your agents.
   </Card>
-  <Card title="Costes" icon="coins" href="/devic/agents/continuous-optimization/costs">
-    Supervisa el consumo de tokens, analiza costes por ejecución y optimiza el uso de modelos y recursos.
+  <Card title="Costs" icon="coins" href="/devic/agents/continuous-optimization/costs">
+    Monitor token consumption, analyze execution costs, and optimize model and resource usage.
   </Card>
 </CardGroup>
