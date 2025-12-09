@@ -1,150 +1,148 @@
 ---
-title: "Lanza tu primer agente"
-description: "Guía paso a paso para crear y configurar tu primer agente en Devic: modelo, prompt, herramientas y conocimiento."
+title: "Launch Your First Agent"
+description: "Step-by-step guide to creating and configuring your first agent in Devic: model, prompt, tools, and knowledge."
 ---
 
-Los agentes son el núcleo de la automatización inteligente dentro de **Devic**.\
-Combinan razonamiento, herramientas y conocimiento para ejecutar tareas de forma autónoma hasta alcanzar un objetivo.
+Agents are the core of intelligent automation within **Devic**.\
+They combine reasoning, tools, and knowledge to autonomously execute tasks until they reach an objective.
 
-En esta guía aprenderás a crear tu primer agente y a configurar los elementos que lo hacen funcionar: el **modelo (LLM)**, el **prompt**, las **tools** y el **RAG (conocimiento)**.
-
----
-
-## Qué es un agente en Devic
-
-Un agente es una entidad inteligente capaz de tomar decisiones por sí misma.\
-A diferencia de los flujos tradicionales —donde las acciones se representan con cajitas y flechas—, en Devic el agente decide qué pasos seguir y cuándo detenerse.
-
-Cada agente se construye combinando:
-
-- Un **modelo de lenguaje (LLM)**, que razona y genera acciones.
-- Un **prompt**, que define su propósito y reglas.
-- Un conjunto de **tools**, que le permiten actuar sobre datos o sistemas.
-- Y opcionalmente, un espacio de **RAG**, donde almacena información de referencia.
+In this guide, you’ll learn how to create your first agent and configure the elements that make it work: the **model (LLM)**, the **prompt**, the **tools**, and **RAG (knowledge)**.
 
 ---
 
-## Paso 1: Crear un nuevo agente
+## What Is an Agent in Devic?
 
-En el panel lateral de Devic, abre la sección **Agentes** y selecciona **New Agent**.\
-Empieza asignando un **nombre** y una **descripción** que definan claramente su función.
+An agent is an intelligent entity capable of making decisions on its own.\
+Unlike traditional workflows —where actions are represented with boxes and arrows— in Devic the agent decides which steps to take and when to stop.
 
-| Campo           | Descripción                                                                                                |
-| --------------- | ---------------------------------------------------------------------------------------------------------- |
-| **Nombre**      | Identificador principal del agente. Usa uno descriptivo, como _Gestor de Pedidos_ o _Analista de Tickets_. |
-| **Descripción** | Explica brevemente el propósito o el contexto del agente. Es visible para otros usuarios del proyecto.     |
+Each agent is built by combining:
 
-**Ejemplo:**
-
-> “Agente especializado en procesar pedidos recibidos por email y registrarlos en la base de datos de ventas.”
-
-![Ejemplo de agente](/new-agent.png)
+- A **language model (LLM)**, which reasons and generates actions.  
+- A **prompt**, which defines its purpose and rules.  
+- A set of **tools**, which allow it to act on data or systems.  
+- And optionally, a **RAG space**, where it stores reference information.
 
 ---
 
-## Paso 2: Definir el prompt
+## Step 1: Create a New Agent
 
-El **prompt** es el núcleo del agente.\
-En él describes cómo debe comportarse, qué objetivo debe cumplir y bajo qué condiciones debe actuar.
+In Devic’s sidebar, open the **Agents** section and select **New Agent**.\
+Start by assigning a **name** and a **description** that clearly define its function.
 
-Un buen prompt debería incluir:
+| Field            | Description                                                                                           |
+| ---------------- | ----------------------------------------------------------------------------------------------------- |
+| **Name**         | Main identifier of the agent. Use something descriptive, such as _Order Manager_ or _Ticket Analyst_. |
+| **Description**  | Brief explanation of the agent’s purpose or context. Visible to other users in the project.           |
 
-- El **rol** del agente.
-- El **objetivo** o resultado esperado.
-- Las **reglas o límites** que debe respetar.
-- Los **criterios de éxito**.
+**Example:**
 
-**Ejemplo de prompt:**
+> “Agent specialized in processing orders received by email and registering them in the sales database.”
 
-```
-Eres un agente especializado en procesar pedidos.
-Recibirás correos de clientes con solicitudes de compra.
-Tu tarea es identificar el cliente, el producto y la cantidad solicitada,
-y actualizar la base de datos de pedidos.
-```
-
-![Ejemplo de prompt](/prompt-example.png)
+![Example agent](/new-agent.png)
 
 ---
 
-## Paso 3: Elegir el modelo (LLM)
+## Step 2: Define the Prompt
 
-El **modelo** es el motor de razonamiento del agente.\
-Devic permite elegir entre distintos **proveedores y modelos**, adaptándose a tus necesidades de rendimiento, coste o privacidad.
+The **prompt** is the core of the agent.\
+It describes how the agent should behave, what objective it must fulfill, and under what conditions it must operate.
 
-### Proveedores disponibles
+A good prompt should include:
 
-- **OpenAI** — Modelos GPT-4 y GPT-4o.
-- **DeepSeek** — Modelos rápidos y optimizados en coste.
-- **Anthropic** — Modelos Claude, excelentes en tareas de razonamiento.
-- **XAi** — Modelos Grok, con enfoque generalista.
-- **Kimi / K2** — Modelos alternativos compatibles con Devic.
+- The agent’s **role**.  
+- The **objective** or expected outcome.  
+- The **rules or limits** it must respect.  
+- The **success criteria**.
 
-### Modelos On-Premise
+**Example prompt:**
 
-También puedes desplegar tus propios modelos **on-premise**, lo que permite:
+You are an agent specialized in processing orders.
+You will receive emails from customers with purchase requests.
+Your task is to identify the customer, product, and requested quantity,
+and update the order database.
 
-- Controlar completamente el tratamiento de los datos.
-- Cumplir políticas de privacidad o compliance.
-- Evitar dependencias con servicios externos.
-
-![Selección de modelo y proveedor](/model-selector.png)
+![Example prompt](/prompt-example.png)
 
 ---
 
-## Paso 4: Añadir Tools
+## Step 3: Choose the Model (LLM)
 
-Las **tools** son las capacidades ejecutivas del agente.\
-Le permiten interactuar con correos, bases de datos, documentos o servicios externos.
+The **model** is the reasoning engine of the agent.\
+Devic allows choosing between different **providers and models**, depending on your needs for performance, cost, or privacy.
 
-Puedes añadir herramientas desde el apartado **Tools → Add tools**.
+### Available Providers
 
-| Tool                  | Descripción                                      |
-| --------------------- | ------------------------------------------------ |
-| **Read Emails**       | Lee correos electrónicos y extrae su contenido.  |
-| **Send Email**        | Envía mensajes o notificaciones automáticas.     |
-| **Databases**         | Permite crear, consultar o actualizar registros. |
-| **OCR**               | Extrae texto de documentos o imágenes.           |
-| **Spreadsheet Tools** | Lee datos de hojas de cálculo o CSVs.            |
+- **OpenAI** — GPT-4 and GPT-4o models.  
+- **DeepSeek** — Fast, cost-optimized models.  
+- **Anthropic** — Claude models, excellent at reasoning tasks.  
+- **XAi** — Grok models, general-purpose.  
+- **Kimi / K2** — Alternative models compatible with Devic.
 
-![Ejemplo de Tools configuradas](/add-tools-agent.png)
+### On-Premise Models
 
-**Consejo:**\
-Configura solo las herramientas necesarias.\
-Por ejemplo, un agente de soporte podría necesitar `Read Emails`, `Databases` y `Send Email`, pero no `OCR`.
+You can also deploy your own **on-premise** models, which allows:
+
+- Full control over data handling.  
+- Meeting privacy or compliance requirements.  
+- Avoiding dependencies on external services.
+
+![Model and provider selection](/model-selector.png)
 
 ---
 
-## Paso 5: Añadir conocimiento (RAG)
+## Step 4: Add Tools
 
-El **RAG (Retrieval Augmented Generation)** es el sistema de memoria del agente.\
-Le permite consultar documentos o archivos externos para obtener información contextual durante su ejecución.
+**Tools** are the agent’s execution capabilities.\
+They allow it to interact with emails, databases, documents, or external services.
 
-Puedes subir archivos en formato:
+You can add tools from **Tools → Add tools**.
 
-- `.pdf`
-- `.docx`
-- `.txt`
+| Tool                  | Description                                         |
+| --------------------- | --------------------------------------------------- |
+| **Read Emails**       | Reads emails and extracts their content.            |
+| **Send Email**        | Sends messages or automated notifications.          |
+| **Databases**         | Allows creating, querying, or updating records.     |
+| **OCR**               | Extracts text from documents or images.             |
+| **Spreadsheet Tools** | Reads data from spreadsheets or CSV files.          |
+
+![Example of configured tools](/add-tools-agent.png)
+
+**Tip:**\
+Configure only the tools you need.\
+For example, a support agent may need `Read Emails`, `Databases`, and `Send Email`, but not `OCR`.
+
+---
+
+## Step 5: Add Knowledge (RAG)
+
+**RAG (Retrieval Augmented Generation)** serves as the agent’s memory.\
+It allows the agent to consult documents or external files to obtain contextual information during execution.
+
+You can upload files in formats such as:
+
+- `.pdf`  
+- `.docx`  
+- `.txt`  
 - `.csv`
 
-**Ejemplos de uso:**
+**Example use cases:**
 
-- Un agente legal consulta contratos o leyes cargados como PDFs.
-- Un agente comercial busca información en catálogos o tarifas.
-- Un agente técnico accede a manuales o guías internas.
+- A legal agent consults contracts or laws uploaded as PDFs.  
+- A sales agent looks up information in catalogs or price lists.  
+- A technical agent accesses manuals or internal guides.
 
-![RAG o Knowledge en un agente](/add-context-agent-rag.png)
+![RAG or Knowledge in an agent](/add-context-agent-rag.png)
 
 ---
 
-## Paso 6: Guardar y ejecutar
+## Step 6: Save and Execute
 
-Cuando hayas configurado el nombre, prompt, modelo, herramientas y RAG, pulsa **Save changes**.\
-El agente quedará listo para ejecutarse manualmente, mediante **webhooks**, o programado con una periodicidad.
+Once you've configured the name, prompt, model, tools, and RAG, click **Save changes**.\
+The agent will be ready to run manually, via **webhooks**, or scheduled periodically.
 
-Puedes probarlo directamente desde la interfaz con el botón de test.
+You can test it directly from the interface using the test button.
 
-![Guarda y ejecutar](/save-changes-agent.png)
+![Save and execute](/save-changes-agent.png)
 
 ## 
 
@@ -152,31 +150,31 @@ Puedes probarlo directamente desde la interfaz con el botón de test.
 
 ---
 
-## Resumen de componentes
+## Component Summary
 
-| Elemento                 | Propósito                                                 |
-| ------------------------ | --------------------------------------------------------- |
-| **Nombre y descripción** | Identifican al agente y explican su función.              |
-| **Prompt**               | Define su comportamiento y reglas.                        |
-| **Modelo (LLM)**         | Es el motor de razonamiento.                              |
-| **Tools**                | Permiten ejecutar acciones y acceder a servicios.         |
-| **RAG**                  | Extiende su conocimiento con documentos o datos externos. |
+| Element                | Purpose                                               |
+| ---------------------- | ----------------------------------------------------- |
+| **Name & Description** | Identify the agent and explain its role.              |
+| **Prompt**             | Defines its behavior and rules.                       |
+| **Model (LLM)**        | Acts as the reasoning engine.                         |
+| **Tools**              | Allow executing actions and accessing services.       |
+| **RAG**                | Extends its knowledge with documents or external data.|
 
 ---
 
-## Próximos pasos
+## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Diseña un prompt efectivo" icon="terminal" href="/devic/agents/prompt">
-    Aprende las mejores prácticas para estructurar prompts que guíen con precisión el comportamiento y las decisiones de tus agentes.
+  <Card title="Design an Effective Prompt" icon="terminal" href="/devic/agents/prompt">
+    Learn best practices for structuring prompts that precisely guide your agents’ behavior and decisions.
   </Card>
   <Card title="Tools" icon="wrench" href="/devic/agents/tools">
-    Explora las herramientas disponibles para tus agentes y cómo pueden utilizarlas para ejecutar acciones reales dentro de Devic.
+    Explore the tools available for your agents and how they can be used to execute real actions within Devic.
   </Card>
   <Card title="RAG" icon="database" href="/devic/agents/rag">
-    Descubre cómo integrar bases de conocimiento y búsqueda semántica mediante el sistema RAG nativo de Devic.
+    Discover how to integrate knowledge bases and semantic search using Devic’s native RAG system.
   </Card>
-  <Card title="Optimización continua" icon="activity" href="/devic/agents/continuous-optimization/index">
-    Aprende a mejorar el rendimiento de tus agentes mediante evaluaciones automáticas, feedback humano y ajuste iterativo.
+  <Card title="Continuous Optimization" icon="activity" href="/devic/agents/continuous-optimization/index">
+    Learn how to improve your agents’ performance through automatic evaluations, human feedback, and iterative tuning.
   </Card>
 </CardGroup>

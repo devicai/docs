@@ -1,31 +1,31 @@
 ---
-title: "Ejecución vía API"
-description: "Aprende cómo invocar agentes de Devic mediante la API para integrarlos con tus aplicaciones o flujos personalizados."
+title: "API Execution"
+description: "Learn how to invoke Devic agents through the API to integrate them with your applications or custom workflows."
 ---
 
-Los agentes de **Devic** pueden ejecutarse no solo desde la interfaz visual, sino también de forma **programática** mediante la API pública.\
-Esto permite integrar los agentes en sistemas externos, automatizar flujos o conectarlos con otras aplicaciones corporativas.
+**Devic** agents can be executed not only from the visual interface, but also **programmatically** through the public API.\
+This allows you to integrate agents into external systems, automate workflows, or connect them with other corporate applications.
 
-Cada agente dispone de un **endpoint dedicado** que permite crear nuevas ejecuciones (threads) enviando las instrucciones directamente por HTTP.
+Each agent has a **dedicated endpoint** that lets you create new executions (threads) by sending instructions directly via HTTP.
 
 ---
 
-## Endpoint base
+## Base Endpoint
 
-Cada agente cuenta con una URL única para crear ejecuciones:
+Each agent has a unique URL for creating executions:
 
 `POST https://api.devic.ai/api/v1/agents/{agent_id}/threads`
 
-El parámetro `{agent_id}` se obtiene desde la vista del agente, en el cuadro de diálogo **“Agent API Documentation”**.
+The `{agent_id}` parameter is obtained from the agent’s view, in the **“Agent API Documentation”** dialog.
 
-![Vista del panel API del agente](/api-execution-agent.png)
+![Agent API panel view](/api-execution-agent.png)
 
 ---
 
-## Ejemplo de uso
+## Usage Example
 
-Puedes invocar un agente utilizando cualquier lenguaje que soporte solicitudes HTTP (JavaScript, Python, cURL, etc.).\
-A continuación se muestra un ejemplo en **JavaScript** utilizando `fetch`:
+You can invoke an agent using any language that supports HTTP requests (JavaScript, Python, cURL, etc.).\
+Below is an example in **JavaScript** using `fetch`:
 
 ```javascript
 const response = await fetch('https://api.devic.ai/api/v1/agents/{agent_id}/threads', {
@@ -35,18 +35,10 @@ const response = await fetch('https://api.devic.ai/api/v1/agents/{agent_id}/thre
     'Authorization': 'Bearer YOUR_API_TOKEN'
   },
   body: JSON.stringify({
-    message: 'Procesa el informe mensual de ventas',
+    message: 'Process the monthly sales report',
     state: 'queued'
   })
 });
 
 const data = await response.json();
 console.log(data);
-```
-
----
-
-<Card title="Siguiente paso" icon="user" href="/devic/assistants">
-  Descubre cómo los asistentes pueden mantener conversaciones continuas, ejecutar tools y mostrar resultados interactivos en Devic.
-</Card>
-
