@@ -1,11 +1,11 @@
 ---
-title: "Listado de Built-in Tools"
-description: "Listado completo de las herramientas integradas de Devic y sus funcionalidades principales."
+title: "List of Built-in Tools"
+description: "Complete list of Devic’s built-in tools and their main functionalities."
 ---
 
-## Descripción general
+## Overview
 
-A continuación encontrarás la descripción completa de las **Built-in Tools** incluidas en Devic, organizadas por su propósito funcional.
+Below is the full description of the **Built-in Tools** included in Devic, organized by functional purpose.
 
 ![Built-in-tools description](/built-in-tools.png)
 
@@ -13,10 +13,10 @@ A continuación encontrarás la descripción completa de las **Built-in Tools** 
 
 ## Read Emails
 
-Lee y gestiona correos electrónicos.
+Reads and manages email messages.
 
-- **Tools disponibles:**
-  - `get_unread_emails`, `get_last_emails`, `mark_email_as_read`, `get_email_attachment`, entre otras.
+- **Available tools:**
+  - `get_unread_emails`, `get_last_emails`, `mark_email_as_read`, `get_email_attachment`, among others.
 
 ![Read-emails description](/built-in-tools-read-email-detail.png)
 
@@ -24,56 +24,56 @@ Lee y gestiona correos electrónicos.
 
 ## Send Email
 
-Permite enviar correos electrónicos automatizados.
+Allows automated email sending.
 
-- **Tool:** `send_basic_email`
-- **Descripción:** Envía un correo electrónico a la dirección especificada y puede escuchar una respuesta.
-- **Uso recomendado:**
-  - Enviar correos personalizados.
-  - Notificaciones automáticas o reportes.
-  - Alertas internas o comunicaciones entre agentes.
+- **Tool:** `send_basic_email`  
+- **Description:** Sends an email to the specified address and can listen for a reply.  
+- **Recommended use:**
+  - Sending personalized emails.
+  - Automated notifications or reports.
+  - Internal alerts or agent-to-agent communication.
 
 ---
 
 ## Code Execution Tools
 
-Ejecuta código en diferentes lenguajes desde Devic (actualmente Python).
+Executes code in different languages directly from Devic (currently Python).
 
-- **Tool:** `execute_python_code`
-- **Descripción:** Ejecuta código Python y devuelve el resultado o error.
-- **Uso recomendado:**
-  - Procesamiento de datos o validación lógica.
+- **Tool:** `execute_python_code`  
+- **Description:** Executes Python code and returns the result or an error.  
+- **Recommended use:**
+  - Data processing or logical validation.
 
 ---
 
 ## Search Knowledge
 
-Busca información relevante dentro de bases de conocimiento internas.
+Searches for relevant information within internal knowledge bases.
 
 - **Tool:** `retrieve_from_rag_in_file`
 
-Esta tool solo sirve si se ha añadido al menos un documento.
+This tool only works if at least one document has been added.
 
 ---
 
 ## Update Knowledge
 
-Actualiza la base de conocimiento de los agentes y MCPs mediante operaciones de escritura o sincronización de información.
+Updates the knowledge base of agents and MCPs through write or synchronization operations.
 
 - **Tool:** `update_memory`  
-- **Descripción:** Cada agente mantiene su propio estado de memoria, el cual puede actualizar introduciendo nuevos fragmentos de texto (por ejemplo, descripciones, notas o resultados). Esta actualización afecta solo a su memoria interna —no modifica los documentos fuente—.  
-- **Uso recomendado:**  
-  - Añadir o actualizar conocimiento contextual del agente.  
-  - Sincronizar información desde documentos o APIs externas.  
-  - Permitir que el agente “aprenda” nuevos datos de manera incremental, manteniendo sus fuentes originales inalteradas.
+- **Description:** Each agent maintains its own memory state, which can be updated by adding new text fragments (e.g., descriptions, notes, or results). This update only affects the agent’s internal memory — it does not modify source documents.  
+- **Recommended use:**  
+  - Add or update contextual knowledge for the agent.  
+  - Synchronize information from documents or external APIs.  
+  - Allow the agent to “learn” new data incrementally while keeping original sources unchanged.
 
 ---
 
 ## Web Search
 
-Permite realizar búsquedas de información actualizada en la web.
+Allows searching for up-to-date information on the web.
 
-- **Tools disponibles:**
+- **Available tools:**
   - `search_web`
   - `web_extract`
 
@@ -81,27 +81,27 @@ Permite realizar búsquedas de información actualizada en la web.
 
 ## Databases
 
-Crea, consulta, actualiza y elimina información estructurada en bases de datos internas.
+Creates, queries, updates, and deletes structured information in internal databases.
 
 - **Tools:**
-  - `get_tables`, `create_table`, `filter_rows`, `update_row`, `vector_search_table_rows`, entre otras.
+  - `get_tables`, `create_table`, `filter_rows`, `update_row`, `vector_search_table_rows`, among others.
 
 ---
 
 ## Files and Directories
 
-Gestiona documentos y carpetas dentro del entorno Devic.
+Manages documents and folders within the Devic workspace.
 
-- **Tools disponibles:**
-  - `create_folder`, `get_folder_content`, `move_document_to_folder`, `navigate_to_folder`, entre otras.
+- **Available tools:**
+  - `create_folder`, `get_folder_content`, `move_document_to_folder`, `navigate_to_folder`, among others.
 
 ---
 
 ## OCR
 
-Extrae texto de imágenes o documentos escaneados.
+Extracts text from images or scanned documents.
 
-- **Tools disponibles:**
+- **Available tools:**
   - `ocr_document`
   - `query_document`
 
@@ -109,17 +109,17 @@ Extrae texto de imágenes o documentos escaneados.
 
 ## PDF from HTML
 
-Convierte contenido HTML en documentos PDF con formato visual.
+Converts HTML content into visually formatted PDF documents.
 
-- **Tool:** `generate_pdf_from_html`
-- **Uso recomendado:**
-  - Creación de reportes corporativos o plantillas visuales.
+- **Tool:** `generate_pdf_from_html`  
+- **Recommended use:**
+  - Creating corporate reports or styled templates.
 
 ---
 
 ## PDF from Markdown
 
-Genera archivos PDF a partir de texto Markdown.
+Generates PDF files from Markdown text.
 
 - **Tool:** `generate_pdf_from_markdown`
 
@@ -127,18 +127,18 @@ Genera archivos PDF a partir de texto Markdown.
 
 ## Chart Images
 
-Genera gráficos visuales a partir de datos estructurados.
+Generates visual charts from structured data.
 
-- **Tool:** `generate_chart_image`
-- **Descripción:** Crea gráficos de tipo barra, línea o área.
-- **Uso recomendado:**
-  - Visualización de datos o reportes dinámicos.
+- **Tool:** `generate_chart_image`  
+- **Description:** Creates bar, line, or area charts.  
+- **Recommended use:**
+  - Data visualization or dynamic reports.
 
 ---
 
 ## Spreadsheet Tools
 
-Permite leer y manipular hojas de cálculo (Excel o CSV).
+Allows reading and manipulating spreadsheets (Excel or CSV).
 
 - **Tools:**
   - `get_sheets`, `get_sheet_content`
@@ -147,16 +147,16 @@ Permite leer y manipular hojas de cálculo (Excel o CSV).
 
 ## Text File Templates
 
-Genera documentos a partir de plantillas (Word, Excel, PDF).
+Generates documents from templates (Word, Excel, PDF).
 
-- **Tools disponibles:**
+- **Available tools:**
   - `fill_text_template`, `get_text_templates`, `merge_word_documents`
 
 ---
 
 ## SharePoint API
 
-Integra Devic con Microsoft SharePoint.
+Integrates Devic with Microsoft SharePoint.
 
 - **Tools:**
   - `check_active_site`, `get_document_details`, `get_excel_content`, `update_cell`
@@ -165,26 +165,26 @@ Integra Devic con Microsoft SharePoint.
 
 ## Short and Medium Term Memory
 
-Permite a los agentes acceder al contexto de interacciones previas.
+Allows agents to access the context of previous interactions.
 
 - **Tools:**
   - `get_agent_threads_summary`, `query_agent_thread_details`
 
 ---
 
-## Próximos pasos
+## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Agentes" icon="robot" href="/devic/agents">
-    Aprende cómo crear y configurar agentes autónomos capaces de ejecutar procesos complejos y tomar decisiones basadas en contexto.
+  <Card title="Agents" icon="robot" href="/devic/agents">
+    Learn how to create and configure autonomous agents capable of executing complex processes and making context-aware decisions.
   </Card>
-  <Card title="Asistentes" icon="user" href="/devic/assistants">
-    Descubre cómo los asistentes ofrecen experiencias conversacionales enriquecidas y pueden integrarse con tus herramientas y datos empresariales.
+  <Card title="Assistants" icon="user" href="/devic/assistants">
+    Discover how assistants provide rich conversational experiences and integrate with your tools and business data.
   </Card>
-  <Card title="Bases de datos" icon="database" href="/devic/databases">
-    Explora cómo crear, gestionar y conectar bases de datos relacionales o vectoriales para potenciar las capacidades de búsqueda y razonamiento.
+  <Card title="Databases" icon="database" href="/devic/databases">
+    Explore how to create, manage, and connect relational or vector databases to enhance search and reasoning capabilities.
   </Card>
   <Card title="MCPs" icon="code" href="/devic/mcps">
-    Profundiza en el estándar Model Context Protocol (MCP) y aprende a conectar tus APIs y servicios internos como herramientas inteligentes.
+    Dive into the Model Context Protocol (MCP) standard and learn to connect your internal APIs and services as intelligent tools.
   </Card>
 </CardGroup>

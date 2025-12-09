@@ -1,72 +1,69 @@
 ---
-title: "Menú de tools"
-description: "Define los endpoints y herramientas que conforman tu MCP desde el panel de Tools Configuration."
+title: "Tools Menu"
+description: "Define the endpoints and tools that make up your MCP from the Tools Configuration panel."
 ---
 
-## Descripción general
+## Overview
 
-Tras crear o importar un MCP, accederás a su panel principal, donde puedes ajustar los parámetros generales del servidor y gestionar las _tools_ que lo integran.
+After creating or importing an MCP, you will access its main panel, where you can adjust the general server settings and manage the tools that compose it.
 
-![Vista del menú de tools](/tools-menu-configuration.png)
+![Tools menu view](/tools-menu-configuration.png)
 
 ---
 
-## Configuración del servidor
+## Server Configuration
 
-En la columna izquierda se encuentra la configuración base del MCP.\
-Cada campo determina cómo el servidor se comunicará con tus servicios o APIs:
+On the left column, you’ll find the base configuration of the MCP.  
+Each field determines how the server will communicate with your services or APIs:
 
-- **Name:** identificador del MCP dentro de la plataforma.
-- **Description:** resumen del propósito o función del servicio.
-- **Server URL:** endpoint raíz de la API que se usará para invocar las herramientas.
-- **Authentication Method:** tipo de autenticación compatible (Basic, Bearer o JWT).
-- **API Key / Token:** credencial necesaria para autorizar las llamadas.
-- **Template parameters:** variables dinámicas (por ejemplo, `{tenantToken}`) utilizables dentro de las requests.
+- **Name:** identifier of the MCP within the platform.  
+- **Description:** summary of the service’s purpose or function.  
+- **Server URL:** root endpoint of the API used to invoke the tools.  
+- **Authentication Method:** compatible authentication method (Basic, Bearer, or JWT).  
+- **API Key / Token:** credential required to authorize requests.  
+- **Template parameters:** dynamic variables (e.g., `{tenantToken}`) that can be used inside requests.
 
-<Card title="Guardar cambios" icon="floppy-disk" horizontal>
-  Después de actualizar los parámetros del MCP, haz clic en <strong>Save Changes</strong>
-   para registrar la configuración.
+<Card title="Save changes" icon="floppy-disk" horizontal>
+  After updating the MCP parameters, click <strong>Save Changes</strong> to apply the configuration.
 </Card>
 
 ---
 
-## Configuración de tools
+## Tools Configuration
 
-La columna derecha muestra el **menú de tools**, donde se listan los endpoints disponibles o creados dentro del MCP.\
-Cada elemento representa una herramienta que puede ser invocada por agentes o asistentes.
+The right column displays the **tools menu**, showing all available or manually created endpoints within the MCP.  
+Each item represents a tool that agents or assistants can invoke.
 
-Para cada tool se muestran:
+Each tool displays:
 
-- **Nombre de la función:** nombre técnico o endpoint (`get_study_counts_by_type`, `get_login_register_metrics`, etc.).
-- **Método HTTP** (GET, POST, PUT, DELETE).
-- **Tipo de cuerpo (body)** o parámetros requeridos.
-- **Descripción funcional** con su propósito o datos devueltos.
+- **Function name:** technical name or endpoint (`get_study_counts_by_type`, `get_login_register_metrics`, etc.).  
+- **HTTP Method** (GET, POST, PUT, DELETE).  
+- **Body type** or required parameters.  
+- **Functional description** explaining its purpose or returned data.
 
-<Card title="Importar o añadir tools" icon="wrench" horizontal>
-  Importa tools desde la documentación de tu API (<strong>Import from documentation</strong>
-  ) o crea nuevas manualmente con <strong>Add Tool</strong>
-  .
+<Card title="Import or add tools" icon="wrench" horizontal>
+  Import tools from your API documentation (<strong>Import from documentation</strong>) or create new ones manually using <strong>Add Tool</strong>.
 </Card>
 
-![Panel de Tools Configuration](/tool-detail.png)
+![Tools Configuration Panel](/tool-detail.png)
 
 ---
 
-## MCP operativo
+## Operational MCP
 
-Una vez guardados los cambios, el MCP quedará listo para usarse.\
-Las tools configuradas estarán disponibles para los agentes y asistentes que utilicen el conector.
+Once changes are saved, the MCP becomes ready for use.  
+The configured tools will be available to any agents or assistants using the connector.
 
-Cada MCP activo puede:
+Each active MCP can:
 
-- Ejecutar peticiones reales contra la API asociada.
-- Ser invocado mediante lenguaje natural por un agente o asistente.
-- Publicarse como endpoint externo accesible desde otros entornos (ChatGPT, servicios SaaS, etc.).
+- Execute real requests against the associated API.  
+- Be invoked through natural language by an agent or assistant.  
+- Be published as an external endpoint accessible from environments like ChatGPT or SaaS applications.
 
-![MCP configurado y activo](/active-mcp.png)
+![Configured and active MCP](/active-mcp.png)
 
 ---
 
-<Card title="Siguiente paso" icon="cog" href="/devic/mcps/my-mcps/configure-tools">
-  Aprende cómo ajustar el comportamiento de cada tool y definir sus parámetros de ejecución.
+<Card title="Next step" icon="cog" href="/devic/mcps/my-mcps/configure-tools">
+  Learn how to customize the behavior of each tool and define execution parameters.
 </Card>

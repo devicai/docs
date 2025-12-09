@@ -1,85 +1,86 @@
 ---
-title: "Integración con LLMs"
-description: "Conecta tus MCPs con modelos de lenguaje como ChatGPT, Claude o Cursor, y habilita su uso desde agentes y asistentes en Devic."
+title: "Integration with LLMs"
+description: "Connect your MCPs with language models like ChatGPT, Claude, or Cursor, and enable their use from agents and assistants in Devic."
 ---
 
-## Introducción
+## Introduction
 
-La integración con **modelos de lenguaje (LLMs)** permite que tus herramientas y servicios (MCPs) puedan ser consumidos directamente por modelos conversacionales como **ChatGPT**, **Claude**, **Cursor**, o incluso por los **Agentes** y **Asistentes** definidos dentro de la propia plataforma Devic.
+Integrating with **language models (LLMs)** allows your tools and services (MCPs) to be consumed directly by conversational models such as **ChatGPT**, **Claude**, **Cursor**, or even by **Agents** and **Assistants** defined within the Devic platform.
 
-Esto convierte a tus MCPs en **extensiones conversacionales vivas**, capaces de ejecutar funciones reales de tu SaaS o infraestructura cuando un modelo las invoca mediante lenguaje natural.
-
----
-
-## Ejemplo: integración con ChatGPT
-
-Cuando un MCP personalizado se publica a través de su URL, **puede ponerse a disposición de cualquier modelo de lenguaje** compatible con el estándar MCP.\
-Esto incluye ChatGPT, que permite configurar conectores personalizados e invocar tools directamente desde la conversación.
-
-![Ejemplo de integración MCP con ChatGPT - configuración del conector](/chatgpt-configuration.png)
-
-### Cómo habilitarlo
-
-1. Accede a la sección **Connectors** en ChatGPT.
-2. Habilita el **Developer Mode**.
-3. Crea un nuevo conector personalizado introduciendo la **URL del MCP** (por ejemplo: `https://mcp.devic.ai/suntropy-solar-service`).
-4. Selecciona las **acciones (tools)** que deseas habilitar.
-5. Guarda los cambios y ChatGPT podrá comunicarse directamente con tu MCP.
-
-![Ejemplo de ChatGPT Developer Mode con MCP conectado](/create-new-mcp.png)
-
-> 💡 **Consejo:** Desde este punto, ChatGPT podrá invocar tus tools directamente dentro del flujo conversacional, permitiendo que el usuario interactúe con tu SaaS mediante lenguaje natural.
+This turns your MCPs into **live conversational extensions**, capable of executing real functions from your SaaS or infrastructure when a model invokes them through natural language.
 
 ---
 
-## Ejemplo de ejecución real
+## Example: integration with ChatGPT
 
-Una vez conectado el MCP, los usuarios pueden hacer preguntas naturales como:
+When a custom MCP is published through its URL, **it can be made available to any language model** compatible with the MCP standard.\
+This includes ChatGPT, which allows you to configure custom connectors and invoke tools directly through conversation.
 
-> _“¿Cuántos inversores solares tengo disponibles?”_\
-> _“Muéstrame el resumen de estudios solares de septiembre.”_
+![Example of MCP integration with ChatGPT – connector configuration](/chatgpt-configuration.png)
 
-El modelo, a través del MCP, ejecuta las tools correspondientes y renderiza los resultados visuales definidos con widgets.
+### How to enable it
 
-![Ejemplo de widget renderizado dentro de ChatGPT con datos en tiempo real](/integration-example.png)
+1. Go to the **Connectors** section in ChatGPT.  
+2. Enable **Developer Mode**.  
+3. Create a new custom connector by entering the **MCP URL** (e.g., `https://mcp.devic.ai/suntropy-solar-service`).  
+4. Select the **actions (tools)** you want to expose.  
+5. Save the changes — ChatGPT will now be able to communicate with your MCP.
 
-Esto no solo muestra los datos, sino que puede hacerlo con **la imagen de marca de tu SaaS**, gracias a los widgets definidos en Devic.
+![Example of ChatGPT Developer Mode with MCP connected](/create-new-mcp.png)
+
+> 💡 **Tip:** From this point on, ChatGPT can invoke your tools directly within the conversational flow, allowing users to interact with your SaaS via natural language.
 
 ---
 
-## Integración desde Agentes y Asistentes
+## Example of real execution
 
-Además de poder conectarse con ChatGPT o Claude, **los MCPs también pueden ser consumidos desde los Agentes y Asistentes configurados en Devic**.\
-Esto permite que tus automatizaciones internas, workflows o asistentes empresariales se beneficien de las mismas capacidades de integración que un modelo de lenguaje externo.
+Once the MCP is connected, users can ask natural-language questions such as:
 
-- Los **Agentes** pueden invocar MCPs dentro de sus flujos de tareas o ejecuciones periódicas.\
-  Consulta la documentación específica:\
+> _“How many solar inverters do I have available?”_  
+> _“Show me the summary of solar studies for September.”_
+
+The model, through the MCP, executes the corresponding tools and renders the visual results defined with widgets.
+
+![Example of widget rendered inside ChatGPT with real-time data](/integration-example.png)
+
+This not only displays data but can do so with **your SaaS branding**, thanks to widgets defined in Devic.
+
+---
+
+## Integration from Agents and Assistants
+
+Beyond integration with ChatGPT or Claude, **MCPs can also be consumed directly from Agents and Assistants configured in Devic**.  
+This allows your internal automations, workflows, or enterprise assistants to benefit from the same integration capabilities as an external language model.
+
+- **Agents** can invoke MCPs within their task flows or scheduled executions.  
+  See the specific documentation:  
   👉 [Agents → Tools](../agents/tools)
-- Los **Asistentes** pueden usar MCPs durante conversaciones o integraciones de proyecto, mostrando resultados interactivos o embebiendo widgets.\
-  Consulta la documentación específica:\
+
+- **Assistants** can use MCPs during conversations or project integrations, showing interactive results or embedding widgets.  
+  See the specific documentation:  
   👉 [Assistants → Tools](../assistants/tools)
 
-![Vista de selección de tools desde un agente en Devic](/add-my-mcp-agent.png)
+![Tool selection view from an agent in Devic](/add-my-mcp-agent.png)
 
 ## 
 
-![Asistente configurando tools MCP en Devic](/add-my-mcp2.png)
+![Assistant configuring MCP tools in Devic](/add-my-mcp2.png)
 
 ---
 
-## Próximos pasos
+## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Agentes" icon="robot" href="/devic/agents">
-    Aprende cómo los agentes de Devic pueden ejecutar procesos autónomos, tomar decisiones basadas en datos y coordinar herramientas inteligentes dentro de tus flujos.
+  <Card title="Agents" icon="robot" href="/devic/agents">
+    Learn how Devic agents can execute autonomous processes, make data-driven decisions, and orchestrate intelligent tools within your workflows.
   </Card>
-  <Card title="Asistentes" icon="user" href="/devic/assistants">
-    Descubre cómo los asistentes permiten interacciones conversacionales en tiempo real, integrando datos y herramientas de tu entorno SaaS.
+  <Card title="Assistants" icon="user" href="/devic/assistants">
+    Discover how assistants enable real-time conversational interactions, integrating data and tools from your SaaS environment.
   </Card>
-  <Card title="Bases de datos" icon="database" href="/devic/databases">
-    Explora cómo crear, consultar y conectar bases de datos internas o vectoriales para potenciar las capacidades de tus agentes y asistentes.
+  <Card title="Databases" icon="database" href="/devic/databases">
+    Explore how to create, query, and connect internal or vector databases to enhance agents’ and assistants’ reasoning capabilities.
   </Card>
   <Card title="Built-in Tools" icon="wrench" href="/devic/mcps/built-in-tools">
-    Consulta el listado completo de herramientas integradas disponibles en Devic y aprende cómo utilizarlas dentro de tus MCPs o agentes personalizados.
+    Browse the complete list of integrated tools available in Devic and learn how to use them within your MCPs or custom agents.
   </Card>
 </CardGroup>

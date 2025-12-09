@@ -1,13 +1,13 @@
 ---
-title: "Primeros pasos"
-description: "Configura tu entorno inicial en Devic: selecciona tu proveedor de modelo, autentícate y conoce las áreas principales de la plataforma."
+title: "Getting Started"
+description: "Set up your initial environment in Devic: select your model provider, authenticate, and explore the main areas of the platform."
 ---
 
-## 1. Seleccionar tu proveedor de modelo
+## 1. Select your model provider
 
-Al iniciar sesión en Devic, el primer paso es seleccionar el **proveedor de modelo** con el que se ejecutarán tus agentes y asistentes.
+When you log in to Devic, the first step is to choose the **model provider** that will run your agents and assistants.
 
-En la barra superior encontrarás el selector de modelos, con soporte para los siguientes proveedores:
+In the top bar, you’ll find the model selector, with support for the following providers:
 
 - **OpenAI**
 - **DeepSeek**
@@ -15,87 +15,85 @@ En la barra superior encontrarás el selector de modelos, con soporte para los s
 - **XAi**
 - **Kimi-K2**
 
-<Card title="Configuración de proveedor" icon="gear" horizontal>
-  Haz clic en el icono de configuración junto al nombre del proveedor para autenticarte con tu clave de API.
+<Card title="Provider configuration" icon="gear" horizontal>
+  Click the settings icon next to the provider name to authenticate using your API key.
 </Card>
 
-### Autenticación con el proveedor
+### Provider authentication
 
-Antes de poder crear o ejecutar agentes, debes autenticar tu cuenta con la **API Key del modelo seleccionado**.\
-Este paso es obligatorio: la plataforma no permite avanzar hasta que la autenticación se complete correctamente.
+Before creating or running agents, you must authenticate your account using the **API Key of the selected model**.  
+This step is mandatory: the platform will not allow you to proceed until authentication is completed successfully.
 
-En la ventana de configuración introduce:
+In the configuration window, enter:
 
-- **Project Name:** nombre identificativo del proyecto o entorno.
-- **Project API Key:** clave API proporcionada por el proveedor del modelo.
+- **Project Name:** an identifier for your project or environment.  
+- **Project API Key:** the API key issued by the model provider.
 
-![Autenticación de proveedor](/APIKeymodel.png)
+![Provider authentication](/APIKeymodel.png)
 
-Para obtener tu clave API, consulta las guías oficiales:
+To obtain your API key, refer to the official guides:
 
-- [Cómo generar una API Key en OpenAI](https://platform.openai.com/account/api-keys)
-- [Cómo generar una API Key en Anthropic](https://docs.anthropic.com/en/api/getting-started)
-- [Cómo generar una API Key en DeepSeek](https://api-docs.deepseek.com/)
-- [Cómo generar una API Key en XAi](https://x.ai/api)
-- [Cómo generar una API Key en Kimi-K2](https://kimi.moonshot.cn/docs)
+- [How to generate an API Key in OpenAI](https://platform.openai.com/account/api-keys)  
+- [How to generate an API Key in Anthropic](https://docs.anthropic.com/en/api/getting-started)  
+- [How to generate an API Key in DeepSeek](https://api-docs.deepseek.com/)  
+- [How to generate an API Key in XAi](https://x.ai/api)  
+- [How to generate an API Key in Kimi-K2](https://kimi.moonshot.cn/docs)
 
-Una vez autenticado, el modelo quedará disponible para su uso en agentes, asistentes y MCPs.
+Once authenticated, the model becomes available for use in agents, assistants, and MCPs.
 
 ---
 
 ## 2. Dashboard
 
-El **Dashboard** es el punto central de control de Devic.\
-Aquí podrás monitorizar el rendimiento de los agentes y el estado de las ejecuciones en tiempo real.
+The **Dashboard** is the central control point of Devic.  
+Here you can monitor agent performance and the status of executions in real time.
 
 <Columns cols={2}>
-  <Card title="Ejecuciones en espera de aprobación" icon="hand">
-    Muestra las tareas pausadas bajo el flujo _Human-in-the-Loop_ que requieren validación manual antes de continuar.
+  <Card title="Executions pending approval" icon="hand">
+    Displays tasks paused under the _Human-in-the-Loop_ workflow that require manual approval before continuing.
   </Card>
-  <Card title="Ejecuciones recientes" icon="clock-rotate-left">
-    Lista de ejecuciones completadas o en curso, con fecha, estado y agente asociado.
+  <Card title="Recent executions" icon="clock-rotate-left">
+    List of completed or ongoing executions, including date, status, and the agent involved.
   </Card>
-  <Card title="Ejecuciones en progreso" icon="spinner">
-    Visualiza qué agentes están activos y las tareas actualmente en ejecución.
+  <Card title="Executions in progress" icon="spinner">
+    Shows which agents are active and the tasks currently being executed.
   </Card>
-  <Card title="Ejecuciones próximas" icon="calendar">
-    Planificación de agentes programados para ejecución automática.
+  <Card title="Upcoming executions" icon="calendar">
+    Schedule of agents configured for automatic execution.
   </Card>
-  <Card title="Gráficas de rendimiento" icon="chart-line">
-    Métricas en tiempo real de agentes ejecutados en las últimas 12 horas.
+  <Card title="Performance charts" icon="chart-line">
+    Real-time metrics for agents executed in the last 12 hours.
   </Card>
 </Columns>
 
-
-
-![Dashboard principal](/dashboard.png)
+![Main dashboard](/dashboard.png)
 
 ---
 
-## 3. Principales áreas
+## 3. Main areas
 
-El menú lateral izquierdo agrupa todas las secciones funcionales de Devic.\
-Desde aquí puedes acceder a cada módulo principal para configurar, monitorear y operar tu entorno AI-native.
+The left sidebar groups all functional sections of Devic.  
+From here you can access each main module to configure, monitor, and operate your AI-native environment.
 
-![Menú lateral principal](/menu.png)
+![Main sidebar](/menu.png)
 
 <Columns cols={2}>
-  <Card title="Asistentes" icon="comments" href="/devic/assistants">
-    Interfaces conversacionales que responden en tiempo real. Puedes conectarlas a tus datos o integrarlas en tus productos.
+  <Card title="Assistants" icon="comments" href="/devic/assistants">
+    Conversational interfaces that respond in real time. You can connect them to your data or integrate them into your products.
   </Card>
-  <Card title="Agentes" icon="robot" href="/devic/agents">
-    Entidades autónomas que ejecutan flujos de negocio, invocan herramientas (MCPs) y gestionan tareas complejas.
+  <Card title="Agents" icon="robot" href="/devic/agents">
+    Autonomous entities that execute business workflows, invoke tools (MCPs), and manage complex tasks.
   </Card>
-  <Card title="Bases de datos" icon="database" href="/devic/databases">
-    Bases de datos vectoriales con búsqueda semántica integrada, disponibles para tus agentes y MCPs.
+  <Card title="Databases" icon="database" href="/devic/databases">
+    Vector databases with integrated semantic search, available for your agents and MCPs.
   </Card>
   <Card title="MCPs" icon="plug" href="/devic/mcps">
-    Herramientas y conectores que amplían las capacidades de tus agentes bajo el estándar Model Context Protocol.
+    Tools and connectors that extend your agents’ capabilities using the Model Context Protocol standard.
   </Card>
 </Columns>
 
 ---
 
-<Card title="Siguiente paso" icon="rocket" href="/devic/mcps">
-  Crea tu primer MCP y empieza a darle las herramientas que tus agentes necesita.
+<Card title="Next step" icon="rocket" href="/devic/mcps">
+  Create your first MCP and start giving your agents the tools they need.
 </Card>

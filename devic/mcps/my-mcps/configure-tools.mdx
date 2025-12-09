@@ -1,76 +1,74 @@
 ---
-title: "Configurar las tools"
-description: "Edita y prueba las tools que conforman tu MCP: parámetros, autenticación, métodos y endpoints."
+title: "Configure the tools"
+description: "Edit and test the tools that make up your MCP: parameters, authentication, methods, and endpoints."
 ---
 
-## Descripción general
+## Overview
 
-Una vez creado o importado tu MCP, puedes ajustar el comportamiento de cada **tool** desde el panel de configuración.\
-Cada tool representa un endpoint de tu API y define cómo el modelo interactuará con él.
+Once your MCP has been created or imported, you can adjust the behavior of each **tool** from the configuration panel.\
+Each tool represents an endpoint of your API and defines how the model will interact with it.
 
-![Vista de configuración de tool](/Tool-description.png)
+![Tool configuration view](/Tool-description.png)
 
 ---
 
-## Editor de configuración
+## Configuration Editor
 
-Al seleccionar una tool se abre el **editor**, donde puedes definir los siguientes campos:
+When selecting a tool, the **editor** opens, where you can define the following fields:
 
-- **Function name:** nombre interno de la función.
-- **Description:** breve explicación del propósito de la tool (ejemplo: “Recupera los estudios categorizados por tipo en un rango de fechas”).
-- **Parameters:** parámetros requeridos por la API (nombre, tipo y descripción).
-- **Endpoint:** ruta del servicio (`/api/analytics/studies/counts-by-type`, por ejemplo).
-- **Method:** método HTTP utilizado (GET, POST, PUT, DELETE).
+- **Function name:** internal function name.
+- **Description:** brief explanation of the tool’s purpose (example: “Retrieves studies categorized by type within a date range”).
+- **Parameters:** parameters required by the API (name, type, and description).
+- **Endpoint:** service path (`/api/analytics/studies/counts-by-type`, for example).
+- **Method:** HTTP method used (GET, POST, PUT, DELETE).
 
-<Card title="Detección automática de propiedades" icon="wand-magic-sparkles" horizontal>
-  Devic detecta automáticamente los parámetros definidos en el JSON y los muestra como <strong>Detected Properties</strong>
-  , listos para vincular con el cuerpo o la ruta del endpoint.
+<Card title="Automatic property detection" icon="wand-magic-sparkles" horizontal>
+  Devic automatically detects parameters defined in the JSON and displays them as <strong>Detected Properties</strong>,
+  ready to bind with the body or endpoint path.
 </Card>
 
-![Parámetros y propiedades detectadas](/tool-configuration.png)
+![Parameters and detected properties](/tool-configuration.png)
 
 ---
 
-## Modos de edición
+## Editing modes
 
-Puedes definir una tool de dos maneras:
+You can define a tool in two ways:
 
-- **Form:** interfaz visual con campos editables para cada propiedad.
-- **JSON:** vista estructurada del esquema completo, compatible con OpenAPI.
+- **Form:** visual interface with editable fields for each property.
+- **JSON:** structured view of the full schema, compatible with OpenAPI.
 
-El botón **Generate** convierte los parámetros definidos en el modo formulario en su equivalente JSON.
+The **Generate** button converts the parameters defined in Form mode into their JSON equivalent.
 
-![Vista en modo JSON](/form-json-generate.png)
+![JSON mode view](/form-json-generate.png)
 
 ---
 
-## Opciones avanzadas
+## Advanced options
 
-En la parte inferior del panel se encuentran los ajustes adicionales:
+At the bottom of the panel, you’ll find additional settings:
 
-- **Query Parameters:** parámetros enviados por URL (`?param=value`).
-- **Path Parameters:** variables incluidas en la ruta (`/api/{id}/data`).
-- **Body Property Key:** propiedad principal del cuerpo JSON.
-- **Custom Headers:** cabeceras personalizadas para autenticación o contexto.
-- **Widget Binding:** vincula la tool con widgets o SDKs embebidos.
+- **Query Parameters:** parameters sent via URL (`?param=value`).
+- **Path Parameters:** variables included in the route (`/api/{id}/data`).
+- **Body Property Key:** main property of the JSON body.
+- **Custom Headers:** custom headers for authentication or context.
+- **Widget Binding:** links the tool with embedded widgets or SDKs.
 
-<Card title="Guardar configuración" icon="floppy-disk" horizontal>
-  Haz clic en <strong>Confirm</strong>
-   para validar los cambios y en <strong>Save Changes</strong>
-   para aplicarlos al MCP.
+<Card title="Save configuration" icon="floppy-disk" horizontal>
+  Click <strong>Confirm</strong> to validate the changes and <strong>Save Changes</strong> to apply them to the MCP.
 </Card>
 
-![Opciones avanzadas y guardado](/query-parameters-path-parameters-body-property-key-custom-headers-widget-binding.png)
+![Advanced options and saving](/query-parameters-path-parameters-body-property-key-custom-headers-widget-binding.png)
 
 ---
 
-## Validación y prueba
+## Validation and testing
 
-Una vez configurada la tool, el MCP quedará listo para su uso.\
-Puedes probar su ejecución desde los agentes o asistentes, o verificarla en la pestaña **Tool Calls**, donde se registran todas las invocaciones realizadas.
+Once the tool is configured, the MCP will be ready for use.\
+You can test its execution from agents or assistants, or verify it in the **Tool Calls** tab, where all invocations are recorded.
 
 ---
 
-<Card title="Siguiente paso" icon="bullhorn" href="/devic/mcps/my-mcps/publish">
-  Aprende cómo publicar tu MCP para que esté disponible para agentes internos o entornos externos.
+<Card title="Next step" icon="bullhorn" href="/devic/mcps/my-mcps/publish">
+  Learn how to publish your MCP so it becomes available to internal agents or external environments.
 </Card>

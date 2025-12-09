@@ -1,64 +1,65 @@
 ---
-title: "Publicar MCP"
-description: "Haz que tu MCP esté disponible para agentes, asistentes o servicios externos mediante una URL pública o privada."
+title: "Publish MCP"
+description: "Make your MCP available to agents, assistants, or external services through a public or private URL."
 ---
 
-## Descripción general
+## Overview
 
-Después de configurar y validar tus tools, el último paso es **publicar** el MCP para que pueda ser utilizado por agentes, asistentes o entornos externos.
+After configuring and validating your tools, the final step is to **publish** the MCP so it can be used by agents, assistants, or external environments.
 
-Para hacerlo, haz clic en el botón **Publish** ubicado en la parte superior derecha del panel.
+To do this, click the **Publish** button located at the top right of the panel.
 
-![Botón de publicación](/publish.png)
-
----
-
-## Visibilidad del MCP
-
-Al seleccionar _Publish_, se abre el cuadro de configuración donde eliges quién tendrá acceso al servidor MCP.
-
-Opciones disponibles:
-
-- **Private — Only accessible by you:**\
-  El MCP será accesible solo desde tu entorno o por tus agentes.\
-  Ideal para integraciones internas o entornos de prueba.
-- **Public — Accessible to everyone:**\
-  Permite que el MCP esté disponible para cualquier entorno que soporte el protocolo MCP, como ChatGPT u otras instancias de Devic.\
-  Esta opción genera una **URL pública de acceso** al servidor.
-
-  ![Publicación pública](/url-mcp-server.png)
+![Publish button](/publish.png)
 
 ---
 
-## URL generada
+## MCP Visibility
 
-Durante la publicación, Devic crea automáticamente una URL bajo el dominio:
+When selecting _Publish_, a configuration window opens where you can choose who will have access to the MCP server.
 
-`https://mcp.devic.ai/<nombre-del-mcp>`
+Available options:
 
-Esa dirección será el endpoint desde el cual agentes o sistemas externos podrán invocar las tools del MCP.
+- **Private — Only accessible by you:**  
+  The MCP will only be accessible from your environment or by your agents.  
+  Ideal for internal integrations or testing environments.
+
+- **Public — Accessible to everyone:**  
+  Makes the MCP available to any environment that supports the MCP protocol, such as ChatGPT or other Devic instances.  
+  This option generates a **public access URL** for the server.
+
+  ![Public publication](/url-mcp-server.png)
 
 ---
 
-<Card title="Publicación completada" icon="check-circle" horizontal>
-  Al finalizar la publicación, recibirás una notificación de éxito y el enlace del MCP aparecerá en la parte superior del panel.
+## Generated URL
+
+During publication, Devic automatically creates a URL under the domain:
+
+`https://mcp.devic.ai/<mcp-name>`
+
+That address becomes the endpoint from which agents or external systems can invoke the MCP tools.
+
+---
+
+<Card title="Publication complete" icon="check-circle" horizontal>
+  Once the publication is finished, you will receive a success notification and the MCP link will appear at the top of the panel.
 </Card>
 
-![Servidor publicado correctamente](/mcp-published.png)
+![Server published successfully](/mcp-published.png)
 
 ---
 
-## Después de publicar
+## After publishing
 
-Una vez activo, el MCP:
+Once active, the MCP:
 
-- Se aloja en la infraestructura de Devic.
-- Puede ser consumido por agentes y asistentes.
-- Puede exponerse a LLMs como chatgpt, claude, cursor, etc.
-- Se actualiza automáticamente si modificas las tools o la configuración.
+- Is hosted on Devic's infrastructure.
+- Can be consumed by agents and assistants.
+- Can be exposed to LLMs such as ChatGPT, Claude, Cursor, etc.
+- Updates automatically if you modify its tools or configuration.
 
 ---
 
-<Card title="Siguiente paso" icon="plug" href="/devic/mcps/my-mcps/sessions">
-  Aprende cómo ejecutar y monitorizar sesiones de tus MCPs activos.
+<Card title="Next step" icon="plug" href="/devic/mcps/my-mcps/sessions">
+  Learn how to execute and monitor sessions of your active MCPs.
 </Card>

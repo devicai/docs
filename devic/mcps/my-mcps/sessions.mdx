@@ -1,93 +1,93 @@
 ---
-title: "Sesiones y actividad del MCP"
-description: "Monitorea la actividad de tu servidor MCP en tiempo real, incluyendo sesiones activas, llamadas de tools y rendimiento general."
+title: "MCP Sessions and Activity"
+description: "Monitor your MCP server’s activity in real time, including active sessions, tool calls, and overall performance."
 ---
 
-## Panel de sesiones
+## Sessions Panel
 
-Una vez publicado tu MCP, puedes acceder a la pestaña **Sessions** para supervisar en tiempo real cómo interactúan los agentes o servicios con tus tools.\
-Desde este panel podrás ver estadísticas de uso, duración media de las sesiones y detalles sobre cada conexión activa.
+Once your MCP is published, you can access the **Sessions** tab to monitor in real time how agents or external services are interacting with your tools.  
+From this panel, you can see usage statistics, average session duration, and details about each active connection.
 
-![Panel de sesiones activo](/sessions.png)
-
----
-
-## Analíticas de sesión
-
-En la parte superior del panel se muestran los indicadores principales:
-
-- **Total Sessions:** número total de sesiones creadas.
-- **Active Sessions:** cuántas están activas actualmente.
-- **Avg Duration:** duración media de las sesiones activas.
-
-La gráfica **Sessions Over Time** muestra la evolución de las conexiones a lo largo del tiempo, permitiendo identificar los picos de actividad.
-
-![Gráfica de sesiones](/sessions-number.png)
+![Active sessions panel](/sessions.png)
 
 ---
 
-## Detalle de sesiones
+## Session Analytics
 
-Debajo del gráfico encontrarás la tabla **Session Details**, donde se listan todas las conexiones realizadas al MCP.
+At the top of the panel, you’ll find the main indicators:
 
-Cada fila incluye:
+- **Total Sessions:** total number of sessions created.  
+- **Active Sessions:** how many sessions are currently active.  
+- **Avg Duration:** average duration of active sessions.
 
-- **Session ID**: identificador único de la sesión.
-- **Status**: estado actual (por ejemplo, _Connected_).
-- **Created / Last Activity**: fecha de creación y última actividad registrada.
-- **Protocol**: protocolo utilizado para la conexión.
-- **Actions**: botón para inspeccionar la actividad de la sesión.
+The **Sessions Over Time** chart displays the evolution of connections over time, helping you identify activity peaks.
 
-![Listado de sesiones y actividad](/sessions-detail.png)
+![Sessions graph](/sessions-number.png)
 
 ---
 
-## Actividad detallada de sesión
+## Session Details
 
-Al hacer clic en **View Activity**, se abre el panel **Session Activity**, donde puedes visualizar cada interacción ocurrida dentro de la sesión, incluyendo:
+Below the chart, the **Session Details** table lists all connections made to the MCP.
 
-- **REQUESTS** realizados por el cliente o agente.
-- **TOOL EXECUTIONS** ejecutadas.
-- **Resultados** y mensajes de error devueltos.
+Each row includes:
 
-Esto te permite auditar el comportamiento de los agentes y depurar posibles incidencias en tiempo real.
+- **Session ID:** unique identifier of the session.  
+- **Status:** current session status (e.g., _Connected_).  
+- **Created / Last Activity:** timestamps of creation and last interaction.  
+- **Protocol:** protocol used for the connection.  
+- **Actions:** button to inspect the session’s activity.
 
-![Detalle de actividad de una sesión](/session-detail.png)
+![Session list and activity](/sessions-detail.png)
+
+---
+
+## Detailed Session Activity
+
+Clicking **View Activity** opens the **Session Activity** panel, where you can inspect each interaction within the session, including:
+
+- **REQUESTS** made by the client or agent.  
+- **TOOL EXECUTIONS** triggered.  
+- **Results** and any error messages returned.
+
+This allows you to audit agent behavior and troubleshoot issues in real time.
+
+![Session activity detail](/session-detail.png)
 
 ---
 
 ## Tool Calls Analytics
 
-En la pestaña **Tool Calls**, puedes analizar el rendimiento de tus herramientas (tools) dentro del MCP.\
-Aquí se muestran métricas clave como:
+In the **Tool Calls** tab, you can analyze the performance of your tools within the MCP.  
+Key metrics include:
 
-- **Total Calls:** número total de ejecuciones.
-- **Success Rate:** porcentaje de éxito.
-- **Avg Latency:** tiempo promedio de respuesta.
-- **Failed Calls:** ejecuciones con error.
+- **Total Calls:** total number of executions.  
+- **Success Rate:** percentage of successful executions.  
+- **Avg Latency:** average response time.  
+- **Failed Calls:** executions that resulted in an error.
 
-![Métricas de Tool Calls](/tool-call-detail.png)
-
----
-
-## Historial de ejecuciones
-
-La tabla inferior muestra las llamadas a las tools registradas, con información sobre:
-
-- **Hora exacta de ejecución**
-- **Tool utilizada**
-- **Estado (Success / Failed)**
-- **Latencia medida**
-- **Sesión asociada**
-
-![Historial de ejecuciones](/tool-execution-detail.png)
-
-Al hacer clic en **Details**, puedes revisar el log completo de la llamada, incluyendo el **input**, **output** y posibles errores devueltos por la API.
-
-![Detalle de ejecuciones](/tool-json-detail.png)
+![Tool calls metrics](/tool-call-detail.png)
 
 ---
 
-<Card title="Siguiente paso" icon="code" href="/devic/mcps/my-mcps/sdks-and-widgets">
-  Aprende a crear tus propios widgets para integrarlos en chatGPT cuando se invoque un MCP propio.
+## Execution History
+
+The lower table displays all recorded tool calls, including:
+
+- **Exact execution time**  
+- **Tool used**  
+- **Status (Success / Failed)**  
+- **Measured latency**  
+- **Associated session**
+
+![Execution history](/tool-execution-detail.png)
+
+Clicking **Details** lets you review the full log of the execution, including the **input**, **output**, and any errors returned by the API.
+
+![Execution detail](/tool-json-detail.png)
+
+---
+
+<Card title="Next step" icon="code" href="/devic/mcps/my-mcps/sdks-and-widgets">
+  Learn how to create your own widgets to integrate with ChatGPT when invoking your MCP.
 </Card>

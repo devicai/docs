@@ -1,72 +1,39 @@
 ---
-title: "Introducción"
-description: "Devic es una plataforma de abstracción que permite a empresas **SaaS** transformarse en organizaciones **AI-native**, integrando inteligencia artificial en sus procesos internos y en sus productos sin necesidad de desarrollar infraestructura propia"
+title: "What They Are"
+description: "Organize your integrations and tools under the Model Context Protocol (MCP) standard to connect agents and assistants with external or internal services."
 ---
 
-La plataforma ofrece un entorno unificado para crear, desplegar y operar sistemas impulsados por IA, combinando **agentes**, **asistentes**, **bases de datos vectoriales** y **herramientas (MCPs)** en una arquitectura interoperable.
+## Overview
 
-Devic nace de la experiencia de un equipo de emprendedores y técnicos que, tras años construyendo productos SaaS, detectaron la falta de un estándar para incorporar IA de forma estructurada, segura y escalable dentro de entornos empresariales.
+The **Model Context Protocol (MCP)** extends the capabilities of language models by enabling them to execute actions on external or internal systems.  
+In Devic, MCPs act as **integration interfaces** that connect agents and assistants with APIs, services, or custom functions.
 
-![Vista general de Devic](/Devic.ai.png)
+Depending on their origin or purpose, you can work with three main types:
+
+- **My MCPs:** transform your API into an MCP server with tools ready to be used by the models.  
+- **Third-party imported MCPs:** access a catalog of integrations such as Google Calendar, Hubspot, or Jira.  
+- **Built-in Tools:** leverage native tools such as sending emails via IMAP, generating PDFs from HTML, or reading spreadsheets.
+
+![View of My MCPs](/my-mcps-import-third-party-built-in-tools.png)
 
 ---
 
-## Por qué Devic
+## Using MCPs
 
-<Card title="Capa de abstracción completa" icon="layers" horizontal>
-  Devic centraliza la gestión de modelos, prompts, herramientas y datos, eliminando la necesidad de desarrollar infraestructura AI desde cero.
-</Card>
+Once created or imported, MCPs become available to all agents and assistants in the environment.  
+They can be invoked through natural language or integrated into automated workflows.
 
 <Columns cols={2}>
-  <Card title="Agnóstico de modelo" icon="brain">
-    Compatible con múltiples LLMs (OpenAI, Anthropic, Azure, modelos on-premise). Permite elegir el modelo más eficiente según el caso de uso.
+  <Card title="Internal use" icon="link">
+    Agents execute MCP tools autonomously within their business logic.
   </Card>
-  <Card title="Gestión de prompts" icon="file-lines">
-    Control de versiones, histórico y trazabilidad completa de cada prompt utilizado por agentes o asistentes.
-  </Card>
-  <Card title="MCPs y herramientas personalizadas" icon="plug">
-    Crea, importa y publica herramientas que los modelos pueden invocar directamente bajo el estándar MCP.
-  </Card>
-  <Card title="RAG nativo" icon="book-open">
-    Ingesta automática de documentos con vectorización y búsqueda semántica integrada.
-  </Card>
-  <Card title="Evaluaciones automáticas" icon="scale-balanced">
-    Usa un modelo como juez (LLM as a Judge) para auditar resultados y evaluar calidad sin intervención humana.
-  </Card>
-  <Card title="FinOps y trazabilidad" icon="chart-line">
-    Control granular de costes, consumo de tokens y logs detallados de cada ejecución.
+  <Card title="External use" icon="globe">
+    MCPs can be published and shared with other environments —for example, ChatGPT or third-party services— through an access URL.
   </Card>
 </Columns>
 
 ---
 
-## Qué puedes construir
-
-Devic proporciona todos los componentes necesarios para construir productos y flujos **AI-native** dentro de tu propio entorno SaaS.
-
-<Columns cols={2}>
-  <Card title="MCPs personalizados" icon="server">
-    Conecta tus APIs o servicios internos y publícalos como MCPs listos para ser usados por tus modelos o agentes.
-  </Card>
-  <Card title="Agentes autónomos" icon="robot">
-    Configura agentes que ejecutan procesos de negocio complejos, con control de contexto, herramientas y tareas.
-  </Card>
-  <Card title="Asistentes conversacionales" icon="comments">
-    Crea asistentes en tiempo real con acceso a tus datos y herramientas, integrables en tus productos o intranets.
-  </Card>
-  <Card title="Widgets y SDKs" icon="window-maximize">
-    Integra tus agentes y asistentes en ChatGPT o cualquier interfaz mediante SDKs o widgets embebibles.
-  </Card>
-  <Card title="Procesos agénticos y Human-in-the-Loop" icon="user-check">
-    Diseña flujos híbridos que combinan automatización con validación humana en puntos críticos del proceso.
-  </Card>
-  <Card title="Bases de datos vectoriales" icon="database">
-    Crea y gestiona bases de datos nativas con búsqueda semántica y acceso directo desde tus agentes y MCPs.
-  </Card>
-</Columns>
-
----
-
-<Card title="Empieza ahora" icon="rocket" href="/devic/quickstart">
-  Configura tu primer agente o asistente y transforma tu producto SaaS en una solución AI-native en minutos.
+<Card title="Next step" icon="wrench" href="/devic/mcps/my-mcps/what-it-is">
+  Learn how to create your MCP automatically from an OpenAPI definition.
 </Card>

@@ -1,53 +1,53 @@
 ---
-title: "Importar tool"
-description: "Crea un nuevo servidor MCP a partir de una especificación OpenAPI o desde cero."
+title: "Import tool"
+description: "Create a new MCP server from an OpenAPI specification or from scratch."
 ---
 
-## Crear un nuevo MCP
+## Create a new MCP
 
-Para iniciar la creación de tu propio MCP, accede a la sección **MCPs → Mis MCPs** en el menú lateral y haz clic en el botón **Add custom MCP**.
+To begin creating your own MCP, go to **MCPs → My MCPs** in the sidebar menu and click the **Add custom MCP** button.
 
-<Card title="Añadir un MCP personalizado" icon="plus" horizontal>
-  Desde este botón podrás importar tu API existente o definir un nuevo MCP desde cero.
+<Card title="Add a custom MCP" icon="plus" horizontal>
+  From this button you can import your existing API or define a new MCP from scratch.
 </Card>
 
-![Vista del botón Add custom MCP](/add-custom-mcp.png)
+![Add custom MCP button view](/add-custom-mcp.png)
 
 ---
 
-## Seleccionar modo de importación
+## Select import mode
 
-Una vez abierto el asistente de creación, se despliega el cuadro **Import Tool Server**, donde podrás elegir el método de importación.
+Once the creation wizard opens, the **Import Tool Server** window appears, where you can choose the import method.
 
-Las opciones disponibles son:
+The available options are:
 
-- **OpenAPI URL:** importa directamente la especificación pública de tu API mediante su URL.
-- **OpenAPI JSON:** carga un archivo local con la especificación de tu API.
-- **Start from scratch:** crea un MCP vacío para definir manualmente tus tools y endpoints.
+- **OpenAPI URL:** directly import the public specification of your API via its URL.
+- **OpenAPI JSON:** upload a local file containing your API specification.
+- **Start from scratch:** create an empty MCP to manually define your tools and endpoints.
 
-<Card title="Importar desde OpenAPI" icon="link">
-  Si tu API ya tiene una definición OpenAPI, basta con pegar la URL o subir el archivo JSON.\
-  Devic generará automáticamente las tools y endpoints correspondientes, levantando de forma inmediata el servidor MCP para que los agentes puedan consumirlo.
+<Card title="Import from OpenAPI" icon="link">
+  If your API already has an OpenAPI definition, simply paste the URL or upload the JSON file.\
+  Devic will automatically generate the corresponding tools and endpoints, immediately spinning up the MCP server so agents can consume it.
 </Card>
 
-![Import Tool Server - opciones de importación](/import-tool.png)
+![Import Tool Server - import options](/import-tool.png)
 
 ## 
 
-![Import Tool Server - opciones de importación](/import-options.png)
+![Import Tool Server - import options](/import-options.png)
 
-## Mantenimiento automático
+## Automatic maintenance
 
-Una vez importado el servicio, **Devic se encarga del resto**.\
-La plataforma transforma tu API en un conjunto de tools listas para usar y mantiene la sincronización de forma automática.\
-Cada vez que actualices tu API, las tools del MCP se actualizarán también, sin necesidad de intervención manual.
+Once the service is imported, **Devic takes care of the rest**.\
+The platform transforms your API into a ready-to-use set of tools and keeps everything synchronized automatically.\
+Whenever you update your API, the MCP tools will update as well — with no manual adjustments required.
 
-<Card title="Sincronización continua" icon="arrows-rotate" horizontal>
-  Solo necesitas mantener tu API. Devic se encargará de mantener actualizadas las tools y el servidor MCP de forma transparente.
+<Card title="Continuous synchronization" icon="arrows-rotate" horizontal>
+  You only need to maintain your API. Devic will transparently keep your tools and MCP server up to date.
 </Card>
 
 ---
 
-<Card title="Siguiente paso" icon="wrench" href="/devic/mcps/my-mcps/tools-menu">
-  Descubre cómo acceder al menú de tools de tu MCP y gestionar cada endpoint disponible.
+<Card title="Next step" icon="wrench" href="/devic/mcps/my-mcps/tools-menu">
+  Learn how to access your MCP’s tools menu and manage each available endpoint.
 </Card>
