@@ -1,61 +1,61 @@
 ---
-title: "Qué es"
-description: "Introducción a los guardrails de Devic: qué son, por qué son necesarios y cómo configurarlos en tus asistentes."
+title: "What It Is"
+description: "Introduction to Devic's guardrails: what they are, why they are necessary, and how to configure them in your assistants."
 ---
 
-Los **guardrails** son mecanismos de seguridad integrados en Devic que permiten controlar, filtrar y supervisar el comportamiento de los asistentes de IA antes de que procesen las instrucciones del usuario.\
-Su objetivo es garantizar que los modelos actúen dentro de límites seguros, legales y adecuados para entornos productivos.
+**Guardrails** are security mechanisms integrated into Devic that allow you to control, filter, and supervise the behavior of AI assistants before they process user instructions.\
+Their purpose is to ensure that models operate within safe, legal, and appropriate boundaries for production environments.
 
-En escenarios reales —especialmente en empresas que manejan datos sensibles, procesos regulados o información crítica— los guardrails son esenciales para evitar riesgos como:
+In real-world scenarios —especially in companies handling sensitive data, regulated processes, or critical information— guardrails are essential to prevent risks such as:
 
-- Exposición involuntaria de datos personales o confidenciales.
-- Generación de contenido tóxico, dañino o inapropiado.
-- Manipulación del modelo mediante intentos de _jailbreak_.
-- Respuestas fuera de contexto o alejadas del objetivo empresarial.
-- Instrucciones inseguras que podrían activar herramientas o procesos de forma incorrecta.
+- Unintentional exposure of personal or confidential data.  
+- Generation of harmful, toxic, or inappropriate content.  
+- Model manipulation through _jailbreak_ attempts.  
+- Out-of-context responses or deviations from business objectives.  
+- Unsafe instructions that could trigger tools or processes incorrectly.
 
-Devic permite añadir guardrails a cada asistente, configurando una capa adicional de protección antes de que el mensaje del usuario llegue al modelo (LLM).
+Devic allows you to add guardrails to each assistant, creating an additional layer of protection before the user’s message reaches the model (LLM).
 
 <img
   src="/guardrails_assistant.png"
-  alt="Acceso a la configuración de guardrails en el asistente"
+  alt="Access to guardrail configuration in the assistant"
   title=""
   style={{ width:"100%" }}
 />
 
 ---
 
-## Cómo acceder a los guardrails
+## How to Access Guardrails
 
-Para configurar los guardrails de un asistente:
+To configure an assistant’s guardrails:
 
-1. Abre el asistente desde el panel lateral de Devic.
-2. Selecciona el menú de opciones (⋮) en la esquina superior derecha.
-3. Haz clic en **Guardrails**.
-4. Pulsa **Add guardrail** para añadir uno nuevo.
+1. Open the assistant from the Devic sidebar.  
+2. Select the options menu (⋮) in the top-right corner.  
+3. Click **Guardrails**.  
+4. Press **Add guardrail** to create a new one.
 
-Esto abrirá el panel donde podrás elegir entre distintos tipos de guardrails según las necesidades del proyecto.
+This will open the panel where you can choose from different types of guardrails depending on the needs of the project.
 
-![Panel de configuración de guardrails](/guardrails_agent_add.png)
-
----
-
-## Tipos de guardrails disponibles
-
-Devic actualmente ofrece **cinco categorías principales** de guardrails:
-
-| Guardrail               | Propósito                                                                                      |
-| ----------------------- | ---------------------------------------------------------------------------------------------- |
-| **Mask PII**            | Detecta y oculta información personal identificable antes de que llegue al modelo.             |
-| **Moderation**          | Bloquea contenido sensible, tóxico o prohibido mediante clasificadores de moderación.          |
-| **Jailbreak**           | Detecta y detiene intentos de romper los límites de seguridad del modelo.                      |
-| **Off Topic Prompts**   | Evita que el asistente responda a temas fuera del alcance definido.                            |
-| **Custom Prompt Check** | Permite crear reglas personalizadas en lenguaje natural para validar o rechazar instrucciones. |
-
-En las siguientes secciones se detalla cada guardrail, su propósito, cuándo utilizarlo y cómo configurarlo correctamente.
+![Guardrails configuration panel](/guardrails_agent_add.png)
 
 ---
 
-<Card title="Siguiente: Mask PII" icon="shield" href="./guardrails/pii">
-  Descubre cómo proteger datos personales y sensibles mediante el guardrail de enmascaramiento automático.
+## Types of Available Guardrails
+
+Devic currently offers **five main categories** of guardrails:
+
+| Guardrail               | Purpose                                                                                       |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
+| **Mask PII**            | Detects and hides personally identifiable information before it reaches the model.            |
+| **Moderation**          | Blocks sensitive, toxic, or prohibited content using moderation classifiers.                  |
+| **Jailbreak**           | Detects and prevents attempts to break the model’s safety boundaries.                         |
+| **Off Topic Prompts**   | Prevents the assistant from responding to topics outside the defined scope.                   |
+| **Custom Prompt Check** | Allows creating personalized rules in natural language to validate or reject instructions.    |
+
+The following sections provide more details on each guardrail, its purpose, when to use it, and how to configure it properly.
+
+---
+
+<Card title="Next: Mask PII" icon="shield" href="./guardrails/pii">
+  Discover how to protect personal and sensitive data using the automatic masking guardrail.
 </Card>

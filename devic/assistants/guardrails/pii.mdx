@@ -1,92 +1,92 @@
 ---
 title: "Mask PII"
-description: "Protege datos personales y sensibles en los prompts mediante el guardrail Mask PII de Devic para tus asistentes."
+description: "Protect personal and sensitive data in prompts using Devic’s Mask PII guardrail for your assistants."
 ---
 
-El guardrail **Mask PII** permite detectar y enmascarar información personal identificable (PII) en el texto de entrada antes de que llegue al modelo. Su función es garantizar que los asistentes no procesen datos que puedan comprometer la privacidad o exponer información regulada.
+The **Mask PII** guardrail detects and masks personally identifiable information (PII) in user input before it reaches the model. Its purpose is to ensure assistants do not process data that could compromise privacy or expose regulated information.
 
-Este guardrail inspecciona el texto recibido y reemplaza automáticamente los datos sensibles por marcadores seguros, manteniendo la intención original del usuario sin revelar su información.
+This guardrail scans incoming text and automatically replaces sensitive data with safe placeholders, preserving the user's intent without revealing their information.
 
-![Interfaz de configuración de Mask PII en Devic](/maskPII.png)
-
----
-
-## Qué detecta Mask PII
-
-Mask PII analiza el input del usuario y sustituye cualquier dato personal identificable detectado por un marcador genérico.  
-Ejemplos:
-
-- “Mi tarjeta es 4111 1111 1111 1111” → “Mi tarjeta es [CREDIT_CARD_NUMBER]”
-- “Vivo en 123 Main St, NY” → “Vivo en [LOCATION]”
-- “Mi email es john.doe@example.com” → “Mi email es [EMAIL_ADDRESS]”
-
-Esto permite que el asistente trabaje con el mensaje sin exponer los datos reales.
+![Mask PII configuration interface in Devic](/maskPII.png)
 
 ---
 
-## Categorías de PII configurables
+## What Mask PII Detects
 
-Devic permite activar o desactivar tipos concretos de PII que se enmascararán en las entradas del usuario.  
-Los tipos disponibles incluyen:
+Mask PII analyzes user input and replaces any detected personally identifiable information with a generic placeholder.  
+Examples:
 
-### **Identificadores globales**
+- “Mi tarjeta es 4111 1111 1111 1111” → “My card is [CREDIT_CARD_NUMBER]”  
+- “Vivo en 123 Main St, NY” → “I live at [LOCATION]”  
+- “Mi email es john.doe@example.com” → “My email is [EMAIL_ADDRESS]”
 
-- Número de tarjeta de crédito  
-- Billetera de criptomonedas  
-- Fecha y hora  
-- Dirección de email  
-- Código IBAN  
-- Dirección IP  
-- Ubicación  
-- Número de licencia médica  
-- Nombre de persona  
-- Número de teléfono  
+This allows the assistant to work with the message without exposing real data.
+
+---
+
+## Configurable PII Categories
+
+Devic allows enabling or disabling specific types of PII that will be masked in user inputs.  
+Available types include:
+
+### **Global Identifiers**
+
+- Credit card number  
+- Cryptocurrency wallet  
+- Date and time  
+- Email address  
+- IBAN  
+- IP address  
+- Location  
+- Medical license number  
+- Person name  
+- Phone number  
 - URL  
 
-### **Estados Unidos**
+### **United States**
 
-- Número de cuenta bancaria  
-- Número de licencia de conducir  
+- Bank account number  
+- Driver’s license number  
 - ITIN  
-- Número de pasaporte  
-- Número de la Seguridad Social  
+- Passport number  
+- Social Security Number  
 
-### **Reino Unido**
+### **United Kingdom**
 
-- Número NHS  
+- NHS number  
 - National Insurance Number  
 
-El usuario puede seleccionar individualmente cada categoría o activar **Select All** desde la interfaz.
+Users can individually select each category or enable **Select All** from the interface.
 
-![Ejemplo de categorías de PII seleccionables en Devic](/Mask_pii_options.png)
-
----
-
-## Cuándo usar Mask PII
-
-Mask PII es recomendable en asistentes que:
-
-- Procesan instrucciones que podrían contener datos personales.  
-- Trabajan en entornos regulados (GDPR, HIPAA, compliance interno).  
-- Interactúan con usuarios finales y deben evitar almacenar o reenviar información sensible.  
-- Ejecutan tareas automatizadas donde los datos deben permanecer anonimizados.  
+![Example of selectable PII categories in Devic](/Mask_pii_options.png)
 
 ---
 
-## Cómo configurarlo
+## When to Use Mask PII
 
-Para habilitar Mask PII en un asistente:
+Mask PII is recommended for assistants that:
 
-1. Abre el asistente desde el panel lateral.  
-2. Haz clic en el menú de opciones (⋮) en la esquina superior derecha.  
-3. Selecciona **Guardrails**.  
-4. Pulsa **Add guardrail**.  
-5. Selecciona **Mask PII**.  
-6. Marca las entidades que deseas enmascarar.  
-7. Guarda la configuración.
+- Process instructions that may contain personal data.  
+- Operate in regulated environments (GDPR, HIPAA, internal compliance).  
+- Interact with end users and must avoid storing or transmitting sensitive information.  
+- Execute automated workflows where data must remain anonymized.  
 
 ---
 
-<Card title="Siguiente: Moderation" icon="alert-triangle" href="./moderation">
-  Aprende cómo bloquear contenido sensible o inapropiado mediante el guardrail de Moderación.
+## How to Configure It
+
+To enable Mask PII in an assistant:
+
+1. Open the assistant from the sidebar.  
+2. Click the options menu (⋮) in the top-right corner.  
+3. Select **Guardrails**.  
+4. Click **Add guardrail**.  
+5. Choose **Mask PII**.  
+6. Select the entities you want to mask.  
+7. Save your configuration.
+
+---
+
+<Card title="Next: Moderation" icon="alert-triangle" href="./moderation">
+  Learn how to block sensitive or inappropriate content using the Moderation guardrail.
 </Card>

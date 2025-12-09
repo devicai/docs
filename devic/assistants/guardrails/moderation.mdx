@@ -1,76 +1,76 @@
 ---
 title: "Moderation"
-description: "Bloquea contenido sensible, dañino o inapropiado antes de que llegue al modelo mediante el guardrail de moderación de Devic para tus asistentes."
+description: "Block sensitive, harmful, or inappropriate content before it reaches the model using Devic’s Moderation guardrail for your assistants."
 ---
 
-El guardrail **Moderation** permite analizar el texto de entrada y bloquear cualquier contenido que sea considerado inseguro o fuera de las políticas definidas.  
-Su función es evitar que el asistente procese instrucciones que incluyan lenguaje tóxico, dañino, explícito, discriminatorio o que ponga en riesgo la integridad del sistema o de los usuarios.
+The **Moderation** guardrail analyzes incoming text and blocks any content considered unsafe or outside defined policies.  
+Its purpose is to prevent the assistant from processing instructions that include toxic, harmful, explicit, or discriminatory language, or anything that could compromise system or user safety.
 
-Este guardrail utiliza clasificadores especializados que determinan si el contenido enviado por el usuario pertenece a alguna categoría restringida.  
-Si se detecta una infracción, el mensaje se detiene y no se envía al modelo.
+This guardrail uses specialized classifiers to determine whether the user’s input falls into any restricted category.  
+If a violation is detected, the message is stopped and not sent to the model.
 
-![Interfaz de configuración de Moderation en Devic](/moderation.png)
+![Moderation configuration interface in Devic](/moderation.png)
 
 ---
 
-## Qué detecta Moderation
+## What Moderation Detects
 
-Moderation clasifica y filtra contenido en múltiples categorías de riesgo.  
-El usuario puede activar solo las categorías que considere necesarias según el caso de uso.
+Moderation classifies and filters content across multiple risk categories.  
+You can activate only the categories that are relevant to your use case.
 
-### Categorías principales
+### Main Categories
 
 #### Sexual Content
 
-Contenido que involucra temas sexuales.
+Content involving sexual topics.
 
-Incluye:
+Includes:
 
-- sexual → Contenido sexual explícito o sugerente.  
-- sexual/minors → Contenido sexual que involucra menores de 18 años.
+- sexual → Explicit or suggestive sexual content.  
+- sexual/minors → Sexual content involving individuals under 18.
 
 ---
 
 #### Hate & Harassment
 
-Contenido que involucra odio, discriminación o acoso.
+Content involving hate, discrimination, or harassment.
 
-Incluye:
+Includes:
 
-- hate → Discurso de odio o discriminación.  
-- hate/threatening → Lenguaje que combina odio con violencia o daño grave.  
-- harassment → Contenido de intimidación o acoso.  
-- harassment/threatening → Acoso que incluye amenazas o violencia.
+- hate → Hate speech or discriminatory content.  
+- hate/threatening → Language combining hate with violence or severe harm.  
+- harassment → Intimidation or harassment content.  
+- harassment/threatening → Harassment that includes threats or violence.
 
 ---
 
 #### Self-Harm
 
-Contenido que involucra autolesiones o suicidio.
+Content involving self-harm or suicide.
 
-Incluye:
+Includes:
 
-- self-harm → Contenido que promueve o representa autolesión.  
-- self-harm/intent → Expresiones en las que el usuario manifiesta intención de hacerse daño.
+- self-harm → Content that promotes or depicts self-harm.  
+- self-harm/intent → Expressions indicating the user intends to harm themselves.
 
-![Interfaz de configuración de Moderation en Devic](/moderation_options.png)
-
----
-
-## Cómo configurarlo en Devic
-
-1. Abre un asistente desde el panel lateral.  
-2. Accede al menú de opciones (⋮) en la parte superior derecha.  
-3. Selecciona **Guardrails**.  
-4. Pulsa **Add guardrail**.  
-5. Elige **Moderation** en la lista y actívalo.  
-6. Selecciona las categorías que deseas bloquear o usa los botones:  
-   - **All Categories** → activa todo.  
-   - **Only Most Critical** → activa solo riesgos severos.  
-   - **Clear** → desactiva todas las categorías.
+![Moderation configuration interface in Devic](/moderation_options.png)
 
 ---
 
-<Card title="Siguiente: Jailbreak" icon="lock" href="./jailbreak">
-  Aprende cómo proteger a tus asistentes frente a intentos de romper sus límites de seguridad.
+## How to Configure It in Devic
+
+1. Open an assistant from the sidebar.  
+2. Go to the options menu (⋮) in the top-right corner.  
+3. Select **Guardrails**.  
+4. Click **Add guardrail**.  
+5. Choose **Moderation** from the list and activate it.  
+6. Select the categories you want to block or use the quick actions:  
+   - **All Categories** → activate everything.  
+   - **Only Most Critical** → activate only the most severe risks.  
+   - **Clear** → deactivate all categories.
+
+---
+
+<Card title="Next: Jailbreak" icon="lock" href="./jailbreak">
+  Learn how to protect your assistants from attempts to break their security boundaries.
 </Card>

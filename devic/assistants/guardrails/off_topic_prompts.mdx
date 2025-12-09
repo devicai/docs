@@ -1,58 +1,58 @@
 ---
 title: "Off Topic Prompts"
-description: "Evita que los asistentes respondan fuera del alcance definido mediante el guardrail Off Topic Prompts de Devic."
+description: "Prevent assistants from responding outside the defined scope using Devic’s Off Topic Prompts guardrail."
 ---
 
-El guardrail **Off Topic Prompts** analiza si la entrada del usuario se mantiene dentro del contexto o alcance permitido del asistente.  
-Cuando detecta que el mensaje es *off-topic* con un nivel de confianza superior al umbral configurado, la instrucción se bloquea antes de que llegue al modelo.
+The **Off Topic Prompts** guardrail analyzes whether the user's input stays within the assistant’s allowed context or scope.  
+When it detects that a message is *off-topic* with a confidence level above the configured threshold, the instruction is blocked before it reaches the model.
 
-![Panel de configuración de Off Topic Prompts](/offtopic_options.png)
-
----
-
-## Qué detecta Off Topic Prompts
-
-Evalúa si el contenido del usuario coincide con el ámbito temático definido por el administrador del asistente.
-
-Ejemplos de uso:
-
-- Mantener un asistente de soporte dentro del dominio técnico.
-- Evitar respuestas sobre temas no relacionados con el negocio.
-- Bloquear instrucciones que desvían al asistente hacia conversaciones personales o inapropiadas.
+![Off Topic Prompts configuration panel](/offtopic_options.png)
 
 ---
 
-## Cómo funciona
+## What Off Topic Prompts Detects
 
-El LLM compara el mensaje del usuario con la descripción del ámbito permitido.  
-El sistema asigna un **confidence score** (0.0 – 1.0).  
-El guardrail se activa cuando:
+It evaluates whether the user’s message aligns with the thematic scope defined by the assistant’s administrator.
 
-- El contenido es considerado *fuera de contexto*, **y**
-- El nivel de confianza ≥ umbral configurado.
+Example use cases:
+
+- Keeping a support assistant within the technical domain.  
+- Preventing responses to topics unrelated to the business.  
+- Blocking instructions that steer the assistant toward personal or inappropriate conversations.
 
 ---
 
-## Parámetros configurables
+## How It Works
 
-### Prompt permitido
+The LLM compares the user message with the description of the allowed scope.  
+The system assigns a **confidence score** (0.0 – 1.0).  
+The guardrail activates when:
 
-Texto que define el alcance temático válido para el asistente.  
-Ejemplo:
+- The content is considered *out of context*, **and**
+- The confidence level ≥ configured threshold.
+
+---
+
+## Configurable Parameters
+
+### Allowed Prompt
+
+Text that defines the valid thematic scope for the assistant.  
+Example:
 
 You are a helpful assistant. Keep responses focused on the user's questions and avoid going off-topic.
 
-### Modelo
+### Model
 
-Modelo LLM utilizado para evaluar si el contenido es off-topic.
+The LLM used to evaluate whether the content is off-topic.
 
 ### Confidence Threshold
 
-Umbral mínimo (0.0 – 1.0) para activar el guardrail.  
-Valores típicos: `0.70 – 0.85`
+Minimum threshold (0.0 – 1.0) required to activate the guardrail.  
+Typical values: `0.70 – 0.85`
 
 ---
 
-<Card title="Siguiente: Custom Prompt Check" icon="search" href="./custom_prompt_check">
-  Aprende a definir reglas personalizadas para validar o bloquear instrucciones del usuario.
+<Card title="Next: Custom Prompt Check" icon="search" href="./custom_prompt_check">
+  Learn how to define custom rules to validate or block user instructions.
 </Card>
