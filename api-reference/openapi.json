@@ -538,7 +538,7 @@
     }
   },
   "paths": {
-    "/api/v1/agents/{agentId}/threads": {
+    "/v1/agents/{agentId}/threads": {
       "post": {
         "tags": [
           "Agents"
@@ -696,7 +696,7 @@
         }
       }
     },
-    "/api/v1/agents/threads/{threadId}": {
+    "/v1/agents/threads/{threadId}": {
       "get": {
         "tags": [
           "Agents"
@@ -817,7 +817,7 @@
         }
       }
     },
-    "/api/v1/agents/threads/{threadId}/approval": {
+    "/v1/agents/threads/{threadId}/approval": {
       "post": {
         "tags": [
           "Agents"
@@ -889,7 +889,7 @@
         }
       }
     },
-    "/api/v1/agents/threads/{threadId}/complete": {
+    "/v1/agents/threads/{threadId}/complete": {
       "post": {
         "tags": [
           "Agents"
@@ -940,7 +940,7 @@
         }
       }
     },
-    "/api/v1/agents/threads/{threadId}/pause": {
+    "/v1/agents/threads/{threadId}/pause": {
       "post": {
         "tags": [
           "Agents"
@@ -991,7 +991,7 @@
         }
       }
     },
-    "/api/v1/agents/threads/{threadId}/resume": {
+    "/v1/agents/threads/{threadId}/resume": {
       "post": {
         "tags": [
           "Agents"
@@ -1042,7 +1042,7 @@
         }
       }
     },
-    "/api/v1/agents/threads/{threadId}/evaluate": {
+    "/v1/agents/threads/{threadId}/evaluate": {
       "post": {
         "tags": [
           "Agents"
@@ -1103,7 +1103,7 @@
         }
       }
     },
-    "/api/v1/agents/threads/{threadId}/evaluation": {
+    "/v1/agents/threads/{threadId}/evaluation": {
       "get": {
         "tags": [
           "Agents"
@@ -1154,7 +1154,7 @@
         }
       }
     },
-    "/api/v1/agents/threads/{threadId}/evaluations": {
+    "/v1/agents/threads/{threadId}/evaluations": {
       "get": {
         "tags": [
           "Agents"
@@ -1208,7 +1208,7 @@
         }
       }
     },
-    "/api/v1/agents/threads/{threadId}/evaluations/{evaluationId}": {
+    "/v1/agents/threads/{threadId}/evaluations/{evaluationId}": {
       "get": {
         "tags": [
           "Agents"
@@ -1269,7 +1269,7 @@
         }
       }
     },
-    "/api/v1/agents/agents/{agentId}/evaluation-config": {
+    "/v1/agents/agents/{agentId}/evaluation-config": {
       "get": {
         "tags": [
           "Agents"
@@ -1390,7 +1390,7 @@
         }
       }
     },
-    "/api/v1/agents/agents/{agentId}/costs/daily": {
+    "/v1/agents/agents/{agentId}/costs/daily": {
       "get": {
         "tags": [
           "Agents"
@@ -1457,7 +1457,7 @@
         }
       }
     },
-    "/api/v1/agents/agents/{agentId}/costs/monthly": {
+    "/v1/agents/agents/{agentId}/costs/monthly": {
       "get": {
         "tags": [
           "Agents"
@@ -1524,7 +1524,7 @@
         }
       }
     },
-    "/api/v1/agents/agents/{agentId}/costs/summary": {
+    "/v1/agents/agents/{agentId}/costs/summary": {
       "get": {
         "tags": [
           "Agents"
@@ -1575,7 +1575,7 @@
         }
       }
     },
-    "/api/v1/assistants": {
+    "/v1/assistants": {
       "get": {
         "tags": [
           "Assistants"
@@ -1614,7 +1614,7 @@
         }
       }
     },
-    "/api/v1/assistants/{identifier}": {
+    "/v1/assistants/{identifier}": {
       "get": {
         "tags": [
           "Assistants"
@@ -1664,7 +1664,7 @@
         }
       }
     },
-    "/api/v1/assistants/{identifier}/messages": {
+    "/v1/assistants/{identifier}/messages": {
       "post": {
         "tags": [
           "Assistants"
@@ -1735,7 +1735,7 @@
         }
       }
     },
-    "/api/v1/assistants/{identifier}/chats/{chatUid}": {
+    "/v1/assistants/{identifier}/chats/{chatUid}": {
       "get": {
         "tags": [
           "Assistants"
@@ -1794,7 +1794,7 @@
         }
       }
     },
-    "/api/v1/assistants/{identifier}/chats": {
+    "/v1/assistants/{identifier}/chats": {
       "get": {
         "tags": [
           "Assistants"
@@ -1872,7 +1872,7 @@
         }
       }
     },
-    "/api/v1/assistants/chats": {
+    "/v1/assistants/chats": {
       "post": {
         "tags": [
           "Assistants"
@@ -1932,7 +1932,7 @@
         }
       }
     },
-    "/api/v1/health": {
+    "/v1/health": {
       "get": {
         "tags": [
           "Health"
@@ -1964,7 +1964,7 @@
         }
       }
     },
-    "/api/v1/docs/{filename}": {
+    "/v1/docs/{filename}": {
       "get": {
         "tags": [
           "Documentation"
@@ -2003,7 +2003,7 @@
         }
       }
     },
-    "/api/v1/docs/{filename}.md": {
+    "/v1/docs/{filename}.md": {
       "get": {
         "tags": [
           "Documentation"
@@ -2042,7 +2042,7 @@
         }
       }
     },
-    "/api/v1/docs": {
+    "/v1/docs": {
       "get": {
         "tags": [
           "Documentation"
