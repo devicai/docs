@@ -14,7 +14,7 @@ Each agent has a **dedicated endpoint** that lets you create new executions (thr
 
 Each agent has a unique URL for creating executions:
 
-`POST https://api.devic.ai/api/v1/agents/{agent_id}/threads`
+`POST https://api.devic.ai/v1/agents/{agent_id}/threads`
 
 The `{agent_id}` parameter is obtained from the agent’s view, in the **“Agent API Documentation”** dialog.
 
@@ -28,7 +28,7 @@ You can invoke an agent using any language that supports HTTP requests (JavaScri
 Below is an example in **JavaScript** using `fetch`:
 
 ```javascript
-const response = await fetch('https://api.devic.ai/api/v1/agents/{agent_id}/threads', {
+const response = await fetch('https://api.devic.ai/v1/agents/{agent_id}/threads', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',

@@ -87,7 +87,7 @@
   constraints: |
     Solo APIs que sean accesibles (internas o externas) y con formato compatible pueden transformarse en MCPs. Requiere permisos de publicación y conocimiento técnico para definir los endpoints correctamente. No cubre APIs sin autenticación o fuera del control del usuario.
   examples: |
-    Ejemplo: “Tengo una API interna de tickets (POST /api/v1/tickets). Creo un conector ‘Tickets-MCP’, defino el método POST con parámetros {userId, issueDesc}, publico el MCP y luego pido al agente ‘crea un ticket para el usuario 123 con descripción X’, y el LLM invoca la herramienta via el MCP.”
+    Ejemplo: “Tengo una API interna de tickets (POST /v1/tickets). Creo un conector ‘Tickets-MCP’, defino el método POST con parámetros {userId, issueDesc}, publico el MCP y luego pido al agente ‘crea un ticket para el usuario 123 con descripción X’, y el LLM invoca la herramienta via el MCP.”
   related: ["MCPs index", "Importar MCPs de terceros", "Configurar las tools de Mis MCPs", "SDKs y Widgets MCP", "Integración con LLMs MCP"]
 - title: Importar tool en Mis MCPs
   url: https://docs.devic.ai/devic/mcps/my-mcps/import-tool
@@ -170,7 +170,7 @@
   constraints: |
     La tool debe tener una API accesible y correctamente documentada; la latencia o fallos de la API pueden influir en la experiencia. Algunos campos solo pueden modificarse si la tool está inactiva o en revisión.  
   examples: |
-    Ejemplo: “Tengo una tool ‘ListarFacturas’ con endpoint `/api/v1/invoices/list`, método GET. Configuro function name = ‘ListInvoices’, parámetros {customerId:string, status:string}, headers {Authorization:Bearer …}, guardo. Luego en el agente hago: ‘muestra facturas pendientes del cliente 789’ y la herramienta responde con la lista filtrada.”  
+    Ejemplo: “Tengo una tool ‘ListarFacturas’ con endpoint `/v1/invoices/list`, método GET. Configuro function name = ‘ListInvoices’, parámetros {customerId:string, status:string}, headers {Authorization:Bearer …}, guardo. Luego en el agente hago: ‘muestra facturas pendientes del cliente 789’ y la herramienta responde con la lista filtrada.”  
   related: ["Importar tool en Mis MCPs", "Menú de tools de Mis MCPs", "Publicar MCP", "Sesiones y actividad del MCP"]
 - title: Publicar MCP
   url: https://docs.devic.ai/devic/mcps/my-mcps/publish
@@ -619,17 +619,17 @@
     "¿Qué endpoint debo usar para crear una ejecución (thread) de un agente en Devic?",
     "¿Qué parámetros y autorización requiere la llamada API de un agente en Devic?"
   ]
-  key_terms: ["api ejecución agente Devic", "invocar agente Devic via API", "POST /api/v1/agents/{agent_id}/threads", "integración agente Devic", "automatizar agente Devic"]
+  key_terms: ["api ejecución agente Devic", "invocar agente Devic via API", "POST /v1/agents/{agent_id}/threads", "integración agente Devic", "automatizar agente Devic"]
   prerequisites: ["Tener un agente publicado en Devic", "Obtener el agent_id del agente y una API token válida"]
   steps: |
     1) Obtén el agent_id de tu agente en el panel de Devic (“Agent API Documentation”).  
-    2) Realiza una solicitud HTTP POST al endpoint: `https://api.devic.ai/api/v1/agents/{agent_id}/threads`.  
+    2) Realiza una solicitud HTTP POST al endpoint: `https://api.devic.ai/v1/agents/{agent_id}/threads`.  
     3) En la cabecera añade ‘Authorization: Bearer YOUR_API_TOKEN’ y ‘Content-Type: application/json’.  
     4) En el cuerpo del JSON incluye campos clave: por ejemplo `{ "message": "Procesa el informe mensual de ventas", "state": "queued" }`.  
     5) Envía la petición, recibe la respuesta con datos del thread creado y el estado inicial; luego monitoriza el estado hasta que finalice.  
     6) Integra este llamado dentro de tu aplicación o flujo externo, asegurando que gestionas errores, latencia y estado de ejecución de la conversación/hilo.  
   api_surface: |
-    Endpoint principal: `POST https://api.devic.ai/api/v1/agents/{agent_id}/threads`  
+    Endpoint principal: `POST https://api.devic.ai/v1/agents/{agent_id}/threads`  
     Parámetros relevantes:  
       - `agent_id`: string (identificador único del agente)  
       - `Authorization`: Bearer token (string)  
@@ -643,7 +643,7 @@
   examples: |
     Ejemplo en JavaScript (fetch):  
       ```js
-      const response = await fetch('https://api.devic.ai/api/v1/agents/YOUR_AGENT_ID/threads', {
+      const response = await fetch('https://api.devic.ai/v1/agents/YOUR_AGENT_ID/threads', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -834,11 +834,11 @@
     "¿Cuál es el endpoint para enviar mensajes a un asistente Devic?",
     "¿Cómo continuar una conversación existente con un asistente Devic vía API?"
   ]  
-  key_terms: ["api ejecución asistente Devic", "invocar asistente Devic vía API", "POST /api/v1/assistants/{assistant_id}/messages", "chatUuid Devic", "integración asistente Devic API"]  
+  key_terms: ["api ejecución asistente Devic", "invocar asistente Devic vía API", "POST /v1/assistants/{assistant_id}/messages", "chatUuid Devic", "integración asistente Devic API"]  
   prerequisites: ["Tener un asistente publicado en Devic", "Obtener el assistant_id del asistente y una API token válida"]  
   steps: |
     1) Obtén el `assistant_id` de tu asistente publicado desde el panel de Devic (“Get Code” o sección similar).  
-    2) Realiza una solicitud HTTP POST al endpoint: `https://api.devic.ai/api/v1/assistants/{assistant_id}/messages`.  
+    2) Realiza una solicitud HTTP POST al endpoint: `https://api.devic.ai/v1/assistants/{assistant_id}/messages`.  
     3) En la cabecera de la solicitud incluye: `Authorization: Bearer YOUR_API_TOKEN` y `Content-Type: application/json`.  
     4) En el cuerpo JSON envía algo como:  
        ```json
@@ -848,7 +848,7 @@
     5) Recibe la respuesta en JSON con campos como `chatUuid`, `message`, `tokens_used`, `timestamp`.  
     6) Integra este flujo en tu aplicación (backend, microservicio, frontend) para que el asistente pueda ser invocado programáticamente y retina la conversación/hilo según tus necesidades.  
   api_surface: |
-    Endpoint principal: `POST https://api.devic.ai/api/v1/assistants/{assistant_id}/messages`  
+    Endpoint principal: `POST https://api.devic.ai/v1/assistants/{assistant_id}/messages`  
     Parámetros relevantes:  
       - `assistant_id`: string (identificador del asistente)  
       - `Authorization`: Bearer token (string)  
@@ -869,7 +869,7 @@
   examples: |
     Ejemplo en JavaScript (fetch):  
       ```js
-      const response = await fetch('https://api.devic.ai/api/v1/assistants/YOUR_ASSISTANT_ID/messages', {
+      const response = await fetch('https://api.devic.ai/v1/assistants/YOUR_ASSISTANT_ID/messages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

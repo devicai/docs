@@ -14,7 +14,7 @@ Each assistant has a dedicated **endpoint** that allows you to send messages, st
 
 Each assistant has a unique URL for sending messages:
 
-`POST https://api.devic.ai/api/v1/assistants/{assistant_id}/messages`
+`POST https://api.devic.ai/v1/assistants/{assistant_id}/messages`
 
 The `{assistant_id}` parameter can be obtained from the assistant view, in the **“Get Code”** dialog.
 
@@ -32,7 +32,7 @@ You can invoke an assistant using any language that supports HTTP requests (Java
 Below is an example in **JavaScript** using `fetch`:
 
 ```js
-    const response = await fetch('https://api.devic.ai/api/v1/assistants/{assistant_id}/messages', {
+    const response = await fetch('https://api.devic.ai/v1/assistants/{assistant_id}/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ The `chatUuid` field identifies the active session or conversation; if it is sen
 To continue a conversation that has already started, simply include the chat identifier (`chatUuid`) obtained in the first response:
 
 ```js
-    const response = await fetch('https://api.devic.ai/api/v1/assistants/{assistant_id}/messages', {
+    const response = await fetch('https://api.devic.ai/v1/assistants/{assistant_id}/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
