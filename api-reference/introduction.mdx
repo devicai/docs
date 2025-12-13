@@ -83,7 +83,7 @@ Devic offers separate environments for development and production.
 
 Example full endpoint:
 
-    GET https://api.devic.ai/api/v1/agents/{agentId}/threads
+    GET https://api.devic.ai/v1/agents/{agentId}/threads
 
 ---
 
@@ -99,7 +99,7 @@ Header format:
 
 Example request:
 
-    GET https://api.devic.ai/api/v1/agents/{agentId}/threads
+    GET https://api.devic.ai/v1/agents/{agentId}/threads
     Authorization: Bearer YOUR_API_TOKEN
     Content-Type: application/json
 
@@ -113,25 +113,25 @@ Invalid or missing tokens return `401 Unauthorized`.
 
 1. **Create a thread**
 
-        POST /api/v1/agents/{agentId}/threads
+        POST /v1/agents/{agentId}/threads
 
 2. **Monitor or control the execution**
 
-        GET /api/v1/agents/threads/{threadId}
-        POST /api/v1/agents/threads/{threadId}/pause
-        POST /api/v1/agents/threads/{threadId}/resume
-        POST /api/v1/agents/threads/{threadId}/complete
+        GET /v1/agents/threads/{threadId}
+        POST /v1/agents/threads/{threadId}/pause
+        POST /v1/agents/threads/{threadId}/resume
+        POST /v1/agents/threads/{threadId}/complete
 
 3. **Trigger or fetch evaluations**
 
-        POST /api/v1/agents/threads/{threadId}/evaluate
-        GET /api/v1/agents/threads/{threadId}/evaluations
+        POST /v1/agents/threads/{threadId}/evaluate
+        GET /v1/agents/threads/{threadId}/evaluations
 
 4. **Inspect costs**
 
-        GET /api/v1/agents/agents/{agentId}/costs/daily
-        GET /api/v1/agents/agents/{agentId}/costs/monthly
-        GET /api/v1/agents/agents/{agentId}/costs/summary
+        GET /v1/agents/agents/{agentId}/costs/daily
+        GET /v1/agents/agents/{agentId}/costs/monthly
+        GET /v1/agents/agents/{agentId}/costs/summary
 
 <Card title="Start with agents" icon="robot" href="/api-reference/endpoint/post-api-v1-agents-agentid-threads">
   Create your first execution thread programmatically.
@@ -143,17 +143,17 @@ Invalid or missing tokens return `401 Unauthorized`.
 
 1. **List assistants**
 
-        GET /api/v1/assistants
+        GET /v1/assistants
 
 2. **Send messages**
 
-        POST /api/v1/assistants/{identifier}/messages
+        POST /v1/assistants/{identifier}/messages
 
 3. **Retrieve chat history**
 
-        GET /api/v1/assistants/{identifier}/chats/{chatUid}
-        GET /api/v1/assistants/{identifier}/chats
-        POST /api/v1/assistants/chats
+        GET /v1/assistants/{identifier}/chats/{chatUid}
+        GET /v1/assistants/{identifier}/chats
+        POST /v1/assistants/chats
 
 <Card title="Start with assistants" icon="comments" href="/api-reference/endpoint/post-api-v1-assistants-identifier-messages">
   Learn how to send your first message to an assistant.
