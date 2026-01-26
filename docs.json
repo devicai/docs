@@ -136,6 +136,16 @@
               "devic/databases/create-new-database",
               "devic/databases/view-and-edit-database"
             ]
+          },
+          {
+            "group": "Skills",
+            "icon": "clipboard-list-check",
+            "pages": [
+              "devic/skills/overview",
+              "devic/skills/agents",
+              "devic/skills/assistants",
+              "devic/skills/tool-servers"
+            ]
           }
         ]
       },
