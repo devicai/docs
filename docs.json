@@ -151,6 +151,11 @@
           {
             "group": "Agents",
             "pages": [
+              "api-reference/endpoint/get-api-v1-agents",
+              "api-reference/endpoint/post-api-v1-agents",
+              "api-reference/endpoint/get-api-v1-agents-agentid",
+              "api-reference/endpoint/patch-api-v1-agents-agentid",
+              "api-reference/endpoint/delete-api-v1-agents-agentid",
               "api-reference/endpoint/post-api-v1-agents-agentid-threads",
               "api-reference/endpoint/get-api-v1-agents-agentid-threads",
               "api-reference/endpoint/get-api-v1-agents-threads-threadid",
@@ -168,6 +173,25 @@
               "api-reference/endpoint/get-api-v1-agents-agents-agentid-costs-daily",
               "api-reference/endpoint/get-api-v1-agents-agents-agentid-costs-monthly",
               "api-reference/endpoint/get-api-v1-agents-agents-agentid-costs-summary"
+            ]
+          },
+          {
+            "group": "Tool Servers",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-tool-servers",
+              "api-reference/endpoint/post-api-v1-tool-servers",
+              "api-reference/endpoint/get-api-v1-tool-servers-toolserverid",
+              "api-reference/endpoint/patch-api-v1-tool-servers-toolserverid",
+              "api-reference/endpoint/delete-api-v1-tool-servers-toolserverid",
+              "api-reference/endpoint/get-api-v1-tool-servers-toolserverid-tools",
+              "api-reference/endpoint/post-api-v1-tool-servers-toolserverid-tools",
+              "api-reference/endpoint/get-api-v1-tool-servers-toolserverid-tools-toolname",
+              "api-reference/endpoint/patch-api-v1-tool-servers-toolserverid-tools-toolname",
+              "api-reference/endpoint/delete-api-v1-tool-servers-toolserverid-tools-toolname",
+              "api-reference/endpoint/post-api-v1-tool-servers-toolserverid-tools-toolname-test",
+              "api-reference/endpoint/get-api-v1-tool-servers-toolserverid-definition",
+              "api-reference/endpoint/patch-api-v1-tool-servers-toolserverid-definition",
+              "api-reference/endpoint/post-api-v1-tool-servers-toolserverid-clone"
             ]
           },
           {
