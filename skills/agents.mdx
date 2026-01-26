@@ -1,0 +1,151 @@
+---
+title: "Agents API"
+description: "Manage autonomous AI agents that execute multi-step tasks with tool access."
+---
+
+# Agents API
+
+The Agents API allows you to manage autonomous AI agents that execute multi-step tasks. Agents can use tools, handle approvals, and maintain execution state through threads.
+
+## Capabilities
+
+- **CRUD Operations**: Create, read, update, and delete agents
+- **Thread Management**: Create and manage execution threads
+- **Execution Control**: Pause, resume, and complete agent executions
+- **Approval Workflows**: Handle human-in-the-loop approval requests
+- **Evaluations**: Evaluate agent performance with scoring criteria
+- **Cost Tracking**: Monitor daily and monthly costs
+
+---
+
+## Key Concepts
+
+### Agent
+
+An agent is configured through an embedded `assistantSpecialization` object that determines its behavior and capabilities:
+
+| Property | Description |
+|----------|-------------|
+| `name` | Agent display name |
+| `assistantSpecialization.presets` | System prompt / instructions |
+| `assistantSpecialization.availableToolsGroupsUids` | Tool groups the agent can use |
+| `provider` / `llm` | LLM configuration |
+| `maxExecutionToolCalls` | Maximum tool calls per execution |
+
+### Thread
+
+A thread represents a single execution of an agent. Threads can be in the following states:
+
+| State | Description |
+|-------|-------------|
+| `PENDING` | Created, not yet started |
+| `PROCESSING` | Actively executing |
+| `WAITING_APPROVAL` | Paused awaiting user approval |
+| `PAUSED` | Manually paused |
+| `COMPLETED` | Finished successfully |
+| `FAILED` | Encountered an error |
+
+---
+
+## Endpoints Summary
+
+### Agent Management
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/v1/agents` | List all agents |
+| GET | `/api/v1/agents/:agentId` | Get agent by ID |
+| POST | `/api/v1/agents` | Create a new agent |
+| PATCH | `/api/v1/agents/:agentId` | Update an agent |
+| DELETE | `/api/v1/agents/:agentId` | Delete an agent |
+
+### Thread Management
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/agents/:agentId/threads` | Create a new thread |
+| GET | `/api/v1/agents/:agentId/threads` | List threads for an agent |
+| GET | `/api/v1/agents/threads/:threadId` | Get specific thread |
+| POST | `/api/v1/agents/threads/:threadId/pause` | Pause a thread |
+| POST | `/api/v1/agents/threads/:threadId/resume` | Resume a thread |
+| POST | `/api/v1/agents/threads/:threadId/complete` | Complete a thread |
+| POST | `/api/v1/agents/threads/:threadId/approval` | Handle approval request |
+
+### Evaluations
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/agents/threads/:threadId/evaluate` | Evaluate a thread |
+| GET | `/api/v1/agents/threads/:threadId/evaluations` | Get all evaluations |
+
+### Cost Tracking
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/v1/agents/agents/:agentId/costs/daily` | Get daily costs |
+| GET | `/api/v1/agents/agents/:agentId/costs/monthly` | Get monthly costs |
+| GET | `/api/v1/agents/agents/:agentId/costs/summary` | Get cost summary |
+
+---
+
+## Example: Create an Agent
+
+```bash
+curl -X POST "https://api.devic.ai/api/v1/agents" \
+  -H "Authorization: Bearer devic-your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Customer Support Agent",
+    "description": "Handles customer support tickets",
+    "assistantSpecialization": {
+      "presets": "You are a customer support agent. Be helpful and professional.",
+      "availableToolsGroupsUids": ["support-tools", "crm-tools"],
+      "model": "gpt-4o"
+    },
+    "maxExecutionToolCalls": 30
+  }'
+```
+
+## Example: Create a Thread
+
+```bash
+curl -X POST "https://api.devic.ai/api/v1/agents/agent-123/threads" \
+  -H "Authorization: Bearer devic-your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "message": "Analyze the Q4 sales report and create a summary",
+    "tags": ["sales", "quarterly-report"]
+  }'
+```
+
+## Example: Handle Approval
+
+```bash
+curl -X POST "https://api.devic.ai/api/v1/agents/threads/thread-456/approval" \
+  -H "Authorization: Bearer devic-your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "approved": true,
+    "message": "Proceed with the data export"
+  }'
+```
+
+---
+
+## Tool Access
+
+Agents access tools through `availableToolsGroupsUids`:
+
+1. Each UID references a **Tools Group**
+2. Tools Groups can contain built-in tools or reference a **Tool Server**
+3. When an agent executes, it can call any tool from its assigned groups
+4. Use `enabledTools` to restrict to a specific subset
+
+**Example**: An agent with `availableToolsGroupsUids: ["crm-tools", "email-tools"]` can use all tools from both groups.
+
+---
+
+## See Also
+
+- [Tool Servers API](/skills/tool-servers) - Configure external tool integrations
+- [API Reference](/api-reference/endpoint/get-api-v1-agents) - Full API documentation

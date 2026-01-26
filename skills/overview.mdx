@@ -1,0 +1,189 @@
+---
+title: "Skills Overview"
+description: "Learn how to install and use Devic AI Skills for Claude Code and other AI coding assistants."
+---
+
+# Devic AI Skills
+
+Skills are reusable knowledge packages that provide AI coding assistants with detailed API documentation and usage patterns for the Devic platform. When installed, skills give your AI assistant deep understanding of Devic's APIs, enabling it to help you build integrations more effectively.
+
+## Installation
+
+Install Devic skills using the skills CLI:
+
+```bash
+npx skills add devicai/skills
+```
+
+This command installs the complete Devic API skill package into your project, making it available to Claude Code and other compatible AI assistants.
+
+## What's Included
+
+The `devicai/skills` package includes comprehensive documentation for:
+
+<Columns cols={3}>
+  <Card title="Agents API" icon="robot" href="/skills/agents">
+    Create, manage, and run autonomous AI agents with tool access and execution control.
+  </Card>
+
+  <Card title="Assistants API" icon="comments" href="/skills/assistants">
+    Build conversational AI experiences with message processing and chat history.
+  </Card>
+
+  <Card title="Tool Servers API" icon="wrench" href="/skills/tool-servers">
+    Configure external tool integrations that agents and assistants can use.
+  </Card>
+</Columns>
+
+---
+
+## How Skills Work
+
+When you install a skill, it adds markdown documentation files to your project's `.claude/skills/` directory. These files are automatically loaded by compatible AI assistants, giving them context about the APIs and best practices.
+
+### Directory Structure
+
+After installation:
+
+```
+your-project/
+├── .claude/
+│   └── skills/
+│       └── devic-api/
+│           ├── SKILL.md          # Main overview and architecture
+│           ├── agents.md         # Agents API documentation
+│           ├── assistants.md     # Assistants API documentation
+│           └── tool-servers.md   # Tool Servers API documentation
+```
+
+---
+
+## Quick Start
+
+### 1. Install the skill
+
+```bash
+npx skills add devicai/skills
+```
+
+### 2. Get your API key
+
+Generate an API key from the [Devic dashboard](https://app.devic.ai/api-keys). Keys follow the pattern:
+
+```
+devic-{random_string}
+```
+
+### 3. Set up authentication
+
+Include your API key in all requests:
+
+```bash
+Authorization: Bearer devic-your-api-key
+```
+
+### 4. Start building
+
+Your AI assistant now understands the Devic API. Try asking it to:
+
+- Create an agent with specific tools
+- Set up a tool server for your external API
+- Send messages to an assistant
+- Monitor agent execution threads
+
+---
+
+## Architecture Overview
+
+Understanding how Devic entities relate to each other:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         Tool Server                             │
+│  (External API integration with tool definitions)               │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              │ referenced by
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                       Tools Group                               │
+│  (Logical grouping of tools - built-in or from tool server)     │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              │ availableToolsGroupsUids
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              Assistant Specialization                           │
+│  (Configuration: presets, tools, model, provider, etc.)         │
+└─────────────────────────────────────────────────────────────────┘
+                    /                   \
+                   /                     \
+                  ▼                       ▼
+┌──────────────────────┐     ┌──────────────────────────────────┐
+│     Assistant        │     │            Agent                  │
+│  (Chat interface)    │     │  (Autonomous execution threads)   │
+└──────────────────────┘     └──────────────────────────────────┘
+         │                              │
+         ▼                              ▼
+┌──────────────────────┐     ┌──────────────────────────────────┐
+│   Chat Histories     │     │          Threads                  │
+│  (Conversations)     │     │  (Execution sessions with tasks)  │
+└──────────────────────┘     └──────────────────────────────────┘
+```
+
+---
+
+## Base URL
+
+All API requests are made to:
+
+```
+https://api.devic.ai
+```
+
+Example endpoint:
+
+```
+GET https://api.devic.ai/api/v1/agents
+```
+
+---
+
+## Response Format
+
+### Success Response
+
+```json
+{
+  "success": true,
+  "data": { ... },
+  "timestamp": "2024-01-15T10:30:00.000Z"
+}
+```
+
+### Error Response
+
+```json
+{
+  "success": false,
+  "error": {
+    "message": "Error description",
+    "code": "ERROR_CODE"
+  },
+  "timestamp": "2024-01-15T10:30:00.000Z"
+}
+```
+
+---
+
+## Next Steps
+
+<Columns cols={2}>
+  <Card title="Agents API" icon="robot" href="/skills/agents">
+    Learn how to create and manage autonomous AI agents.
+  </Card>
+
+  <Card title="Assistants API" icon="comments" href="/skills/assistants">
+    Build conversational AI experiences.
+  </Card>
+</Columns>

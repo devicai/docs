@@ -1,0 +1,156 @@
+---
+title: "Assistants API"
+description: "Build conversational AI experiences with message processing and chat history."
+---
+
+# Assistants API
+
+The Assistants API allows you to interact with AI assistants that can process messages, maintain conversation history, and provide specialized capabilities.
+
+## Capabilities
+
+- **Message Processing**: Send messages and receive AI responses
+- **Chat History**: Maintain and retrieve conversation history
+- **Specializations**: Use different assistant configurations for different use cases
+- **Custom Models**: Override LLM provider and model per request
+- **Tagging**: Organize conversations with tags
+
+---
+
+## Key Concepts
+
+### Assistant Specialization
+
+Assistant Specializations define how an assistant behaves, what tools it can use, and how it processes messages.
+
+| Property | Description |
+|----------|-------------|
+| `identifier` | Unique identifier used in API paths |
+| `name` | Display name |
+| `presets` | System prompt / instructions |
+| `availableToolsGroupsUids` | Tool group IDs the assistant can use |
+| `model` / `provider` | Default LLM configuration |
+| `accessConfiguration` | Visibility and external access settings |
+
+### Chat History
+
+Conversations are stored and can be continued by providing a `chatUid`:
+
+```json
+{
+  "chatUid": "chat-123",
+  "messages": [
+    { "role": "user", "content": "Hello" },
+    { "role": "assistant", "content": "Hi! How can I help?" }
+  ]
+}
+```
+
+---
+
+## Endpoints Summary
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/v1/assistants` | List all assistant specializations |
+| GET | `/api/v1/assistants/:identifier` | Get specific assistant |
+| POST | `/api/v1/assistants/:identifier/messages` | Send message to assistant |
+| GET | `/api/v1/assistants/:identifier/chats` | List chat histories |
+| GET | `/api/v1/assistants/:identifier/chats/:chatUid` | Get specific chat |
+| POST | `/api/v1/assistants/chats` | Get all chats with filters |
+| GET | `/api/v1/assistants/tags` | Get unique tags |
+
+---
+
+## Example: Send a Message
+
+```bash
+curl -X POST "https://api.devic.ai/api/v1/assistants/default/messages" \
+  -H "Authorization: Bearer devic-your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "message": "Explain the concept of recursion in programming",
+    "chatUid": "chat-123",
+    "tags": ["programming", "education"]
+  }'
+```
+
+### Response
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "role": "user",
+      "content": "Explain the concept of recursion in programming"
+    },
+    {
+      "role": "assistant",
+      "content": "Recursion is a programming concept where a function calls itself..."
+    }
+  ]
+}
+```
+
+## Example: Custom Model
+
+Override the default LLM for a specific request:
+
+```bash
+curl -X POST "https://api.devic.ai/api/v1/assistants/default/messages" \
+  -H "Authorization: Bearer devic-your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "message": "Write a haiku about programming",
+    "provider": "anthropic",
+    "model": "claude-3-opus-20240229"
+  }'
+```
+
+## Example: List Chat Histories
+
+```bash
+curl -X GET "https://api.devic.ai/api/v1/assistants/default/chats?limit=20" \
+  -H "Authorization: Bearer devic-your-api-key"
+```
+
+---
+
+## Supported Providers
+
+When sending messages, you can specify custom providers and models:
+
+| Provider | Description |
+|----------|-------------|
+| `openai` | OpenAI API |
+| `anthropic` | Anthropic API |
+| `azure` | Azure OpenAI |
+| `google` | Google AI (Gemini) |
+
+**Note:** The provider must be configured in your account settings before use.
+
+---
+
+## Access Configuration
+
+Control visibility and external API access:
+
+```json
+{
+  "accessConfiguration": {
+    "externalAccess": true,
+    "visibilityByRole": ["admin", "user"]
+  }
+}
+```
+
+- `externalAccess: true` - Makes the assistant available via the public API
+- `visibilityByRole` - Controls which user roles can see/use the assistant
+
+---
+
+## See Also
+
+- [Agents API](/skills/agents) - For autonomous task execution
+- [API Reference](/api-reference/endpoint/get-api-v1-assistants) - Full API documentation

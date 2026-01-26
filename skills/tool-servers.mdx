@@ -1,0 +1,299 @@
+---
+title: "Tool Servers API"
+description: "Configure external tool integrations that agents and assistants can use."
+---
+
+# Tool Servers API
+
+The Tool Servers API allows you to manage external tool integrations that agents and assistants can use. Tool servers define collections of API endpoints that can be called as tools during AI executions.
+
+## Capabilities
+
+- **CRUD Operations**: Create, read, update, and delete tool servers
+- **Tool Management**: Add, update, and remove individual tools
+- **Test Tool Calls**: Test tool configurations before deployment
+- **Clone Servers**: Duplicate tool server configurations
+- **Authentication**: Support for JWT, OAuth2, Basic Auth, and custom headers
+
+---
+
+## How Tool Servers Connect to Agents
+
+Tool Servers provide external API capabilities through a layered architecture:
+
+```
+Tool Server (API Definition)
+       │
+       │ assigned to
+       ▼
+  Tools Group (Logical Grouping)
+       │
+       │ referenced by availableToolsGroupsUids
+       ▼
+Assistant Specialization
+       │
+       ├──► Assistant (processes messages with tools)
+       │
+       └──► Agent (executes threads with tools)
+```
+
+### Integration Steps
+
+1. **Create Tool Server**: Define your external API tools
+2. **Assign to Tools Group**: Link the tool server to a Tools Group (via dashboard)
+3. **Configure Agent**: Add the Tools Group UID to `availableToolsGroupsUids`
+4. **Tools Available**: The agent can now invoke tools during execution
+
+---
+
+## Endpoints Summary
+
+### Tool Server Management
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/v1/tool-servers` | List all tool servers |
+| GET | `/api/v1/tool-servers/:id` | Get tool server by ID |
+| POST | `/api/v1/tool-servers` | Create tool server |
+| PATCH | `/api/v1/tool-servers/:id` | Update tool server |
+| DELETE | `/api/v1/tool-servers/:id` | Delete tool server |
+| POST | `/api/v1/tool-servers/:id/clone` | Clone tool server |
+
+### Tool Management
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/v1/tool-servers/:id/tools` | List tools in server |
+| GET | `/api/v1/tool-servers/:id/tools/:name` | Get specific tool |
+| POST | `/api/v1/tool-servers/:id/tools` | Add tool to server |
+| PATCH | `/api/v1/tool-servers/:id/tools/:name` | Update tool |
+| DELETE | `/api/v1/tool-servers/:id/tools/:name` | Delete tool |
+| POST | `/api/v1/tool-servers/:id/tools/:name/test` | Test tool call |
+
+---
+
+## Example: Create Tool Server with Tools
+
+```bash
+curl -X POST "https://api.devic.ai/api/v1/tool-servers" \
+  -H "Authorization: Bearer devic-your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Weather API",
+    "description": "Get weather information",
+    "url": "https://api.weather.example.com",
+    "identifier": "weather-api",
+    "enabled": true,
+    "toolDefinitions": [
+      {
+        "type": "function",
+        "function": {
+          "name": "get_weather",
+          "description": "Get current weather for a location",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "city": {
+                "type": "string",
+                "description": "City name"
+              }
+            },
+            "required": ["city"]
+          }
+        },
+        "endpoint": "/weather/${city}",
+        "method": "GET",
+        "pathParametersKeys": ["city"]
+      }
+    ]
+  }'
+```
+
+## Example: Add Tool to Existing Server
+
+```bash
+curl -X POST "https://api.devic.ai/api/v1/tool-servers/server-123/tools" \
+  -H "Authorization: Bearer devic-your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tool": {
+      "type": "function",
+      "function": {
+        "name": "create_contact",
+        "description": "Create a new contact in the CRM",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "email": { "type": "string" }
+          },
+          "required": ["name", "email"]
+        }
+      },
+      "endpoint": "/contacts",
+      "method": "POST",
+      "bodyMode": "advanced",
+      "bodyJsonTemplate": "{ name: params.name, email: params.email }"
+    }
+  }'
+```
+
+## Example: Test Tool Call
+
+```bash
+curl -X POST "https://api.devic.ai/api/v1/tool-servers/server-123/tools/get_weather/test" \
+  -H "Authorization: Bearer devic-your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "parameters": {
+      "city": "London"
+    }
+  }'
+```
+
+### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "success": true,
+    "data": {
+      "temperature": 15,
+      "condition": "cloudy"
+    },
+    "executionTimeMs": 245,
+    "requestUrl": "https://api.weather.example.com/weather/London",
+    "requestMethod": "GET"
+  }
+}
+```
+
+---
+
+## Tool Definition Schema
+
+```json
+{
+  "type": "function",
+  "function": {
+    "name": "tool_name",
+    "description": "What this tool does",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "param1": {
+          "type": "string",
+          "description": "Parameter description"
+        }
+      },
+      "required": ["param1"]
+    }
+  },
+  "endpoint": "/api/endpoint/${pathParam}",
+  "method": "POST",
+  "pathParametersKeys": ["pathParam"],
+  "queryParametersKeys": ["queryParam"],
+  "bodyPropertyKey": "bodyParam",
+  "bodyMode": "simple",
+  "bodyJsonTemplate": "{ key: params.value }",
+  "customHeaders": [
+    {"headerName": "X-Custom-Header", "value": "custom-value"}
+  ],
+  "responsePostProcessingEnabled": true,
+  "responsePostProcessingTemplate": "response.body.data"
+}
+```
+
+### Parameter Handling
+
+| Mode | Description |
+|------|-------------|
+| Path Parameters | Use `${paramName}` in endpoint URL, list in `pathParametersKeys` |
+| Query Parameters | List parameter names in `queryParametersKeys` |
+| Body (Simple) | Specify parameter name in `bodyPropertyKey` |
+| Body (Advanced) | Use `bodyJsonTemplate` with JS expression, access via `params.<name>` |
+
+### Response Post-Processing
+
+When enabled, transform the response using JavaScript expressions:
+
+```javascript
+// Extract data field
+response.body.data
+
+// Map to names only
+response.body.items.map(i => i.name)
+
+// Conditional
+response.status === 200 ? response.body : {error: 'Failed'}
+```
+
+---
+
+## Authentication Configuration
+
+### JWT / Bearer Token
+
+```json
+{
+  "authenticationConfig": {
+    "authenticationMethod": "jwt",
+    "jwt": {
+      "token": "your-api-token"
+    }
+  }
+}
+```
+
+### Basic Auth
+
+```json
+{
+  "authenticationConfig": {
+    "authenticationMethod": "basic",
+    "basic": {
+      "username": "api_user",
+      "password": "secret_password"
+    }
+  }
+}
+```
+
+### OAuth2
+
+```json
+{
+  "authenticationConfig": {
+    "authenticationMethod": "oauth2",
+    "oauth2": {
+      "clientId": "client-id",
+      "clientSecret": "client-secret",
+      "refreshToken": "refresh-token",
+      "refreshTokenEndpoint": "https://auth.example.com/token",
+      "grant_type": "refresh_token"
+    }
+  }
+}
+```
+
+### Custom Headers
+
+```json
+{
+  "authenticationConfig": {
+    "authenticationMethod": "customHeader",
+    "customHeader": {
+      "headerName": "X-API-Key",
+      "value": "your-api-key"
+    }
+  }
+}
+```
+
+---
+
+## See Also
+
+- [Agents API](/skills/agents) - Use tools in agent executions
+- [API Reference](/api-reference/endpoint/get-api-v1-tool-servers) - Full API documentation
