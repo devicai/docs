@@ -14,24 +14,24 @@ The Devic API is ideal for backend automation, SaaS integrations and systems tha
 ## What you can do with the API
 
 <Columns cols={2}>
-  <Card title="Run agents programmatically" icon="robot">
-    Launch new executions, pause or resume them, complete runs, and trigger automated evaluations.
+  <Card title="Manage agents programmatically" icon="robot">
+    Create, update, delete agents and run executions, pause or resume them, complete runs, and trigger evaluations.
   </Card>
 
   <Card title="Power conversational assistants" icon="comments">
     Send messages to assistants, retrieve chat histories and integrate them directly inside your product.
   </Card>
 
+  <Card title="Configure tool servers" icon="wrench">
+    Create and manage tool servers with their tools, authentication, and test tool calls programmatically.
+  </Card>
+
   <Card title="Monitor quality with evaluations" icon="scale-balanced">
-    Score outputs, audit behaviour and receive structured feedback using Devic’s evaluation engine.
+    Score outputs, audit behaviour and receive structured feedback using Devic's evaluation engine.
   </Card>
 
   <Card title="FinOps and cost visibility" icon="chart-line">
     Retrieve daily, monthly and aggregated cost data for each agent.
-  </Card>
-
-  <Card title="Docs as an API" icon="book-open">
-    Access your workspace documentation as rendered HTML or raw markdown.
   </Card>
 
   <Card title="Health checks" icon="heartbeat">
@@ -46,21 +46,29 @@ The Devic API is ideal for backend automation, SaaS integrations and systems tha
 The Devic API is divided into the following groups:
 
 ### **Agents**
-- Create and list agent threads  
-- Pause, resume or complete executions  
-- Trigger evaluations  
-- Retrieve evaluation results  
-- Retrieve daily, monthly and summary costs  
+- Create, list, update and delete agents
+- Create and list agent threads
+- Pause, resume or complete executions
+- Trigger evaluations
+- Retrieve evaluation results
+- Retrieve daily, monthly and summary costs
 
 ### **Assistants**
-- List available assistants  
-- Send messages  
-- Retrieve chat histories  
-- Filter conversations across assistants  
+- List available assistants
+- Send messages
+- Retrieve chat histories
+- Filter conversations across assistants
+
+### **Tool Servers**
+- Create, list, update and delete tool servers
+- Manage tool definitions within servers
+- Configure authentication (JWT, OAuth2, Basic, Custom Headers)
+- Test tool calls programmatically
+- Clone tool servers
 
 ### **Documentation**
-- List available docs  
-- Retrieve rendered HTML or markdown  
+- List available docs
+- Retrieve rendered HTML or markdown
 
 ### **Health**
 - Basic availability checks  
@@ -109,7 +117,28 @@ Invalid or missing tokens return `401 Unauthorized`.
 
 ## Typical workflows
 
-### 1. Running an agent
+### 1. Managing agents
+
+1. **Create an agent**
+
+        POST /v1/agents
+
+2. **List all agents**
+
+        GET /v1/agents
+
+3. **Update or delete an agent**
+
+        PATCH /v1/agents/{agentId}
+        DELETE /v1/agents/{agentId}
+
+<Card title="Start with agents" icon="robot" href="/api-reference/endpoint/post-api-v1-agents">
+  Create your first agent programmatically.
+</Card>
+
+---
+
+### 2. Running an agent
 
 1. **Create a thread**
 
@@ -133,13 +162,13 @@ Invalid or missing tokens return `401 Unauthorized`.
         GET /v1/agents/agents/{agentId}/costs/monthly
         GET /v1/agents/agents/{agentId}/costs/summary
 
-<Card title="Start with agents" icon="robot" href="/api-reference/endpoint/post-api-v1-agents-agentid-threads">
-  Create your first execution thread programmatically.
+<Card title="Run agent threads" icon="play" href="/api-reference/endpoint/post-api-v1-agents-agentid-threads">
+  Create execution threads for your agents.
 </Card>
 
 ---
 
-### 2. Conversational assistants
+### 3. Conversational assistants
 
 1. **List assistants**
 
@@ -157,6 +186,38 @@ Invalid or missing tokens return `401 Unauthorized`.
 
 <Card title="Start with assistants" icon="comments" href="/api-reference/endpoint/post-api-v1-assistants-identifier-messages">
   Learn how to send your first message to an assistant.
+</Card>
+
+---
+
+### 4. Managing tool servers
+
+1. **Create a tool server with tools**
+
+        POST /v1/tool-servers
+
+2. **List and get tool servers**
+
+        GET /v1/tool-servers
+        GET /v1/tool-servers/{toolServerId}
+
+3. **Manage tools in a server**
+
+        GET /v1/tool-servers/{toolServerId}/tools
+        POST /v1/tool-servers/{toolServerId}/tools
+        PATCH /v1/tool-servers/{toolServerId}/tools/{toolName}
+        DELETE /v1/tool-servers/{toolServerId}/tools/{toolName}
+
+4. **Test tool calls**
+
+        POST /v1/tool-servers/{toolServerId}/tools/{toolName}/test
+
+5. **Clone a tool server**
+
+        POST /v1/tool-servers/{toolServerId}/clone
+
+<Card title="Start with tool servers" icon="wrench" href="/api-reference/endpoint/post-api-v1-tool-servers">
+  Create and configure tool servers programmatically.
 </Card>
 
 ---
@@ -185,12 +246,16 @@ Common status codes:
 
 ## Next steps
 
-<Columns cols={2}>
-  <Card title="Explore agents endpoints" icon="robot" href="/api-reference/endpoint/post-api-v1-agents-agentid-threads">
-    Start creating and controlling agent executions.
+<Columns cols={3}>
+  <Card title="Explore agents endpoints" icon="robot" href="/api-reference/endpoint/get-api-v1-agents">
+    Create, manage and run AI agents programmatically.
   </Card>
 
   <Card title="Explore assistants endpoints" icon="comments" href="/api-reference/endpoint/get-api-v1-assistants">
     Build conversational AI experiences powered by Devic.
+  </Card>
+
+  <Card title="Explore tool servers" icon="wrench" href="/api-reference/endpoint/get-api-v1-tool-servers">
+    Configure and manage tool servers and their tools.
   </Card>
 </Columns>
