@@ -26,6 +26,10 @@ The Devic API is ideal for backend automation, SaaS integrations and systems tha
     Create and manage tool servers with their tools, authentication, and test tool calls programmatically.
   </Card>
 
+  <Card title="Upload files" icon="file-arrow-up">
+    Upload files and attach them to assistant or agent messages with shareable download URLs.
+  </Card>
+
   <Card title="Monitor quality with evaluations" icon="scale-balanced">
     Score outputs, audit behaviour and receive structured feedback using Devic's evaluation engine.
   </Card>
@@ -66,12 +70,16 @@ The Devic API is divided into the following groups:
 - Test tool calls programmatically
 - Clone tool servers
 
+### **Files**
+- Upload files and receive shareable download URLs
+- Attach uploaded files to assistant or agent messages
+
 ### **Documentation**
 - List available docs
 - Retrieve rendered HTML or markdown
 
 ### **Health**
-- Basic availability checks  
+- Basic availability checks
 
 <Card title="View OpenAPI specification" icon="layers" href="/openapi.json">
   Download the OpenAPI specification used to generate this API reference.
@@ -190,7 +198,24 @@ Invalid or missing tokens return `401 Unauthorized`.
 
 ---
 
-### 4. Managing tool servers
+### 4. Uploading files
+
+1. **Upload a file**
+
+        POST /v1/files/upload
+
+2. **Use the download URL in a message**
+
+        POST /v1/assistants/{identifier}/messages
+        (include the downloadUrl in the files array)
+
+<Card title="Upload files" icon="file-arrow-up" href="/api-reference/endpoint/post-api-v1-files-upload">
+  Upload files and attach them to messages.
+</Card>
+
+---
+
+### 5. Managing tool servers
 
 1. **Create a tool server with tools**
 
