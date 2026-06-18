@@ -3096,7 +3096,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "Document reverted successfully",
             "content": {
               "application/json": {
@@ -3254,7 +3254,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Document attached successfully",
             "content": {
               "application/json": {
@@ -3314,7 +3314,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Document detached successfully",
             "content": {
               "application/json": {
@@ -3580,7 +3580,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Folder attached successfully",
             "content": {
               "application/json": {
@@ -3640,7 +3640,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Folder detached successfully",
             "content": {
               "application/json": {
