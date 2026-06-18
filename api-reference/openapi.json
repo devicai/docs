@@ -16,6 +16,18 @@
   },
   "tags": [
     {
+      "name": "Documents",
+      "description": "Knowledge base documents: create, version, attach and index markdown content for RAG"
+    },
+    {
+      "name": "Document Folders",
+      "description": "Organise knowledge base documents into folders and attach them in bulk"
+    },
+    {
+      "name": "Files",
+      "description": "Upload files and obtain shareable download URLs to attach to messages"
+    },
+    {
       "name": "Agents",
       "description": "Endpoints related to AI agents and their operations"
     },
@@ -56,6 +68,331 @@
       }
     },
     "schemas": {
+      "KnowledgeDocument": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Document ID"
+          },
+          "clientUID": {
+            "type": "string",
+            "description": "Client UID"
+          },
+          "projectId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Project ID the document is scoped to"
+          },
+          "name": {
+            "type": "string",
+            "description": "Document name"
+          },
+          "fileName": {
+            "type": "string",
+            "description": "File name (with extension)"
+          },
+          "fileType": {
+            "type": "string",
+            "enum": [
+              "md",
+              "pdf",
+              "txt",
+              "docx"
+            ],
+            "description": "File type"
+          },
+          "mimeType": {
+            "type": "string",
+            "description": "MIME type"
+          },
+          "size": {
+            "type": "integer",
+            "description": "File size in bytes"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "ready",
+              "failed"
+            ],
+            "description": "Processing / indexing status"
+          },
+          "markdownContent": {
+            "type": "string",
+            "description": "Markdown content (for markdown documents)"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Auto-generated summary"
+          },
+          "tokenCount": {
+            "type": "integer",
+            "description": "Token count"
+          },
+          "currentVersion": {
+            "type": "integer",
+            "description": "Current version number"
+          },
+          "folderId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Folder ID the document is filed in"
+          },
+          "parentDocumentId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Parent document ID (for subdocuments referenced via @ mentions)"
+          },
+          "createdByUserUID": {
+            "type": "string",
+            "description": "UID of the user that created the document"
+          },
+          "creationTimestampMs": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Creation timestamp (ms)"
+          },
+          "lastEditTimestampMs": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Last edit timestamp (ms)"
+          }
+        }
+      },
+      "PaginatedDocuments": {
+        "type": "object",
+        "properties": {
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KnowledgeDocument"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total number of documents matching the query"
+          }
+        }
+      },
+      "CreateMarkdownDocumentRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "markdownContent"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Document name (without extension)"
+          },
+          "markdownContent": {
+            "type": "string",
+            "description": "Markdown content to store and index for RAG"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Optional project ID to scope the document"
+          },
+          "parentDocumentId": {
+            "type": "string",
+            "description": "Optional parent document ID (for subdocuments referenced via @ mentions)"
+          },
+          "folderId": {
+            "type": "string",
+            "description": "Optional folder ID to file the document"
+          }
+        }
+      },
+      "UpdateDocumentRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Document name"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Document summary"
+          },
+          "markdownContent": {
+            "type": "string",
+            "description": "Markdown content (creates a new version when it changes)"
+          },
+          "projectId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Project ID (send null to unset)"
+          },
+          "parentDocumentId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Parent document ID (send null to unset)"
+          },
+          "folderId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Folder ID (send null to unset)"
+          }
+        }
+      },
+      "AttachDocumentRequest": {
+        "type": "object",
+        "required": [
+          "targetType",
+          "targetId"
+        ],
+        "properties": {
+          "targetType": {
+            "type": "string",
+            "enum": [
+              "agent",
+              "assistant"
+            ],
+            "description": "Type of entity to attach the document to"
+          },
+          "targetId": {
+            "type": "string",
+            "description": "ID of the agent or assistant"
+          }
+        }
+      },
+      "DocumentVersion": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer",
+            "description": "Version number"
+          },
+          "markdownContent": {
+            "type": "string",
+            "description": "Content at this version"
+          },
+          "createdAt": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Timestamp (ms)"
+          },
+          "changeType": {
+            "type": "string",
+            "description": "Type of change (created, updated, reverted)"
+          },
+          "changeDescription": {
+            "type": "string",
+            "description": "Human-readable change description"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Whether this is the active version"
+          }
+        }
+      },
+      "DocumentFolder": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Folder ID"
+          },
+          "clientUID": {
+            "type": "string",
+            "description": "Client UID"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project ID the folder is scoped to"
+          },
+          "name": {
+            "type": "string",
+            "description": "Folder name"
+          },
+          "parentFolderId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Parent folder ID"
+          },
+          "color": {
+            "type": "string",
+            "description": "Optional color tag"
+          }
+        }
+      },
+      "CreateFolderRequest": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Folder name"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Optional project ID"
+          },
+          "parentFolderId": {
+            "type": "string",
+            "description": "Optional parent folder ID"
+          },
+          "color": {
+            "type": "string",
+            "description": "Optional color tag"
+          }
+        }
+      },
+      "UpdateFolderRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Folder name"
+          },
+          "parentFolderId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Parent folder ID (send null to unset)"
+          },
+          "color": {
+            "type": "string",
+            "description": "Color tag"
+          }
+        }
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Whether the operation succeeded"
+          }
+        }
+      },
+      "FileUploadResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Uploaded file name"
+          },
+          "downloadUrl": {
+            "type": "string",
+            "description": "Shareable URL to download the uploaded file"
+          },
+          "fileType": {
+            "type": "string",
+            "enum": [
+              "image",
+              "document",
+              "audio",
+              "video",
+              "other"
+            ],
+            "description": "Detected file category"
+          }
+        }
+      },
       "ThreadStatus": {
         "type": "string",
         "enum": [
@@ -346,6 +683,134 @@
             "format": "date-time",
             "description": "Timestamp when the specialization was created"
           }
+        }
+      },
+      "CreateAssistantRequest": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string", "description": "Assistant name", "example": "Customer Support Assistant" },
+          "description": { "type": "string", "description": "Assistant description" },
+          "presets": { "type": "string", "description": "System prompt / instructions" },
+          "model": { "type": "string", "description": "Default LLM model" },
+          "provider": { "type": "string", "description": "Default LLM provider" },
+          "imgUrl": { "type": "string", "description": "Image URL for the assistant" },
+          "state": { "type": "string", "enum": ["active", "inactive", "coming_soon"], "description": "Assistant state" },
+          "availableToolsGroupsUids": { "type": "array", "items": { "type": "string" }, "description": "Tool group UIDs the assistant can use" },
+          "enabledTools": { "type": "array", "items": { "type": "string" }, "description": "Explicit subset of enabled tool names" },
+          "accessConfiguration": {
+            "type": "object",
+            "properties": {
+              "externalAccess": { "type": "boolean" },
+              "visibilityByRole": { "type": "array", "items": { "type": "string" } }
+            },
+            "description": "Access configuration"
+          },
+          "widgetConfiguration": {
+            "type": "object",
+            "properties": {
+              "enabled": { "type": "boolean" },
+              "sourcesWhiteList": { "type": "array", "items": { "type": "string" } },
+              "color": { "type": "string" },
+              "welcomeMessage": { "type": "string" }
+            },
+            "description": "Widget configuration"
+          },
+          "memoryDocuments": { "type": "array", "items": { "type": "object" }, "description": "Memory documents for RAG" },
+          "structuredOutput": { "type": "object", "description": "Structured output JSON schema configuration" },
+          "guardrailsConfiguration": {
+            "type": "object",
+            "properties": {
+              "enabled": { "type": "boolean" },
+              "guardrails": { "type": "object" }
+            },
+            "description": "Guardrails configuration"
+          },
+          "codeSnippetIds": { "type": "array", "items": { "type": "string" }, "description": "Code snippet IDs" },
+          "availableSkillIds": { "type": "array", "items": { "type": "string" }, "description": "Skill IDs the assistant can use" },
+          "subagentsIds": { "type": "array", "items": { "type": "string" }, "description": "Subagent IDs the assistant can invoke" },
+          "maxChatMessages": { "type": "integer", "description": "Maximum chat messages in context" },
+          "maxToolResponseInputTokens": { "type": "integer", "description": "Maximum input tokens for tool responses" }
+        }
+      },
+      "UpdateAssistantRequest": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "description": "Assistant name" },
+          "description": { "type": "string", "description": "Assistant description" },
+          "presets": { "type": "string", "description": "System prompt / instructions" },
+          "model": { "type": "string", "description": "Default LLM model" },
+          "provider": { "type": "string", "description": "Default LLM provider" },
+          "imgUrl": { "type": "string", "description": "Image URL for the assistant" },
+          "state": { "type": "string", "enum": ["active", "inactive", "coming_soon"], "description": "Assistant state" },
+          "availableToolsGroupsUids": { "type": "array", "items": { "type": "string" }, "description": "Tool group UIDs" },
+          "enabledTools": { "type": "array", "items": { "type": "string" }, "description": "Enabled tool names" },
+          "accessConfiguration": {
+            "type": "object",
+            "properties": {
+              "externalAccess": { "type": "boolean" },
+              "visibilityByRole": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "widgetConfiguration": {
+            "type": "object",
+            "properties": {
+              "enabled": { "type": "boolean" },
+              "sourcesWhiteList": { "type": "array", "items": { "type": "string" } },
+              "color": { "type": "string" },
+              "welcomeMessage": { "type": "string" }
+            }
+          },
+          "memoryDocuments": { "type": "array", "items": { "type": "object" } },
+          "structuredOutput": { "type": "object" },
+          "guardrailsConfiguration": {
+            "type": "object",
+            "properties": {
+              "enabled": { "type": "boolean" },
+              "guardrails": { "type": "object" }
+            }
+          },
+          "codeSnippetIds": { "type": "array", "items": { "type": "string" } },
+          "availableSkillIds": { "type": "array", "items": { "type": "string" } },
+          "subagentsIds": { "type": "array", "items": { "type": "string" } },
+          "maxChatMessages": { "type": "integer" },
+          "maxToolResponseInputTokens": { "type": "integer" }
+        }
+      },
+      "AssistantDetailResponse": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string", "description": "Assistant ID" },
+          "identifier": { "type": "string", "description": "Unique identifier" },
+          "name": { "type": "string", "description": "Assistant name" },
+          "description": { "type": "string", "description": "Assistant description" },
+          "presets": { "type": "string", "description": "System prompt / instructions" },
+          "model": { "type": "string", "description": "Default LLM model" },
+          "provider": { "type": "string", "description": "Default LLM provider" },
+          "imgUrl": { "type": "string", "description": "Image URL" },
+          "state": { "type": "string", "description": "Assistant state" },
+          "availableToolsGroupsUids": { "type": "array", "items": { "type": "string" } },
+          "enabledTools": { "type": "array", "items": { "type": "string" } },
+          "accessConfiguration": { "type": "object" },
+          "widgetConfiguration": { "type": "object" },
+          "memoryDocuments": { "type": "array", "items": { "type": "object" } },
+          "structuredOutput": { "type": "object" },
+          "guardrailsConfiguration": { "type": "object" },
+          "codeSnippetIds": { "type": "array", "items": { "type": "string" } },
+          "availableSkillIds": { "type": "array", "items": { "type": "string" } },
+          "subagentsIds": { "type": "array", "items": { "type": "string" } },
+          "maxChatMessages": { "type": "integer" },
+          "maxToolResponseInputTokens": { "type": "integer" },
+          "creationTimestampMs": { "type": "integer", "description": "Creation timestamp in milliseconds" },
+          "lastEditTimestampMs": { "type": "integer", "description": "Last edit timestamp in milliseconds" }
+        }
+      },
+      "DeleteAssistantResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "description": "Success status" },
+          "message": { "type": "string", "description": "Success or error message" },
+          "deletedId": { "type": "string", "description": "Deleted assistant ID" }
         }
       },
       "ChatMessage": {
@@ -1372,6 +1837,1137 @@
     }
   },
   "paths": {
+    "/v1/documents": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "List documents",
+        "description": "Lists knowledge base documents for the authenticated client, with optional filtering and pagination.",
+        "operationId": "listDocuments",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "required": false,
+            "description": "Filter by project ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Filter by status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "ready",
+                "failed"
+              ]
+            }
+          },
+          {
+            "name": "fileType",
+            "in": "query",
+            "required": false,
+            "description": "Filter by file type",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "md",
+                "pdf",
+                "txt",
+                "docx"
+              ]
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Free-text search in name and content",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "folderId",
+            "in": "query",
+            "required": false,
+            "description": "Filter by folder ID. Use \"none\" to return documents without a folder",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parentOnly",
+            "in": "query",
+            "required": false,
+            "description": "When true, only return root documents (no parent)",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of items to return",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Number of items to skip",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Documents retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedDocuments"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Create a markdown document",
+        "description": "Creates a markdown document and indexes its content for RAG. Optionally scope it to a project and/or file it inside a folder.",
+        "operationId": "createMarkdownDocument",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMarkdownDocumentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Document created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KnowledgeDocument"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/documents/graph": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Get document graph",
+        "description": "Returns the graph of links between documents (built from @ mentions), optionally scoped to a project.",
+        "operationId": "getDocumentGraph",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "required": false,
+            "description": "Scope the graph to a project",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Document graph",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Nodes and edges describing links between documents"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/documents/{id}": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Get a document by ID",
+        "description": "Retrieves a single document, including its current markdown content.",
+        "operationId": "getDocument",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Document ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Document details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KnowledgeDocument"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Update a document",
+        "description": "Updates a document. Changing the markdown content creates a new version and re-indexes the document.",
+        "operationId": "updateDocument",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Document ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDocumentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Document updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KnowledgeDocument"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Delete a document",
+        "description": "Deletes a document and removes it from the knowledge index.",
+        "operationId": "deleteDocument",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Document ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Document deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/documents/{id}/versions": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "List document versions",
+        "description": "Lists all stored versions for a document.",
+        "operationId": "listDocumentVersions",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Document ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Document versions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentVersion"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/documents/{id}/versions/{version}": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Get a document version",
+        "description": "Retrieves a specific version of a document.",
+        "operationId": "getDocumentVersion",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Document ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "description": "Version number",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Document version",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentVersion"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/documents/{id}/revert/{version}": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Revert a document to a previous version",
+        "description": "Reverts a document to a previous version, creating a new active version with that content and re-indexing it.",
+        "operationId": "revertDocumentVersion",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Document ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "description": "Target version number",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Document reverted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KnowledgeDocument"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/documents/{id}/subdocuments": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "List subdocuments",
+        "description": "Lists the subdocuments referenced from a document via @ mentions.",
+        "operationId": "listSubdocuments",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Document ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subdocuments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KnowledgeDocument"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/documents/{id}/usage": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Get document usage",
+        "description": "Returns which agents and assistants currently reference this document.",
+        "operationId": "getDocumentUsage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Document ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Document usage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Agents and assistants that reference the document"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/documents/{id}/attach": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Attach a document to an agent or assistant",
+        "description": "Attaches a document to an agent or assistant so it becomes part of its RAG knowledge.",
+        "operationId": "attachDocument",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Document ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AttachDocumentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Document attached successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/documents/{id}/detach": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Detach a document from an agent or assistant",
+        "description": "Detaches a document from an agent or assistant.",
+        "operationId": "detachDocument",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Document ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AttachDocumentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Document detached successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/document-folders": {
+      "get": {
+        "tags": [
+          "Document Folders"
+        ],
+        "summary": "List document folders",
+        "description": "Lists document folders for the authenticated client, optionally scoped to a project.",
+        "operationId": "listDocumentFolders",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "required": false,
+            "description": "Filter by project ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Folders retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentFolder"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Document Folders"
+        ],
+        "summary": "Create a document folder",
+        "description": "Creates a document folder to organise knowledge base documents.",
+        "operationId": "createDocumentFolder",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFolderRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Folder created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentFolder"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/document-folders/{id}": {
+      "patch": {
+        "tags": [
+          "Document Folders"
+        ],
+        "summary": "Update a document folder",
+        "description": "Updates a document folder.",
+        "operationId": "updateDocumentFolder",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Folder ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFolderRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Folder updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentFolder"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Document Folders"
+        ],
+        "summary": "Delete a document folder",
+        "description": "Deletes a folder. Pass deleteDocuments=true to also delete the documents it contains.",
+        "operationId": "deleteDocumentFolder",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Folder ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "deleteDocuments",
+            "in": "query",
+            "required": false,
+            "description": "When true, also delete the documents contained in the folder",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Folder deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/document-folders/{folderId}/attach": {
+      "post": {
+        "tags": [
+          "Document Folders"
+        ],
+        "summary": "Attach a folder to an agent or assistant",
+        "description": "Attaches a folder and all the documents it contains to an agent or assistant.",
+        "operationId": "attachDocumentFolder",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "folderId",
+            "in": "path",
+            "required": true,
+            "description": "Folder ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AttachDocumentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Folder attached successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/document-folders/{folderId}/detach": {
+      "post": {
+        "tags": [
+          "Document Folders"
+        ],
+        "summary": "Detach a folder from an agent or assistant",
+        "description": "Detaches a folder from an agent or assistant.",
+        "operationId": "detachDocumentFolder",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "folderId",
+            "in": "path",
+            "required": true,
+            "description": "Folder ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AttachDocumentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Folder detached successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/files/upload": {
+      "post": {
+        "tags": [
+          "Files"
+        ],
+        "summary": "Upload a file",
+        "description": "Uploads a file and returns a shareable download URL. Supports images, documents, audio and video up to 25MB. The returned downloadUrl can be included in the files array when sending a message to an assistant or agent.",
+        "operationId": "uploadFile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The file to upload (max 25MB)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "File uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileUploadResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/v1/agents/{agentId}/threads": {
       "post": {
         "tags": [
@@ -2446,6 +4042,34 @@
             "description": "Internal Server Error"
           }
         }
+      },
+      "post": {
+        "tags": ["Assistants"],
+        "summary": "Create a new assistant",
+        "description": "Creates a new assistant with the provided configuration.",
+        "operationId": "createAssistant",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateAssistantRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Assistant created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AssistantDetailResponse" }
+              }
+            }
+          },
+          "400": { "description": "Invalid request data" },
+          "401": { "description": "Unauthorized - Invalid or missing token" },
+          "500": { "description": "Internal Server Error" }
+        }
       }
     },
     "/v1/assistants/{identifier}": {
@@ -2495,6 +4119,73 @@
           "500": {
             "description": "Internal Server Error"
           }
+        }
+      },
+      "patch": {
+        "tags": ["Assistants"],
+        "summary": "Update an assistant",
+        "description": "Updates an existing assistant with the provided data. Supports partial updates.",
+        "operationId": "updateAssistant",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "The unique identifier of the assistant to update",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateAssistantRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Assistant updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AssistantDetailResponse" }
+              }
+            }
+          },
+          "400": { "description": "Invalid request data" },
+          "401": { "description": "Unauthorized - Invalid or missing token" },
+          "404": { "description": "Assistant not found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["Assistants"],
+        "summary": "Delete an assistant",
+        "description": "Deletes an assistant and its associated resources (RAG documents, internal API key).",
+        "operationId": "deleteAssistant",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "The unique identifier of the assistant to delete",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assistant deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DeleteAssistantResponse" }
+              }
+            }
+          },
+          "401": { "description": "Unauthorized - Invalid or missing token" },
+          "404": { "description": "Assistant not found" },
+          "500": { "description": "Internal Server Error" }
         }
       }
     },

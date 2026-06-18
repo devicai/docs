@@ -26,6 +26,14 @@ The Devic API is ideal for backend automation, SaaS integrations and systems tha
     Create and manage tool servers with their tools, authentication, and test tool calls programmatically.
   </Card>
 
+  <Card title="Build a knowledge base (RAG)" icon="book">
+    Create and version documents, organise them in folders, and attach them to agents or assistants so they are indexed for retrieval.
+  </Card>
+
+  <Card title="Upload files" icon="file-arrow-up">
+    Upload files and attach them to assistant or agent messages with shareable download URLs.
+  </Card>
+
   <Card title="Monitor quality with evaluations" icon="scale-balanced">
     Score outputs, audit behaviour and receive structured feedback using Devic's evaluation engine.
   </Card>
@@ -66,12 +74,22 @@ The Devic API is divided into the following groups:
 - Test tool calls programmatically
 - Clone tool servers
 
+### **Knowledge**
+- Create, version, update and delete documents
+- Organise documents into folders
+- Attach documents or folders to agents or assistants for RAG indexing
+- Inspect document usage, versions and link graph
+
+### **Files**
+- Upload files and receive shareable download URLs
+- Attach uploaded files to assistant or agent messages
+
 ### **Documentation**
 - List available docs
 - Retrieve rendered HTML or markdown
 
 ### **Health**
-- Basic availability checks  
+- Basic availability checks
 
 <Card title="View OpenAPI specification" icon="layers" href="/openapi.json">
   Download the OpenAPI specification used to generate this API reference.
@@ -190,7 +208,58 @@ Invalid or missing tokens return `401 Unauthorized`.
 
 ---
 
-### 4. Managing tool servers
+### 4. Uploading files
+
+1. **Upload a file**
+
+        POST /v1/files/upload
+
+2. **Use the download URL in a message**
+
+        POST /v1/assistants/{identifier}/messages
+        (include the downloadUrl in the files array)
+
+<Card title="Upload files" icon="file-arrow-up" href="/api-reference/endpoint/post-api-v1-files-upload">
+  Upload files and attach them to messages.
+</Card>
+
+---
+
+### 5. Building a knowledge base (RAG)
+
+1. **Create a document** (its content is indexed automatically)
+
+        POST /v1/documents
+
+2. **Attach it to an agent or assistant** so it is used for retrieval
+
+        POST /v1/documents/{id}/attach
+        (body: { "targetType": "agent" | "assistant", "targetId": "..." })
+
+3. **Organise and manage documents**
+
+        GET /v1/documents
+        PATCH /v1/documents/{id}
+        DELETE /v1/documents/{id}
+
+4. **Group documents in folders and attach them in bulk**
+
+        POST /v1/document-folders
+        POST /v1/document-folders/{folderId}/attach
+
+<Note>
+  `POST /v1/documents` indexes **markdown** content. To attach a binary file (PDF, DOCX…)
+  to a single message instead of the knowledge base, upload it with `POST /v1/files/upload`
+  and include the returned `downloadUrl` in the message `files` array.
+</Note>
+
+<Card title="Create your first document" icon="book" href="/api-reference/endpoint/post-api-v1-documents">
+  Add indexed knowledge to your agents and assistants.
+</Card>
+
+---
+
+### 6. Managing tool servers
 
 1. **Create a tool server with tools**
 

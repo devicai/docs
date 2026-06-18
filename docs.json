@@ -208,11 +208,44 @@
             "group": "Assistants",
             "pages": [
               "api-reference/endpoint/get-api-v1-assistants",
+              "api-reference/endpoint/post-api-v1-assistants",
               "api-reference/endpoint/get-api-v1-assistants-identifier",
+              "api-reference/endpoint/patch-api-v1-assistants-identifier",
+              "api-reference/endpoint/delete-api-v1-assistants-identifier",
               "api-reference/endpoint/post-api-v1-assistants-identifier-messages",
               "api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid",
               "api-reference/endpoint/get-api-v1-assistants-identifier-chats",
               "api-reference/endpoint/post-api-v1-assistants-chats"
+            ]
+          },
+          {
+            "group": "Knowledge",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-documents",
+              "api-reference/endpoint/post-api-v1-documents",
+              "api-reference/endpoint/get-api-v1-documents-id",
+              "api-reference/endpoint/patch-api-v1-documents-id",
+              "api-reference/endpoint/delete-api-v1-documents-id",
+              "api-reference/endpoint/get-api-v1-documents-graph",
+              "api-reference/endpoint/get-api-v1-documents-id-versions",
+              "api-reference/endpoint/get-api-v1-documents-id-versions-version",
+              "api-reference/endpoint/post-api-v1-documents-id-revert-version",
+              "api-reference/endpoint/get-api-v1-documents-id-subdocuments",
+              "api-reference/endpoint/get-api-v1-documents-id-usage",
+              "api-reference/endpoint/post-api-v1-documents-id-attach",
+              "api-reference/endpoint/post-api-v1-documents-id-detach",
+              "api-reference/endpoint/get-api-v1-document-folders",
+              "api-reference/endpoint/post-api-v1-document-folders",
+              "api-reference/endpoint/patch-api-v1-document-folders-id",
+              "api-reference/endpoint/delete-api-v1-document-folders-id",
+              "api-reference/endpoint/post-api-v1-document-folders-folderid-attach",
+              "api-reference/endpoint/post-api-v1-document-folders-folderid-detach"
+            ]
+          },
+          {
+            "group": "Files",
+            "pages": [
+              "api-reference/endpoint/post-api-v1-files-upload"
             ]
           },
           {
