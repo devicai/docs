@@ -219,6 +219,21 @@
             ]
           },
           {
+            "group": "Projects",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-projects",
+              "api-reference/endpoint/post-api-v1-projects",
+              "api-reference/endpoint/get-api-v1-projects-projectid",
+              "api-reference/endpoint/patch-api-v1-projects-projectid",
+              "api-reference/endpoint/delete-api-v1-projects-projectid",
+              "api-reference/endpoint/get-api-v1-projects-projectid-stats",
+              "api-reference/endpoint/get-api-v1-projects-projectid-threads",
+              "api-reference/endpoint/get-api-v1-projects-projectid-conversations",
+              "api-reference/endpoint/get-api-v1-projects-projectid-costs-daily",
+              "api-reference/endpoint/get-api-v1-projects-projectid-costs-monthly"
+            ]
+          },
+          {
             "group": "Knowledge",
             "pages": [
               "api-reference/endpoint/get-api-v1-documents",
