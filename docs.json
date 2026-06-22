@@ -234,6 +234,38 @@
             ]
           },
           {
+            "group": "Tenants",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-tenants",
+              "api-reference/endpoint/get-api-v1-tenants-tenantid",
+              "api-reference/endpoint/patch-api-v1-tenants-tenantid",
+              "api-reference/endpoint/delete-api-v1-tenants-tenantid",
+              "api-reference/endpoint/get-api-v1-tenants-tenantid-stats",
+              "api-reference/endpoint/get-api-v1-tenants-tenantid-costs",
+              "api-reference/endpoint/get-api-v1-tenants-tenantid-subtenants",
+              "api-reference/endpoint/get-api-v1-tenants-tenantid-subtenants-subtenantid"
+            ]
+          },
+          {
+            "group": "Tenant Usage",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-tenant-usage-tiers",
+              "api-reference/endpoint/get-api-v1-tenant-usage-tenantid",
+              "api-reference/endpoint/get-api-v1-tenant-usage-tenantid-history",
+              "api-reference/endpoint/get-api-v1-tenant-usage-tenantid-subtenants-subtenantid",
+              "api-reference/endpoint/get-api-v1-tenant-usage-tenantid-subtenants-subtenantid-history"
+            ]
+          },
+          {
+            "group": "Tenant Admin",
+            "pages": [
+              "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-usage-limits-reset",
+              "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-subtenants-subtenantid-usage-limits-reset",
+              "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-tier",
+              "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-subtenants-subtenantid-tier"
+            ]
+          },
+          {
             "group": "Knowledge",
             "pages": [
               "api-reference/endpoint/get-api-v1-documents",

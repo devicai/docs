@@ -72,6 +72,423 @@
       }
     },
     "schemas": {
+      "Tenant": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "Account-chosen identifier of the tenant"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "Logo URL (auto favicon of the corporate domain, or manual)"
+          },
+          "domain": {
+            "type": "string",
+            "description": "Corporate domain (auto-detected or manual)"
+          },
+          "source": {
+            "type": "string",
+            "description": "How the tenant was created (e.g. auto)"
+          },
+          "subtenantsCount": {
+            "type": "integer"
+          },
+          "firstSeenAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastSeenAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "TenantList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tenant"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
+      "Subtenant": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "subtenantId": {
+            "type": "string",
+            "description": "Identifier of the end user/entity inside the tenant"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "emailDomain": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "firstSeenAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastSeenAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SubtenantList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subtenant"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
+      "UpdateTenantRequest": {
+        "type": "object",
+        "description": "Editable tenant fields. Setting imageUrl or domain marks them manual and freezes the automatic favicon/domain detection.",
+        "properties": {
+          "displayName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "Overrides the auto-detected favicon (marks it manual)"
+          },
+          "domain": {
+            "type": "string",
+            "description": "Overrides domain auto-detection (marks it manual)"
+          }
+        }
+      },
+      "TenantStats": {
+        "type": "object",
+        "description": "Live chat/thread counts per assistant and per agent for a tenant (from the indexed tenantId, so they reflect full history).",
+        "properties": {
+          "byAssistant": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "assistantIdentifier": {
+                  "type": "string"
+                },
+                "chats": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "byAgent": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "agentId": {
+                  "type": "string"
+                },
+                "threads": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "totals": {
+            "type": "object",
+            "properties": {
+              "chats": {
+                "type": "integer"
+              },
+              "threads": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "LimitRule": {
+        "type": "object",
+        "description": "A usage-limit rule. scope=tenant caps the whole tenant; scope=subtenant with no id applies the same cap to EACH subtenant; scope=subtenant with subtenantId overrides one subtenant. The window is windowEvery x windowUnit.",
+        "properties": {
+          "scope": {
+            "type": "string",
+            "enum": [
+              "tenant",
+              "subtenant"
+            ]
+          },
+          "subtenantId": {
+            "type": "string"
+          },
+          "metric": {
+            "type": "string",
+            "enum": [
+              "tokens",
+              "cost"
+            ]
+          },
+          "windowUnit": {
+            "type": "string",
+            "enum": [
+              "hour",
+              "day",
+              "week",
+              "month"
+            ]
+          },
+          "windowEvery": {
+            "type": "integer",
+            "description": "Number of windowUnit per window (e.g. 3 hours)"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RuleUsage": {
+        "type": "object",
+        "description": "Live consumption for one applicable rule.",
+        "properties": {
+          "scope": {
+            "type": "string",
+            "enum": [
+              "tenant",
+              "subtenant"
+            ]
+          },
+          "subtenantId": {
+            "type": "string",
+            "nullable": true
+          },
+          "metric": {
+            "type": "string",
+            "enum": [
+              "tokens",
+              "cost"
+            ]
+          },
+          "windowUnit": {
+            "type": "string",
+            "enum": [
+              "hour",
+              "day",
+              "week",
+              "month"
+            ]
+          },
+          "windowEvery": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "current": {
+            "type": "number",
+            "description": "Consumption in the current window"
+          },
+          "percent": {
+            "type": "number"
+          },
+          "resetsAt": {
+            "type": "integer",
+            "description": "Epoch ms when the window resets"
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "tier",
+              "adhoc"
+            ]
+          },
+          "tierId": {
+            "type": "string"
+          }
+        }
+      },
+      "TenantUsage": {
+        "type": "object",
+        "properties": {
+          "tenantId": {
+            "type": "string"
+          },
+          "subtenantId": {
+            "type": "string",
+            "description": "Present only on the subtenant variant"
+          },
+          "tierId": {
+            "type": "string",
+            "nullable": true
+          },
+          "usage": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RuleUsage"
+            }
+          }
+        }
+      },
+      "Tier": {
+        "type": "object",
+        "description": "A reusable bundle of limit rules (a plan, e.g. free/pro/enterprise). Tenants reference a tier by tierId by live reference: editing the tier applies instantly to every tenant assigned to it.",
+        "properties": {
+          "tierId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LimitRule"
+            }
+          },
+          "excludedAssistants": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Assistants exempt from this tier's limits (by specialization identifier or _id) — neither counted nor blocked"
+          },
+          "excludedAgents": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Agents exempt from this tier's limits (by _id)"
+          },
+          "isDefault": {
+            "type": "boolean",
+            "description": "Applied to tenants without an explicit tierId"
+          }
+        }
+      },
+      "TenantUsageHistoryRow": {
+        "type": "object",
+        "description": "Durable snapshot of one closed usage window (the live counters are ephemeral).",
+        "properties": {
+          "tenantId": {
+            "type": "string"
+          },
+          "subtenantId": {
+            "type": "string",
+            "description": "Empty string for tenant-scope"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "tenant",
+              "subtenant"
+            ]
+          },
+          "metric": {
+            "type": "string",
+            "enum": [
+              "tokens",
+              "cost"
+            ]
+          },
+          "windowUnit": {
+            "type": "string",
+            "enum": [
+              "hour",
+              "day",
+              "week",
+              "month"
+            ]
+          },
+          "windowEvery": {
+            "type": "integer"
+          },
+          "windowStart": {
+            "type": "integer",
+            "description": "Epoch ms"
+          },
+          "windowEnd": {
+            "type": "integer",
+            "description": "Epoch ms"
+          },
+          "consumption": {
+            "type": "number",
+            "description": "Amount counted toward the limit"
+          },
+          "exemptConsumption": {
+            "type": "number",
+            "description": "Amount incurred by exempt entities (not counted toward the limit)"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "percent": {
+            "type": "number"
+          },
+          "tierId": {
+            "type": "string"
+          }
+        }
+      },
+      "ChangeTierRequest": {
+        "type": "object",
+        "required": [
+          "tierId"
+        ],
+        "properties": {
+          "tierId": {
+            "type": "string",
+            "description": "Tier (plan) to assign"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Free-text reason stored in the tier-change audit log"
+          },
+          "resetUsage": {
+            "type": "boolean",
+            "description": "Also reset usage counters on change"
+          }
+        }
+      },
       "Project": {
         "type": "object",
         "properties": {
@@ -657,6 +1074,14 @@
             "additionalProperties": true,
             "description": "Custom metadata to associate with the thread"
           },
+          "tenantId": {
+            "type": "string",
+            "description": "Tenant (customer/organization) this thread belongs to in multi-tenant setups. Auto-registers the tenant on first use and attributes its cost/usage. See the Tenants endpoints."
+          },
+          "subtenantId": {
+            "type": "string",
+            "description": "End user/entity inside the tenant. When omitted it is derived from metadata.subtenantMetadata.id or the legacy metadata.userId. Used for per-subtenant cost attribution and usage limits."
+          },
           "async": {
             "type": "boolean",
             "description": "Whether to execute the thread asynchronously",
@@ -1031,6 +1456,14 @@
             "type": "object",
             "additionalProperties": true,
             "description": "Custom metadata for this interaction"
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "Tenant (customer/organization) this conversation belongs to in multi-tenant setups. Auto-registers the tenant on first use and attributes its cost/usage. See the Tenants endpoints."
+          },
+          "subtenantId": {
+            "type": "string",
+            "description": "End user/entity inside the tenant. When omitted it is derived from metadata.subtenantMetadata.id or the legacy metadata.userId. Used for per-subtenant cost attribution and usage limits."
           }
         }
       },
@@ -1971,6 +2404,1126 @@
     }
   },
   "paths": {
+    "/v1/tenants": {
+      "get": {
+        "tags": [
+          "Tenants"
+        ],
+        "summary": "List tenants",
+        "description": "Lists the tenants of the authenticated account. Tenants are auto-registered the first time a message/thread carries their tenantId.",
+        "operationId": "listTenants",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Case-insensitive match on tenantId, displayName, email or domain",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Max items (default 50, capped at 200)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "description": "Items to skip (pagination)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tenants",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenantId}": {
+      "get": {
+        "tags": [
+          "Tenants"
+        ],
+        "summary": "Get a tenant",
+        "operationId": "getTenant",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tenant"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tenant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Tenants"
+        ],
+        "summary": "Update a tenant",
+        "description": "Updates editable tenant fields. Setting imageUrl or domain marks them manual and freezes auto-detection.",
+        "operationId": "updateTenant",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTenantRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tenant"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tenant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tenants"
+        ],
+        "summary": "Delete a tenant",
+        "description": "Deletes the tenant and all its subtenants.",
+        "operationId": "deleteTenant",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tenant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenantId}/stats": {
+      "get": {
+        "tags": [
+          "Tenants"
+        ],
+        "summary": "Get live tenant stats",
+        "description": "Live chat/thread counts per assistant and per agent, plus totals.",
+        "operationId": "getTenantStats",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tenant stats",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantStats"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tenant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenantId}/costs": {
+      "get": {
+        "tags": [
+          "Tenants"
+        ],
+        "summary": "Get tenant cost time series",
+        "description": "Cost series for a tenant (or a single subtenant), bucketed daily or monthly, with byAgent/byAssistant breakdowns.",
+        "operationId": "getTenantCosts",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "granularity",
+            "in": "query",
+            "required": false,
+            "description": "Bucketing of the series",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "daily",
+                "monthly"
+              ]
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "Start date (YYYY-MM-DD, or YYYY-MM for monthly)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "End date",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtenantId",
+            "in": "query",
+            "required": false,
+            "description": "Scope the series to a single subtenant",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cost documents",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tenant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenantId}/subtenants": {
+      "get": {
+        "tags": [
+          "Tenants"
+        ],
+        "summary": "List subtenants of a tenant",
+        "operationId": "listSubtenants",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Search filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Max items",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "description": "Items to skip",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of subtenants",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubtenantList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tenant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenantId}/subtenants/{subtenantId}": {
+      "get": {
+        "tags": [
+          "Tenants"
+        ],
+        "summary": "Get a subtenant",
+        "operationId": "getSubtenant",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtenantId",
+            "in": "path",
+            "required": true,
+            "description": "subtenantId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subtenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subtenant"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Subtenant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/tenant-usage/tiers": {
+      "get": {
+        "tags": [
+          "Tenant Usage"
+        ],
+        "summary": "List tiers (plans)",
+        "description": "Read-only. Lists the account's reusable tiers (plans) and their limit rules.",
+        "operationId": "listTiers",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tiers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Tier"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/tenant-usage/{tenantId}": {
+      "get": {
+        "tags": [
+          "Tenant Usage"
+        ],
+        "summary": "Get tenant usage & limits",
+        "description": "Read-only view of a tenant's current consumption against its applicable limit rules, plus its tier.",
+        "operationId": "getTenantUsage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tenant usage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantUsage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tenant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/tenant-usage/{tenantId}/history": {
+      "get": {
+        "tags": [
+          "Tenant Usage"
+        ],
+        "summary": "Get tenant usage history",
+        "description": "Read-only. Durable per-window usage snapshots for a tenant (the live counters are ephemeral).",
+        "operationId": "getTenantUsageHistory",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtenantId",
+            "in": "query",
+            "required": false,
+            "description": "Scope to a subtenant",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "required": false,
+            "description": "Filter by scope",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "tenant",
+                "subtenant"
+              ]
+            }
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "description": "Filter by metric",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "tokens",
+                "cost"
+              ]
+            }
+          },
+          {
+            "name": "windowUnit",
+            "in": "query",
+            "required": false,
+            "description": "Filter by window unit",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "hour",
+                "day",
+                "week",
+                "month"
+              ]
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "Range start (epoch ms)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "Range end (epoch ms)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Max items",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "description": "Items to skip",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usage history rows",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TenantUsageHistoryRow"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tenant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/tenant-usage/{tenantId}/subtenants/{subtenantId}": {
+      "get": {
+        "tags": [
+          "Tenant Usage"
+        ],
+        "summary": "Get subtenant usage & limits",
+        "description": "Read-only view of a subtenant's current consumption against its applicable limit rules, plus its tier.",
+        "operationId": "getSubtenantUsage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtenantId",
+            "in": "path",
+            "required": true,
+            "description": "subtenantId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subtenant usage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantUsage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Subtenant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/tenant-usage/{tenantId}/subtenants/{subtenantId}/history": {
+      "get": {
+        "tags": [
+          "Tenant Usage"
+        ],
+        "summary": "Get subtenant usage history",
+        "description": "Read-only. Durable per-window usage snapshots for a subtenant.",
+        "operationId": "getSubtenantUsageHistory",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtenantId",
+            "in": "path",
+            "required": true,
+            "description": "subtenantId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "description": "Filter by metric",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "tokens",
+                "cost"
+              ]
+            }
+          },
+          {
+            "name": "windowUnit",
+            "in": "query",
+            "required": false,
+            "description": "Filter by window unit",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "hour",
+                "day",
+                "week",
+                "month"
+              ]
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "Range start (epoch ms)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "Range end (epoch ms)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Max items",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "description": "Items to skip",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usage history rows",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TenantUsageHistoryRow"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Subtenant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/tenant-admin/{tenantId}/usage-limits/reset": {
+      "post": {
+        "tags": [
+          "Tenant Admin"
+        ],
+        "summary": "Reset tenant usage counters",
+        "description": "Admin action (full API keys only — devic-ui restricted keys are blocked at the gateway). Clears the realtime usage counters so consumption restarts from zero.",
+        "operationId": "resetTenantUsage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtenantId",
+            "in": "query",
+            "required": false,
+            "description": "Optionally scope the reset to a subtenant",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reset result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "403": {
+            "description": "Forbidden - key not allowed on /tenant-admin"
+          },
+          "404": {
+            "description": "Tenant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/tenant-admin/{tenantId}/subtenants/{subtenantId}/usage-limits/reset": {
+      "post": {
+        "tags": [
+          "Tenant Admin"
+        ],
+        "summary": "Reset subtenant usage counters",
+        "description": "Admin action (full API keys only). Clears the realtime usage counters for a subtenant.",
+        "operationId": "resetSubtenantUsage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtenantId",
+            "in": "path",
+            "required": true,
+            "description": "subtenantId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reset result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "403": {
+            "description": "Forbidden - key not allowed on /tenant-admin"
+          },
+          "404": {
+            "description": "Subtenant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/tenant-admin/{tenantId}/tier": {
+      "post": {
+        "tags": [
+          "Tenant Admin"
+        ],
+        "summary": "Change a tenant's tier (plan)",
+        "description": "Admin action (full API keys only) — typically called from a checkout/upgrade webhook. Assignment is by live reference (the tenant stores the tierId); the change is recorded with source webhook.",
+        "operationId": "changeTenantTier",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeTierRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Change result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "403": {
+            "description": "Forbidden - key not allowed on /tenant-admin"
+          },
+          "404": {
+            "description": "Tenant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/tenant-admin/{tenantId}/subtenants/{subtenantId}/tier": {
+      "post": {
+        "tags": [
+          "Tenant Admin"
+        ],
+        "summary": "Change a subtenant's tier (plan)",
+        "description": "Admin action (full API keys only). Assigns a tier to a specific subtenant (by live reference).",
+        "operationId": "changeSubtenantTier",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtenantId",
+            "in": "path",
+            "required": true,
+            "description": "subtenantId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeTierRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Change result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "403": {
+            "description": "Forbidden - key not allowed on /tenant-admin"
+          },
+          "404": {
+            "description": "Subtenant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/v1/projects": {
       "get": {
         "tags": [
