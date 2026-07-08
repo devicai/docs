@@ -6690,6 +6690,24 @@
               "default": 0,
               "minimum": 0
             }
+          },
+          {
+            "name": "tenantId",
+            "in": "query",
+            "required": false,
+            "description": "Filter chat histories by tenant ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtenantId",
+            "in": "query",
+            "required": false,
+            "description": "Filter chat histories by subtenant ID (end user/entity inside a tenant)",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
