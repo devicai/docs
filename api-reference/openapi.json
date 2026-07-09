@@ -1289,7 +1289,15 @@
           "availableSkillIds": { "type": "array", "items": { "type": "string" }, "description": "Skill IDs the assistant can use" },
           "subagentsIds": { "type": "array", "items": { "type": "string" }, "description": "Subagent IDs the assistant can invoke" },
           "maxChatMessages": { "type": "integer", "description": "Maximum chat messages in context" },
-          "maxToolResponseInputTokens": { "type": "integer", "description": "Maximum input tokens for tool responses" }
+          "maxToolResponseInputTokens": { "type": "integer", "description": "Maximum input tokens for tool responses" },
+          "contextManagement": {
+            "type": "object",
+            "properties": {
+              "fullContextTurnDepth": { "type": "integer", "description": "Number of most-recent turns sent to the model in full; older turns are replaced by their summary. 0 or omitted disables compression." },
+              "alwaysIncludeUserMessages": { "type": "boolean", "description": "When true, user messages are always sent in full regardless of depth." }
+            },
+            "description": "Context depth control: summarize older turns to reduce the token footprint sent to the model."
+          }
         }
       },
       "UpdateAssistantRequest": {
@@ -1333,7 +1341,15 @@
           "availableSkillIds": { "type": "array", "items": { "type": "string" } },
           "subagentsIds": { "type": "array", "items": { "type": "string" } },
           "maxChatMessages": { "type": "integer" },
-          "maxToolResponseInputTokens": { "type": "integer" }
+          "maxToolResponseInputTokens": { "type": "integer" },
+          "contextManagement": {
+            "type": "object",
+            "properties": {
+              "fullContextTurnDepth": { "type": "integer", "description": "Number of most-recent turns sent to the model in full; older turns are replaced by their summary. 0 or omitted disables compression." },
+              "alwaysIncludeUserMessages": { "type": "boolean", "description": "When true, user messages are always sent in full regardless of depth." }
+            },
+            "description": "Context depth control: summarize older turns to reduce the token footprint sent to the model."
+          }
         }
       },
       "AssistantDetailResponse": {
@@ -1360,6 +1376,14 @@
           "subagentsIds": { "type": "array", "items": { "type": "string" } },
           "maxChatMessages": { "type": "integer" },
           "maxToolResponseInputTokens": { "type": "integer" },
+          "contextManagement": {
+            "type": "object",
+            "properties": {
+              "fullContextTurnDepth": { "type": "integer", "description": "Number of most-recent turns sent to the model in full; older turns are replaced by their summary. 0 or omitted disables compression." },
+              "alwaysIncludeUserMessages": { "type": "boolean", "description": "When true, user messages are always sent in full regardless of depth." }
+            },
+            "description": "Context depth control: summarize older turns to reduce the token footprint sent to the model."
+          },
           "creationTimestampMs": { "type": "integer", "description": "Creation timestamp in milliseconds" },
           "lastEditTimestampMs": { "type": "integer", "description": "Last edit timestamp in milliseconds" }
         }
@@ -1635,6 +1659,14 @@
           "maxToolResponseInputTokens": {
             "type": "integer",
             "description": "Maximum input tokens for tool responses"
+          },
+          "contextManagement": {
+            "type": "object",
+            "properties": {
+              "fullContextTurnDepth": { "type": "integer", "description": "Number of most-recent turns sent to the model in full; older turns are replaced by their summary. 0 or omitted disables compression." },
+              "alwaysIncludeUserMessages": { "type": "boolean", "description": "When true, user messages are always sent in full regardless of depth." }
+            },
+            "description": "Context depth control: summarize older turns to reduce the token footprint sent to the model."
           }
         }
       },
