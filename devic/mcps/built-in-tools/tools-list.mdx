@@ -46,6 +46,38 @@ Executes code in different languages directly from Devic (currently Python).
 
 ---
 
+## Terminal Sandbox
+
+Gives the assistant or agent an isolated Linux machine where it can **run code and shell commands**. This is the tool group to add when a skill or a task requires executing something — installing a package, running a Node or Python script, building a file — rather than just reasoning about it.
+
+- **Available tools:**
+  - `create_terminal_sandbox`, `run_terminal_command`, `stop_terminal_sandbox`, `get_sandbox_status`, `extend_sandbox_timeout`
+  - Files: `write_sandbox_file`, `read_sandbox_file`, `list_sandbox_files`, `create_sandbox_directory`
+  - Transfers: `download_sandbox_file` (returns a shareable URL), `upload_file_to_sandbox`
+  - Serving: `get_sandbox_public_url`
+- **Runtimes:** Node.js and Python, with full shell access.
+- **Recommended use:**
+  - Generating files (documents, presentations, spreadsheets) with code.
+  - Running scripts a skill defines.
+  - Anything that needs real execution and a filesystem.
+
+<Note>
+Sandboxes are ephemeral: files are lost when the sandbox stops unless snapshots are enabled. To hand a generated file to the user or to another step, get a URL with `download_sandbox_file`.
+</Note>
+
+---
+
+## Browser Sandbox
+
+Browses the web with a real headless Chromium inside a sandbox, when reading a page is not enough and the assistant needs to interact with it.
+
+- **Available tools:** `create_browser_session`, `browser_navigate`, `browser_observe`, `browser_action`, `browser_get_element`, `close_browser_session`
+- **Recommended use:**
+  - Sites that require clicking, typing or scrolling to reach the content.
+  - Visual checks through screenshots.
+
+---
+
 ## Search Knowledge
 
 Searches for relevant information within internal knowledge bases.
@@ -53,6 +85,18 @@ Searches for relevant information within internal knowledge bases.
 - **Tool:** `retrieve_from_rag_in_file`
 
 This tool only works if at least one document has been added.
+
+---
+
+## Advanced Knowledge Search
+
+Explores the knowledge base like a filesystem instead of only searching it semantically. **Required for skills**: it is what lets a model open a skill's instructions on demand.
+
+- **Available tools:** `list_knowledge_directory`, `read_knowledge_document`, `grep_knowledge`, `search_knowledge`
+- **Recommended use:**
+  - Attaching skills (without this group their full text is injected into the system prompt on every run).
+  - Browsing folders and reading specific documents by id.
+  - Searching exact text patterns across the knowledge base.
 
 ---
 
@@ -125,6 +169,25 @@ Generates PDF files from Markdown text.
 
 ---
 
+## Image Generation
+
+Generates images from a text prompt.
+
+- **Tool:** `generate_image`
+- **Recommended use:**
+  - Illustrations or visual assets for a document or a presentation.
+
+---
+
+## Image Viewer (vision)
+
+Loads an image into the model's visual context so it can actually look at it.
+
+- **Tool:** `view_image`
+- **Note:** this group is **added automatically** for models that support vision — you do not need to assign it.
+
+---
+
 ## Chart Images
 
 Generates visual charts from structured data.
@@ -169,6 +232,52 @@ Allows agents to access the context of previous interactions.
 
 - **Tools:**
   - `get_agent_threads_summary`, `query_agent_thread_details`
+
+---
+
+## Group IDs for the API and the CLI
+
+In the dashboard you pick these groups from a list. Over the API or the CLI you
+reference them by **UID**, inside `availableToolsGroupsUids` — the same flat array
+that also holds your own MCP servers' ids:
+
+```json
+{
+  "availableToolsGroupsUids": [
+    "f8a3c1d0-5e2b-4a9f-8c7d-6b5e4f3a2c1d",
+    "f7a2c841-3b9e-4d5f-a1c8-92e7d4b06f13"
+  ]
+}
+```
+
+| Group | UID |
+|---|---|
+| Search knowledge | `c0930948-219d-42a7-92d5-ad597acb77a7` |
+| Advanced Knowledge Search | `f7a2c841-3b9e-4d5f-a1c8-92e7d4b06f13` |
+| Web Search | `1d063a05-b8c3-42b9-89ca-4ed2e3b174bf` |
+| Read emails | `c4bf8a70-2ee7-40c2-8428-22fd6fc8f476` |
+| Send email | `2492c61d-38ef-4e24-b110-cba113d203cb` |
+| Databases | `1ea39541-e1f2-482c-b268-c2c6811f3f0a` |
+| Terminal Sandbox | `f8a3c1d0-5e2b-4a9f-8c7d-6b5e4f3a2c1d` |
+| Browser Sandbox | `a7b2c3d4-e5f6-4a8b-9c0d-1e2f3a4b5c6d` |
+| OCR | `0c3b1c25-b1d6-4cd2-a34a-e7f73ddd64dc` |
+| Image Generation | `9b7f024a-2b99-4e99-85f5-2d06f4b9cad7` |
+| Image Viewer (vision) | `e298822e-2643-40dc-96c6-e4ac78c36df1` |
+| PDF from Markdown | `24217810-72f7-4f82-aadc-c660f4f9f1ab` |
+| PDF from HTML | `7df63d5c-f3e1-4030-9d79-502974781bbc` |
+| Chart Images | `d6619437-f962-4d86-9283-906381641eaa` |
+| Spreadsheet Tools | `8d100ced-0121-49a4-8a13-b9f2474ea844` |
+| Short and Medium Term Memory | `a2fa4767-d86e-4486-87b0-4680880b8868` |
+
+For an agent the field lives inside `assistantSpecialization`; for an assistant it
+sits at the root. Adding a group grants every tool it contains — narrow it down
+with `enabledTools` if you only want some.
+
+<Note>
+This table lists the groups you can assign today. Availability can differ by
+account and by plan, so if a group described above is not offered in your
+dashboard, it is not enabled for you — check there before wiring its UID.
+</Note>
 
 ---
 
