@@ -7,7 +7,10 @@
     "light": "#6F8EFF",
     "dark": "#2C3A8C"
   },
-  "favicon": "/favicon.svg",
+  "favicon": {
+    "light": "/favicon.svg",
+    "dark": "/favicon.svg"
+  },
   "modeToggle": {
     "default": "light",
     "isHidden": true
@@ -316,7 +319,8 @@
   "logo": {
     "light": "/logo/devic-light.svg",
     "dark": "/logo/devic-dark.svg",
-    "height": "28px"
+    "height": "28px",
+    "href": "https://app.devic.ai/"
   },
   "navbar": {
     "links": [
@@ -345,9 +349,18 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/devic_ai",
+      "github": "https://github.com/devicai",
+      "linkedin": "https://www.linkedin.com/company/devicai"
+    }
+  },
+  "description": "Turn your SaaS AI-native with Devic. Build, deploy, and operate agents, assistants, MCP tools, RAG, and AI workflows from one platform.",
+  "thumbnails": {
+    "background": "/images/images.png"
+  },
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-8K836ZN854"
     }
   }
 }
