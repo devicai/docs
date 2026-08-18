@@ -1246,55 +1246,157 @@
       },
       "CreateAssistantRequest": {
         "type": "object",
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "properties": {
-          "name": { "type": "string", "description": "Assistant name", "example": "Customer Support Assistant" },
-          "description": { "type": "string", "description": "Assistant description" },
-          "presets": { "type": "string", "description": "System prompt / instructions" },
-          "model": { "type": "string", "description": "Default LLM model" },
-          "provider": { "type": "string", "description": "Default LLM provider" },
-          "imgUrl": { "type": "string", "description": "Image URL for the assistant" },
-          "state": { "type": "string", "enum": ["active", "inactive", "coming_soon"], "description": "Assistant state" },
-          "availableToolsGroupsUids": { "type": "array", "items": { "type": "string" }, "description": "Tool group UIDs the assistant can use" },
-          "enabledTools": { "type": "array", "items": { "type": "string" }, "description": "Explicit subset of enabled tool names" },
+          "name": {
+            "type": "string",
+            "description": "Assistant name",
+            "example": "Customer Support Assistant"
+          },
+          "description": {
+            "type": "string",
+            "description": "Assistant description"
+          },
+          "presets": {
+            "type": "string",
+            "description": "System prompt / instructions"
+          },
+          "model": {
+            "type": "string",
+            "description": "Default LLM model"
+          },
+          "provider": {
+            "type": "string",
+            "description": "Default LLM provider"
+          },
+          "imgUrl": {
+            "type": "string",
+            "description": "Image URL for the assistant"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive",
+              "coming_soon"
+            ],
+            "description": "Assistant state"
+          },
+          "availableToolsGroupsUids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tool group UIDs the assistant can use"
+          },
+          "enabledTools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Explicit subset of enabled tool names"
+          },
           "accessConfiguration": {
             "type": "object",
             "properties": {
-              "externalAccess": { "type": "boolean" },
-              "visibilityByRole": { "type": "array", "items": { "type": "string" } }
+              "externalAccess": {
+                "type": "boolean"
+              },
+              "visibilityByRole": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
             },
             "description": "Access configuration"
           },
           "widgetConfiguration": {
             "type": "object",
             "properties": {
-              "enabled": { "type": "boolean" },
-              "sourcesWhiteList": { "type": "array", "items": { "type": "string" } },
-              "color": { "type": "string" },
-              "welcomeMessage": { "type": "string" }
+              "enabled": {
+                "type": "boolean"
+              },
+              "sourcesWhiteList": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "color": {
+                "type": "string"
+              },
+              "welcomeMessage": {
+                "type": "string"
+              }
             },
             "description": "Widget configuration"
           },
-          "memoryDocuments": { "type": "array", "items": { "type": "object" }, "description": "Memory documents for RAG" },
-          "structuredOutput": { "type": "object", "description": "Structured output JSON schema configuration" },
+          "memoryDocuments": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Memory documents for RAG"
+          },
+          "structuredOutput": {
+            "type": "object",
+            "description": "Structured output JSON schema configuration"
+          },
           "guardrailsConfiguration": {
             "type": "object",
             "properties": {
-              "enabled": { "type": "boolean" },
-              "guardrails": { "type": "object" }
+              "enabled": {
+                "type": "boolean"
+              },
+              "guardrails": {
+                "type": "object"
+              }
             },
             "description": "Guardrails configuration"
           },
-          "codeSnippetIds": { "type": "array", "items": { "type": "string" }, "description": "Code snippet IDs" },
-          "availableSkillIds": { "type": "array", "items": { "type": "string" }, "description": "Skill IDs the assistant can use" },
-          "subagentsIds": { "type": "array", "items": { "type": "string" }, "description": "Subagent IDs the assistant can invoke" },
-          "maxChatMessages": { "type": "integer", "description": "Maximum chat messages in context" },
-          "maxToolResponseInputTokens": { "type": "integer", "description": "Maximum input tokens for tool responses" },
+          "codeSnippetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Code snippet IDs"
+          },
+          "availableSkillIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Skill IDs the assistant can use"
+          },
+          "subagentsIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Subagent IDs the assistant can invoke"
+          },
+          "maxChatMessages": {
+            "type": "integer",
+            "description": "Maximum chat messages in context"
+          },
+          "maxToolResponseInputTokens": {
+            "type": "integer",
+            "description": "Maximum input tokens for tool responses"
+          },
           "contextManagement": {
             "type": "object",
             "properties": {
-              "fullContextTurnDepth": { "type": "integer", "description": "Number of most-recent turns sent to the model in full; older turns are replaced by their summary. 0 or omitted disables compression." },
-              "alwaysIncludeUserMessages": { "type": "boolean", "description": "When true, user messages are always sent in full regardless of depth." }
+              "fullContextTurnDepth": {
+                "type": "integer",
+                "description": "Number of most-recent turns sent to the model in full; older turns are replaced by their summary. 0 or omitted disables compression."
+              },
+              "alwaysIncludeUserMessages": {
+                "type": "boolean",
+                "description": "When true, user messages are always sent in full regardless of depth."
+              }
             },
             "description": "Context depth control: summarize older turns to reduce the token footprint sent to the model."
           }
@@ -1303,50 +1405,142 @@
       "UpdateAssistantRequest": {
         "type": "object",
         "properties": {
-          "name": { "type": "string", "description": "Assistant name" },
-          "description": { "type": "string", "description": "Assistant description" },
-          "presets": { "type": "string", "description": "System prompt / instructions" },
-          "model": { "type": "string", "description": "Default LLM model" },
-          "provider": { "type": "string", "description": "Default LLM provider" },
-          "imgUrl": { "type": "string", "description": "Image URL for the assistant" },
-          "state": { "type": "string", "enum": ["active", "inactive", "coming_soon"], "description": "Assistant state" },
-          "availableToolsGroupsUids": { "type": "array", "items": { "type": "string" }, "description": "Tool group UIDs" },
-          "enabledTools": { "type": "array", "items": { "type": "string" }, "description": "Enabled tool names" },
+          "name": {
+            "type": "string",
+            "description": "Assistant name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Assistant description"
+          },
+          "presets": {
+            "type": "string",
+            "description": "System prompt / instructions"
+          },
+          "model": {
+            "type": "string",
+            "description": "Default LLM model"
+          },
+          "provider": {
+            "type": "string",
+            "description": "Default LLM provider"
+          },
+          "imgUrl": {
+            "type": "string",
+            "description": "Image URL for the assistant"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive",
+              "coming_soon"
+            ],
+            "description": "Assistant state"
+          },
+          "availableToolsGroupsUids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tool group UIDs"
+          },
+          "enabledTools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Enabled tool names"
+          },
           "accessConfiguration": {
             "type": "object",
             "properties": {
-              "externalAccess": { "type": "boolean" },
-              "visibilityByRole": { "type": "array", "items": { "type": "string" } }
+              "externalAccess": {
+                "type": "boolean"
+              },
+              "visibilityByRole": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
             }
           },
           "widgetConfiguration": {
             "type": "object",
             "properties": {
-              "enabled": { "type": "boolean" },
-              "sourcesWhiteList": { "type": "array", "items": { "type": "string" } },
-              "color": { "type": "string" },
-              "welcomeMessage": { "type": "string" }
+              "enabled": {
+                "type": "boolean"
+              },
+              "sourcesWhiteList": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "color": {
+                "type": "string"
+              },
+              "welcomeMessage": {
+                "type": "string"
+              }
             }
           },
-          "memoryDocuments": { "type": "array", "items": { "type": "object" } },
-          "structuredOutput": { "type": "object" },
+          "memoryDocuments": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "structuredOutput": {
+            "type": "object"
+          },
           "guardrailsConfiguration": {
             "type": "object",
             "properties": {
-              "enabled": { "type": "boolean" },
-              "guardrails": { "type": "object" }
+              "enabled": {
+                "type": "boolean"
+              },
+              "guardrails": {
+                "type": "object"
+              }
             }
           },
-          "codeSnippetIds": { "type": "array", "items": { "type": "string" } },
-          "availableSkillIds": { "type": "array", "items": { "type": "string" } },
-          "subagentsIds": { "type": "array", "items": { "type": "string" } },
-          "maxChatMessages": { "type": "integer" },
-          "maxToolResponseInputTokens": { "type": "integer" },
+          "codeSnippetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "availableSkillIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "subagentsIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "maxChatMessages": {
+            "type": "integer"
+          },
+          "maxToolResponseInputTokens": {
+            "type": "integer"
+          },
           "contextManagement": {
             "type": "object",
             "properties": {
-              "fullContextTurnDepth": { "type": "integer", "description": "Number of most-recent turns sent to the model in full; older turns are replaced by their summary. 0 or omitted disables compression." },
-              "alwaysIncludeUserMessages": { "type": "boolean", "description": "When true, user messages are always sent in full regardless of depth." }
+              "fullContextTurnDepth": {
+                "type": "integer",
+                "description": "Number of most-recent turns sent to the model in full; older turns are replaced by their summary. 0 or omitted disables compression."
+              },
+              "alwaysIncludeUserMessages": {
+                "type": "boolean",
+                "description": "When true, user messages are always sent in full regardless of depth."
+              }
             },
             "description": "Context depth control: summarize older turns to reduce the token footprint sent to the model."
           }
@@ -1355,45 +1549,135 @@
       "AssistantDetailResponse": {
         "type": "object",
         "properties": {
-          "_id": { "type": "string", "description": "Assistant ID" },
-          "identifier": { "type": "string", "description": "Unique identifier" },
-          "name": { "type": "string", "description": "Assistant name" },
-          "description": { "type": "string", "description": "Assistant description" },
-          "presets": { "type": "string", "description": "System prompt / instructions" },
-          "model": { "type": "string", "description": "Default LLM model" },
-          "provider": { "type": "string", "description": "Default LLM provider" },
-          "imgUrl": { "type": "string", "description": "Image URL" },
-          "state": { "type": "string", "description": "Assistant state" },
-          "availableToolsGroupsUids": { "type": "array", "items": { "type": "string" } },
-          "enabledTools": { "type": "array", "items": { "type": "string" } },
-          "accessConfiguration": { "type": "object" },
-          "widgetConfiguration": { "type": "object" },
-          "memoryDocuments": { "type": "array", "items": { "type": "object" } },
-          "structuredOutput": { "type": "object" },
-          "guardrailsConfiguration": { "type": "object" },
-          "codeSnippetIds": { "type": "array", "items": { "type": "string" } },
-          "availableSkillIds": { "type": "array", "items": { "type": "string" } },
-          "subagentsIds": { "type": "array", "items": { "type": "string" } },
-          "maxChatMessages": { "type": "integer" },
-          "maxToolResponseInputTokens": { "type": "integer" },
+          "_id": {
+            "type": "string",
+            "description": "Assistant ID"
+          },
+          "identifier": {
+            "type": "string",
+            "description": "Unique identifier"
+          },
+          "name": {
+            "type": "string",
+            "description": "Assistant name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Assistant description"
+          },
+          "presets": {
+            "type": "string",
+            "description": "System prompt / instructions"
+          },
+          "model": {
+            "type": "string",
+            "description": "Default LLM model"
+          },
+          "provider": {
+            "type": "string",
+            "description": "Default LLM provider"
+          },
+          "imgUrl": {
+            "type": "string",
+            "description": "Image URL"
+          },
+          "state": {
+            "type": "string",
+            "description": "Assistant state"
+          },
+          "availableToolsGroupsUids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "enabledTools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "accessConfiguration": {
+            "type": "object"
+          },
+          "widgetConfiguration": {
+            "type": "object"
+          },
+          "memoryDocuments": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "structuredOutput": {
+            "type": "object"
+          },
+          "guardrailsConfiguration": {
+            "type": "object"
+          },
+          "codeSnippetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "availableSkillIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "subagentsIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "maxChatMessages": {
+            "type": "integer"
+          },
+          "maxToolResponseInputTokens": {
+            "type": "integer"
+          },
           "contextManagement": {
             "type": "object",
             "properties": {
-              "fullContextTurnDepth": { "type": "integer", "description": "Number of most-recent turns sent to the model in full; older turns are replaced by their summary. 0 or omitted disables compression." },
-              "alwaysIncludeUserMessages": { "type": "boolean", "description": "When true, user messages are always sent in full regardless of depth." }
+              "fullContextTurnDepth": {
+                "type": "integer",
+                "description": "Number of most-recent turns sent to the model in full; older turns are replaced by their summary. 0 or omitted disables compression."
+              },
+              "alwaysIncludeUserMessages": {
+                "type": "boolean",
+                "description": "When true, user messages are always sent in full regardless of depth."
+              }
             },
             "description": "Context depth control: summarize older turns to reduce the token footprint sent to the model."
           },
-          "creationTimestampMs": { "type": "integer", "description": "Creation timestamp in milliseconds" },
-          "lastEditTimestampMs": { "type": "integer", "description": "Last edit timestamp in milliseconds" }
+          "creationTimestampMs": {
+            "type": "integer",
+            "description": "Creation timestamp in milliseconds"
+          },
+          "lastEditTimestampMs": {
+            "type": "integer",
+            "description": "Last edit timestamp in milliseconds"
+          }
         }
       },
       "DeleteAssistantResponse": {
         "type": "object",
         "properties": {
-          "success": { "type": "boolean", "description": "Success status" },
-          "message": { "type": "string", "description": "Success or error message" },
-          "deletedId": { "type": "string", "description": "Deleted assistant ID" }
+          "success": {
+            "type": "boolean",
+            "description": "Success status"
+          },
+          "message": {
+            "type": "string",
+            "description": "Success or error message"
+          },
+          "deletedId": {
+            "type": "string",
+            "description": "Deleted assistant ID"
+          }
         }
       },
       "ChatMessage": {
@@ -1617,12 +1901,16 @@
           },
           "availableToolsGroupsUids": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "Tool group UIDs the agent can use"
           },
           "enabledTools": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "Explicit subset of enabled tool names"
           },
           "model": {
@@ -1639,17 +1927,23 @@
           },
           "codeSnippetIds": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "Code snippet IDs available to the agent"
           },
           "availableSkillIds": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "Skill IDs the agent can mount"
           },
           "subagentsIds": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "Subagent IDs the agent can invoke"
           },
           "maxChatMessages": {
@@ -1663,8 +1957,14 @@
           "contextManagement": {
             "type": "object",
             "properties": {
-              "fullContextTurnDepth": { "type": "integer", "description": "Number of most-recent turns sent to the model in full; older turns are replaced by their summary. 0 or omitted disables compression." },
-              "alwaysIncludeUserMessages": { "type": "boolean", "description": "When true, user messages are always sent in full regardless of depth." }
+              "fullContextTurnDepth": {
+                "type": "integer",
+                "description": "Number of most-recent turns sent to the model in full; older turns are replaced by their summary. 0 or omitted disables compression."
+              },
+              "alwaysIncludeUserMessages": {
+                "type": "boolean",
+                "description": "When true, user messages are always sent in full regardless of depth."
+              }
             },
             "description": "Context depth control: summarize older turns to reduce the token footprint sent to the model."
           }
@@ -1672,7 +1972,9 @@
       },
       "CreateAgentRequest": {
         "type": "object",
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -1721,18 +2023,41 @@
           "agentNotificationConfig": {
             "type": "object",
             "properties": {
-              "enabled": { "type": "boolean" },
-              "enableEmailNotification": { "type": "boolean" },
-              "notifiedEmails": { "type": "array", "items": { "type": "string" } },
-              "approvalEmails": { "type": "array", "items": { "type": "string" } }
+              "enabled": {
+                "type": "boolean"
+              },
+              "enableEmailNotification": {
+                "type": "boolean"
+              },
+              "notifiedEmails": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "approvalEmails": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
             }
           },
           "evaluationConfig": {
             "type": "object",
             "properties": {
-              "enabled": { "type": "boolean" },
-              "customCriteria": { "type": "array", "items": { "type": "object" } },
-              "disableDefaultEvaluation": { "type": "boolean" }
+              "enabled": {
+                "type": "boolean"
+              },
+              "customCriteria": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "disableDefaultEvaluation": {
+                "type": "boolean"
+              }
             }
           }
         }
@@ -1782,18 +2107,41 @@
           "agentNotificationConfig": {
             "type": "object",
             "properties": {
-              "enabled": { "type": "boolean" },
-              "enableEmailNotification": { "type": "boolean" },
-              "notifiedEmails": { "type": "array", "items": { "type": "string" } },
-              "approvalEmails": { "type": "array", "items": { "type": "string" } }
+              "enabled": {
+                "type": "boolean"
+              },
+              "enableEmailNotification": {
+                "type": "boolean"
+              },
+              "notifiedEmails": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "approvalEmails": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
             }
           },
           "evaluationConfig": {
             "type": "object",
             "properties": {
-              "enabled": { "type": "boolean" },
-              "customCriteria": { "type": "array", "items": { "type": "object" } },
-              "disableDefaultEvaluation": { "type": "boolean" }
+              "enabled": {
+                "type": "boolean"
+              },
+              "customCriteria": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "disableDefaultEvaluation": {
+                "type": "boolean"
+              }
             }
           }
         }
@@ -1867,7 +2215,9 @@
         "properties": {
           "agents": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/AgentResponse" },
+            "items": {
+              "$ref": "#/components/schemas/AgentResponse"
+            },
             "description": "Array of agents"
           },
           "total": {
@@ -1923,38 +2273,78 @@
         "properties": {
           "authenticationMethod": {
             "type": "string",
-            "enum": ["jwt", "basic", "oauth2", "customHeader"],
+            "enum": [
+              "jwt",
+              "basic",
+              "oauth2",
+              "customHeader"
+            ],
             "description": "Authentication method"
           },
           "jwt": {
             "type": "object",
             "properties": {
-              "token": { "type": "string" }
+              "token": {
+                "type": "string"
+              }
             }
           },
           "basic": {
             "type": "object",
             "properties": {
-              "username": { "type": "string" },
-              "password": { "type": "string" }
+              "username": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              }
             }
           },
           "oauth2": {
             "type": "object",
             "properties": {
-              "refreshToken": { "type": "string" },
-              "clientId": { "type": "string" },
-              "clientSecret": { "type": "string" },
-              "refreshTokenEndpoint": { "type": "string" },
-              "grant_type": { "type": "string", "enum": ["refresh_token", "client_credentials"] },
-              "scope": { "type": "string" },
-              "requestFormat": { "type": "string", "enum": ["json", "form"] }
+              "refreshToken": {
+                "type": "string"
+              },
+              "clientId": {
+                "type": "string"
+              },
+              "clientSecret": {
+                "type": "string"
+              },
+              "refreshTokenEndpoint": {
+                "type": "string"
+              },
+              "grant_type": {
+                "type": "string",
+                "enum": [
+                  "refresh_token",
+                  "client_credentials"
+                ]
+              },
+              "scope": {
+                "type": "string"
+              },
+              "requestFormat": {
+                "type": "string",
+                "enum": [
+                  "json",
+                  "form"
+                ]
+              }
             }
           },
           "customHeader": {
             "oneOf": [
-              { "$ref": "#/components/schemas/ToolHeader" },
-              { "type": "array", "items": { "$ref": "#/components/schemas/ToolHeader" } }
+              {
+                "$ref": "#/components/schemas/ToolHeader"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ToolHeader"
+                }
+              }
             ]
           }
         }
@@ -1964,7 +2354,10 @@
         "properties": {
           "mode": {
             "type": "string",
-            "enum": ["public", "private"],
+            "enum": [
+              "public",
+              "private"
+            ],
             "description": "Server mode"
           },
           "slug": {
@@ -1973,7 +2366,10 @@
           },
           "status": {
             "type": "string",
-            "enum": ["active", "inactive"],
+            "enum": [
+              "active",
+              "inactive"
+            ],
             "description": "Server status"
           }
         }
@@ -1990,15 +2386,21 @@
             "additionalProperties": {
               "type": "object",
               "properties": {
-                "type": { "type": "string" },
-                "description": { "type": "string" }
+                "type": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
               }
             },
             "description": "Parameter properties definition"
           },
           "required": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "Required parameter names"
           },
           "additionalProperties": {
@@ -2009,7 +2411,9 @@
       },
       "ToolFunction": {
         "type": "object",
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -2030,11 +2434,15 @@
       },
       "ToolDefinition": {
         "type": "object",
-        "required": ["function"],
+        "required": [
+          "function"
+        ],
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["function"],
+            "enum": [
+              "function"
+            ],
             "description": "Tool type (always 'function')"
           },
           "function": {
@@ -2046,17 +2454,27 @@
           },
           "method": {
             "type": "string",
-            "enum": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+            "enum": [
+              "GET",
+              "POST",
+              "PUT",
+              "DELETE",
+              "PATCH"
+            ],
             "description": "HTTP method"
           },
           "queryParametersKeys": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "Query parameter keys"
           },
           "pathParametersKeys": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "Path parameter keys"
           },
           "bodyPropertyKey": {
@@ -2065,7 +2483,9 @@
           },
           "customHeaders": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/ToolHeader" },
+            "items": {
+              "$ref": "#/components/schemas/ToolHeader"
+            },
             "description": "Custom headers for the tool"
           },
           "isFormDataBody": {
@@ -2074,7 +2494,10 @@
           },
           "bodyMode": {
             "type": "string",
-            "enum": ["simple", "advanced"],
+            "enum": [
+              "simple",
+              "advanced"
+            ],
             "description": "Body mode"
           },
           "bodyJsonTemplate": {
@@ -2093,7 +2516,9 @@
       },
       "CreateToolServerRequest": {
         "type": "object",
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -2136,7 +2561,9 @@
           },
           "toolDefinitions": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/ToolDefinition" },
+            "items": {
+              "$ref": "#/components/schemas/ToolDefinition"
+            },
             "description": "Array of tool definitions"
           }
         }
@@ -2172,7 +2599,9 @@
           },
           "toolDefinitions": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/ToolDefinition" },
+            "items": {
+              "$ref": "#/components/schemas/ToolDefinition"
+            },
             "description": "Array of tool definitions"
           }
         }
@@ -2250,14 +2679,18 @@
           },
           "toolDefinitions": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/ToolDefinition" },
+            "items": {
+              "$ref": "#/components/schemas/ToolDefinition"
+            },
             "description": "Array of tool definitions"
           }
         }
       },
       "ToolServerWithDefinitionResponse": {
         "allOf": [
-          { "$ref": "#/components/schemas/ToolServerResponse" },
+          {
+            "$ref": "#/components/schemas/ToolServerResponse"
+          },
           {
             "type": "object",
             "properties": {
@@ -2273,7 +2706,9 @@
         "properties": {
           "toolServers": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/ToolServerResponse" },
+            "items": {
+              "$ref": "#/components/schemas/ToolServerResponse"
+            },
             "description": "Array of tool servers"
           },
           "total": {
@@ -2299,7 +2734,9 @@
         "properties": {
           "tools": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/ToolDefinition" },
+            "items": {
+              "$ref": "#/components/schemas/ToolDefinition"
+            },
             "description": "Array of tool definitions"
           },
           "total": {
@@ -2310,7 +2747,9 @@
       },
       "AddToolRequest": {
         "type": "object",
-        "required": ["tool"],
+        "required": [
+          "tool"
+        ],
         "properties": {
           "tool": {
             "$ref": "#/components/schemas/ToolDefinition",
@@ -2330,17 +2769,27 @@
           },
           "method": {
             "type": "string",
-            "enum": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+            "enum": [
+              "GET",
+              "POST",
+              "PUT",
+              "DELETE",
+              "PATCH"
+            ],
             "description": "HTTP method"
           },
           "queryParametersKeys": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "Query parameter keys"
           },
           "pathParametersKeys": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "Path parameter keys"
           },
           "bodyPropertyKey": {
@@ -2349,7 +2798,9 @@
           },
           "customHeaders": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/ToolHeader" },
+            "items": {
+              "$ref": "#/components/schemas/ToolHeader"
+            },
             "description": "Custom headers"
           },
           "isFormDataBody": {
@@ -2358,7 +2809,10 @@
           },
           "bodyMode": {
             "type": "string",
-            "enum": ["simple", "advanced"],
+            "enum": [
+              "simple",
+              "advanced"
+            ],
             "description": "Body mode"
           },
           "bodyJsonTemplate": {
@@ -2394,7 +2848,9 @@
       },
       "TestToolCallRequest": {
         "type": "object",
-        "required": ["parameters"],
+        "required": [
+          "parameters"
+        ],
         "properties": {
           "parameters": {
             "type": "object",
@@ -6400,16 +6856,24 @@
         }
       },
       "post": {
-        "tags": ["Assistants"],
+        "tags": [
+          "Assistants"
+        ],
         "summary": "Create a new assistant",
         "description": "Creates a new assistant with the provided configuration.",
         "operationId": "createAssistant",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/CreateAssistantRequest" }
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssistantRequest"
+              }
             }
           }
         },
@@ -6418,13 +6882,21 @@
             "description": "Assistant created successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/AssistantDetailResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/AssistantDetailResponse"
+                }
               }
             }
           },
-          "400": { "description": "Invalid request data" },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "500": { "description": "Internal Server Error" }
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       }
     },
@@ -6478,25 +6950,35 @@
         }
       },
       "patch": {
-        "tags": ["Assistants"],
+        "tags": [
+          "Assistants"
+        ],
         "summary": "Update an assistant",
         "description": "Updates an existing assistant with the provided data. Supports partial updates.",
         "operationId": "updateAssistant",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "identifier",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the assistant to update",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/UpdateAssistantRequest" }
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAssistantRequest"
+              }
             }
           }
         },
@@ -6505,29 +6987,47 @@
             "description": "Assistant updated successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/AssistantDetailResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/AssistantDetailResponse"
+                }
               }
             }
           },
-          "400": { "description": "Invalid request data" },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Assistant not found" },
-          "500": { "description": "Internal Server Error" }
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Assistant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       },
       "delete": {
-        "tags": ["Assistants"],
+        "tags": [
+          "Assistants"
+        ],
         "summary": "Delete an assistant",
         "description": "Deletes an assistant and its associated resources (RAG documents, internal API key).",
         "operationId": "deleteAssistant",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "identifier",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the assistant to delete",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -6535,13 +7035,21 @@
             "description": "Assistant deleted successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/DeleteAssistantResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteAssistantResponse"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Assistant not found" },
-          "500": { "description": "Internal Server Error" }
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Assistant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       }
     },
@@ -6978,32 +7486,47 @@
     },
     "/v1/agents": {
       "get": {
-        "tags": ["Agents"],
+        "tags": [
+          "Agents"
+        ],
         "summary": "List all agents",
         "description": "Retrieves a paginated list of all agents for the authenticated client.",
         "operationId": "listAgents",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "offset",
             "in": "query",
             "required": false,
             "description": "Number of items to skip",
-            "schema": { "type": "integer", "default": 0 }
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
           },
           {
             "name": "limit",
             "in": "query",
             "required": false,
             "description": "Maximum number of items to return",
-            "schema": { "type": "integer", "default": 10, "maximum": 100 }
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 100
+            }
           },
           {
             "name": "archived",
             "in": "query",
             "required": false,
             "description": "Filter by archived status",
-            "schema": { "type": "boolean" }
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -7011,25 +7534,39 @@
             "description": "Agents retrieved successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/PaginatedAgentsResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedAgentsResponse"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "500": { "description": "Internal Server Error" }
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       },
       "post": {
-        "tags": ["Agents"],
+        "tags": [
+          "Agents"
+        ],
         "summary": "Create a new agent",
         "description": "Creates a new agent with the provided configuration, including assistant specialization for tools and behavior.",
         "operationId": "createAgent",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/CreateAgentRequest" }
+              "schema": {
+                "$ref": "#/components/schemas/CreateAgentRequest"
+              }
             }
           }
         },
@@ -7038,30 +7575,46 @@
             "description": "Agent created successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/AgentResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/AgentResponse"
+                }
               }
             }
           },
-          "400": { "description": "Invalid request data" },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "500": { "description": "Internal Server Error" }
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       }
     },
     "/v1/agents/{agentId}": {
       "get": {
-        "tags": ["Agents"],
+        "tags": [
+          "Agents"
+        ],
         "summary": "Get agent by ID",
         "description": "Retrieves detailed information about a specific agent.",
         "operationId": "getAgentById",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "agentId",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the agent",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -7069,35 +7622,53 @@
             "description": "Agent retrieved successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/AgentResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/AgentResponse"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Agent not found" },
-          "500": { "description": "Internal Server Error" }
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Agent not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       },
       "patch": {
-        "tags": ["Agents"],
+        "tags": [
+          "Agents"
+        ],
         "summary": "Update an agent",
         "description": "Updates an existing agent with the provided data. Supports partial updates.",
         "operationId": "updateAgent",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "agentId",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the agent to update",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/UpdateAgentRequest" }
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAgentRequest"
+              }
             }
           }
         },
@@ -7106,29 +7677,47 @@
             "description": "Agent updated successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/AgentResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/AgentResponse"
+                }
               }
             }
           },
-          "400": { "description": "Invalid request data" },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Agent not found" },
-          "500": { "description": "Internal Server Error" }
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Agent not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       },
       "delete": {
-        "tags": ["Agents"],
+        "tags": [
+          "Agents"
+        ],
         "summary": "Delete an agent",
         "description": "Deletes an agent. Note: This does not delete associated threads.",
         "operationId": "deleteAgent",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "agentId",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the agent to delete",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -7136,37 +7725,58 @@
             "description": "Agent deleted successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/DeleteAgentResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteAgentResponse"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Agent not found" },
-          "500": { "description": "Internal Server Error" }
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Agent not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       }
     },
     "/v1/tool-servers": {
       "get": {
-        "tags": ["Tool Servers"],
+        "tags": [
+          "Tool Servers"
+        ],
         "summary": "List all tool servers",
         "description": "Retrieves a paginated list of all tool servers for the authenticated client.",
         "operationId": "listToolServers",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "offset",
             "in": "query",
             "required": false,
             "description": "Number of items to skip",
-            "schema": { "type": "integer", "default": 0 }
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
           },
           {
             "name": "limit",
             "in": "query",
             "required": false,
             "description": "Maximum number of items to return",
-            "schema": { "type": "integer", "default": 10, "maximum": 100 }
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 100
+            }
           }
         ],
         "responses": {
@@ -7174,25 +7784,39 @@
             "description": "Tool servers retrieved successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/PaginatedToolServersResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedToolServersResponse"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "500": { "description": "Internal Server Error" }
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       },
       "post": {
-        "tags": ["Tool Servers"],
+        "tags": [
+          "Tool Servers"
+        ],
         "summary": "Create a new tool server",
         "description": "Creates a new tool server. If toolDefinitions array is provided, a new tool server definition will be created and linked automatically.",
         "operationId": "createToolServer",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/CreateToolServerRequest" }
+              "schema": {
+                "$ref": "#/components/schemas/CreateToolServerRequest"
+              }
             }
           }
         },
@@ -7201,30 +7825,46 @@
             "description": "Tool server created successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ToolServerWithDefinitionResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ToolServerWithDefinitionResponse"
+                }
               }
             }
           },
-          "400": { "description": "Invalid request data" },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "500": { "description": "Internal Server Error" }
+          "400": {
+            "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       }
     },
     "/v1/tool-servers/{toolServerId}": {
       "get": {
-        "tags": ["Tool Servers"],
+        "tags": [
+          "Tool Servers"
+        ],
         "summary": "Get tool server by ID",
         "description": "Retrieves a specific tool server by its ID, including its tool definition.",
         "operationId": "getToolServerById",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "toolServerId",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the tool server",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -7232,35 +7872,53 @@
             "description": "Tool server retrieved successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ToolServerWithDefinitionResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ToolServerWithDefinitionResponse"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Tool server not found" },
-          "500": { "description": "Internal Server Error" }
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tool server not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       },
       "patch": {
-        "tags": ["Tool Servers"],
+        "tags": [
+          "Tool Servers"
+        ],
         "summary": "Update tool server",
         "description": "Updates the tool server information. If toolDefinitions array is provided, it will update (or create) the tool server definition with the new tools.",
         "operationId": "updateToolServer",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "toolServerId",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the tool server",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/UpdateToolServerRequest" }
+              "schema": {
+                "$ref": "#/components/schemas/UpdateToolServerRequest"
+              }
             }
           }
         },
@@ -7269,28 +7927,44 @@
             "description": "Tool server updated successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ToolServerWithDefinitionResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ToolServerWithDefinitionResponse"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Tool server not found" },
-          "500": { "description": "Internal Server Error" }
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tool server not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       },
       "delete": {
-        "tags": ["Tool Servers"],
+        "tags": [
+          "Tool Servers"
+        ],
         "summary": "Delete tool server",
         "description": "Deletes a tool server. Note: This does not delete the associated tool server definition.",
         "operationId": "deleteToolServer",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "toolServerId",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the tool server",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -7298,30 +7972,46 @@
             "description": "Tool server deleted successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/DeleteResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Tool server not found" },
-          "500": { "description": "Internal Server Error" }
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tool server not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       }
     },
     "/v1/tool-servers/{toolServerId}/tools": {
       "get": {
-        "tags": ["Tool Servers"],
+        "tags": [
+          "Tool Servers"
+        ],
         "summary": "Get all tools in a tool server",
         "description": "Retrieves all tool definitions from a tool server definition.",
         "operationId": "listToolsInServer",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "toolServerId",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the tool server",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -7329,35 +8019,53 @@
             "description": "Tools retrieved successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ToolListResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ToolListResponse"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Tool server not found" },
-          "500": { "description": "Internal Server Error" }
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tool server not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       },
       "post": {
-        "tags": ["Tool Servers"],
+        "tags": [
+          "Tool Servers"
+        ],
         "summary": "Add a tool to a tool server",
         "description": "Adds a new tool definition to the tool server. If the tool server does not have a definition, one will be created.",
         "operationId": "addToolToServer",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "toolServerId",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the tool server",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/AddToolRequest" }
+              "schema": {
+                "$ref": "#/components/schemas/AddToolRequest"
+              }
             }
           }
         },
@@ -7366,38 +8074,58 @@
             "description": "Tool added successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ToolDefinition" }
+                "schema": {
+                  "$ref": "#/components/schemas/ToolDefinition"
+                }
               }
             }
           },
-          "400": { "description": "Invalid tool data or tool name already exists" },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Tool server not found" },
-          "500": { "description": "Internal Server Error" }
+          "400": {
+            "description": "Invalid tool data or tool name already exists"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tool server not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       }
     },
     "/v1/tool-servers/{toolServerId}/tools/{toolName}": {
       "get": {
-        "tags": ["Tool Servers"],
+        "tags": [
+          "Tool Servers"
+        ],
         "summary": "Get a specific tool by name",
         "description": "Retrieves a specific tool definition by its function name.",
         "operationId": "getToolByName",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "toolServerId",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the tool server",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "toolName",
             "in": "path",
             "required": true,
             "description": "The function name of the tool",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -7405,42 +8133,62 @@
             "description": "Tool retrieved successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ToolDefinition" }
+                "schema": {
+                  "$ref": "#/components/schemas/ToolDefinition"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Tool server or tool not found" },
-          "500": { "description": "Internal Server Error" }
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tool server or tool not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       },
       "patch": {
-        "tags": ["Tool Servers"],
+        "tags": [
+          "Tool Servers"
+        ],
         "summary": "Update a tool by name",
         "description": "Updates a specific tool definition identified by its function name.",
         "operationId": "updateToolByName",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "toolServerId",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the tool server",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "toolName",
             "in": "path",
             "required": true,
             "description": "The function name of the tool to update",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/UpdateToolRequest" }
+              "schema": {
+                "$ref": "#/components/schemas/UpdateToolRequest"
+              }
             }
           }
         },
@@ -7449,35 +8197,53 @@
             "description": "Tool updated successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ToolDefinition" }
+                "schema": {
+                  "$ref": "#/components/schemas/ToolDefinition"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Tool server or tool not found" },
-          "500": { "description": "Internal Server Error" }
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tool server or tool not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       },
       "delete": {
-        "tags": ["Tool Servers"],
+        "tags": [
+          "Tool Servers"
+        ],
         "summary": "Delete a tool by name",
         "description": "Removes a specific tool definition from the tool server definition.",
         "operationId": "deleteToolByName",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "toolServerId",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the tool server",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "toolName",
             "in": "path",
             "required": true,
             "description": "The function name of the tool to delete",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -7485,44 +8251,64 @@
             "description": "Tool deleted successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/DeleteResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Tool server or tool not found" },
-          "500": { "description": "Internal Server Error" }
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tool server or tool not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       }
     },
     "/v1/tool-servers/{toolServerId}/tools/{toolName}/test": {
       "post": {
-        "tags": ["Tool Servers"],
+        "tags": [
+          "Tool Servers"
+        ],
         "summary": "Test a tool call",
         "description": "Executes a tool call with the provided parameters and returns the result. This is useful for testing and debugging tool configurations.",
         "operationId": "testToolCall",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "toolServerId",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the tool server",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "toolName",
             "in": "path",
             "required": true,
             "description": "The function name of the tool to test",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/TestToolCallRequest" }
+              "schema": {
+                "$ref": "#/components/schemas/TestToolCallRequest"
+              }
             }
           }
         },
@@ -7531,31 +8317,49 @@
             "description": "Tool call executed",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/TestToolCallResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/TestToolCallResponse"
+                }
               }
             }
           },
-          "400": { "description": "Invalid parameters or tool configuration" },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Tool server or tool not found" },
-          "500": { "description": "Internal Server Error" }
+          "400": {
+            "description": "Invalid parameters or tool configuration"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tool server or tool not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       }
     },
     "/v1/tool-servers/{toolServerId}/definition": {
       "get": {
-        "tags": ["Tool Servers"],
+        "tags": [
+          "Tool Servers"
+        ],
         "summary": "Get tool server definition",
         "description": "Retrieves the full tool server definition for a tool server.",
         "operationId": "getToolServerDefinition",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "toolServerId",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the tool server",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -7563,35 +8367,53 @@
             "description": "Tool server definition retrieved successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ToolServerDefinitionResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ToolServerDefinitionResponse"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Tool server or definition not found" },
-          "500": { "description": "Internal Server Error" }
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tool server or definition not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       },
       "patch": {
-        "tags": ["Tool Servers"],
+        "tags": [
+          "Tool Servers"
+        ],
         "summary": "Update tool server definition",
         "description": "Updates the tool server definition (name, description, and/or tools).",
         "operationId": "updateToolServerDefinition",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "toolServerId",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the tool server",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/ToolServerDefinitionResponse" }
+              "schema": {
+                "$ref": "#/components/schemas/ToolServerDefinitionResponse"
+              }
             }
           }
         },
@@ -7600,30 +8422,46 @@
             "description": "Tool server definition updated successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ToolServerDefinitionResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ToolServerDefinitionResponse"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Tool server or definition not found" },
-          "500": { "description": "Internal Server Error" }
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tool server or definition not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       }
     },
     "/v1/tool-servers/{toolServerId}/clone": {
       "post": {
-        "tags": ["Tool Servers"],
+        "tags": [
+          "Tool Servers"
+        ],
         "summary": "Clone a tool server",
         "description": "Creates a copy of the tool server and its definition. The cloned server will have '(Copy)' appended to its name.",
         "operationId": "cloneToolServer",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "toolServerId",
             "in": "path",
             "required": true,
             "description": "The unique identifier of the tool server to clone",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -7631,13 +8469,21 @@
             "description": "Tool server cloned successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ToolServerResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ToolServerResponse"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized - Invalid or missing token" },
-          "404": { "description": "Tool server not found" },
-          "500": { "description": "Internal Server Error" }
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Tool server not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       }
     }
