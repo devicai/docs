@@ -161,7 +161,7 @@ The Devic API is divided into the following groups:
 ### **Health**
 - Basic availability checks
 
-<Card title="View OpenAPI specification" icon="layers" href="/openapi.json">
+<Card title="View OpenAPI specification" icon="layers" href="/api-reference/openapi.json">
   Download the OpenAPI specification used to generate this API reference.
 </Card>
 
@@ -304,7 +304,7 @@ Invalid or missing tokens return `401 Unauthorized`.
 2. **Attach it to an agent or assistant** so it is used for retrieval
 
         POST /v1/documents/{id}/attach
-        (body: { "targetType": "agent" | "assistant", "targetId": "..." })
+        (body: `{ "targetType": "agent" | "assistant", "targetId": "..." }`)
 
 3. **Organise and manage documents**
 
