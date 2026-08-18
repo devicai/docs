@@ -7,17 +7,15 @@ description: "Make your MCP available to agents, assistants, or external service
 
 After configuring and validating your tools, the final step is to **publish** the MCP so it can be used by agents, assistants, or external environments.
 
-To do this, click the **Publish** button located at the top right of the panel.
+To do this, click the **Publish** button located at the top right of the panel. It opens **Manage Published Server**, which is also where you come back to change or undo any of this later.
 
-![Publish button](/publish.png)
+![Manage Published Server](/publish.png)
 
 ---
 
 ## MCP Visibility
 
-When selecting _Publish_, a configuration window opens where you can choose who will have access to the MCP server.
-
-Available options:
+Choose who will have access to the MCP server:
 
 - **Private — Only accessible by you:**  
   The MCP will only be accessible from your environment or by your agents.  
@@ -27,25 +25,29 @@ Available options:
   Makes the MCP available to any environment that supports the MCP protocol, such as ChatGPT or other Devic instances.  
   This option generates a **public access URL** for the server.
 
-  ![Public publication](/url-mcp-server.png)
-
 ---
 
-## Generated URL
+## The address
 
-During publication, Devic automatically creates a URL under the domain:
+Each published server gets its **own subdomain**, not a path on a shared one:
 
-`https://mcp.devic.ai/<mcp-name>`
+`https://<slug>.mcp.devic.ai`
+
+The **Server URL Slug** field is yours to choose — it defaults to the server's name and the dialog shows the resulting address as you type. Slugs are unique across Devic, so an already-taken one is refused rather than silently reassigned.
+
+![The published address](/url-mcp-server.png)
 
 That address becomes the endpoint from which agents or external systems can invoke the MCP tools.
 
+<Note>
+  Changing the slug changes the address. Anything already pointing at the old one — a ChatGPT connector, a client's configuration — stops resolving, so treat it as a move rather than a rename.
+</Note>
+
 ---
 
-<Card title="Publication complete" icon="check-circle" horizontal>
-  Once the publication is finished, you will receive a success notification and the MCP link will appear at the top of the panel.
-</Card>
+## Changing your mind
 
-![Server published successfully](/mcp-published.png)
+The same dialog carries **Update Configuration**, which applies a new visibility or slug, and **Unpublish Server**, which withdraws the public address while leaving the server itself and its tools untouched.
 
 ---
 

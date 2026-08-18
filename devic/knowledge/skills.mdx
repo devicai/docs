@@ -5,11 +5,17 @@ description: "Packaged know-how an agent loads only when it needs it: what a ski
 
 A document tells an agent *what is true*. A **skill** tells it *how to do something*.
 
+<Note>
+  Skills are marked **Preview** in the interface. The model described here is settled — what may still move is the interface around it.
+</Note>
+
 A skill is a self-contained set of instructions — a procedure, a house style, a checklist, a format to produce — written as markdown and given a name and a description. The agent is told its skills exist, and reads the full instructions only at the moment it decides one applies.
 
 That last part is the whole point. Ten skills cost roughly ten lines of prompt until one of them is needed.
 
 ![The skill catalogue](/images/knowledge/skills-catalogue.png)
+
+The catalogue lives under **Knowledge → Skills**, with a search box, a tag filter and a project selector. Each card carries the skill's type, how many agents and assistants it is linked to, how many times it has been read, and — through **Connect Project** — which [project](/devic/projects/index) it belongs to, which is also what decides who can see it.
 
 ---
 
@@ -49,7 +55,7 @@ Folder skills follow the same layout as the Agent Skills format used elsewhere i
 
 ## Attaching a skill
 
-Skills are attached where knowledge is attached: in the **Knowledge** section of an agent, an assistant or an environment, under its own **Skills** tab.
+Skills are attached where knowledge is attached: an agent, an assistant and an environment each have a **Knowledge / Skills / Memory** switcher in their configuration. Open **Skills**, then **Link skill**.
 
 ![Attaching a skill](/images/knowledge/skill-attach.png)
 
@@ -136,7 +142,7 @@ The same catalogue is reachable outside the console:
 | [`devic skills`](/devic/cli/index) | `list`, `install`, `update`, `uninstall` — installs a skill into a local coding assistant (Claude Code, Codex, Cursor, opencode, Cline) and keeps a lockfile of what is installed. |
 
 <Note>
-  Installations are tracked per user and per skill, so an administrator can see who is running an outdated copy — or a copy of a skill that has since been deleted. It is on the **Installations** view of the skills page.
+  Installs are tracked per user and per skill, so an administrator can see who is running an outdated copy — or a copy of a skill that has since been deleted. It is on the **Installs** tab of the skills page.
 </Note>
 
 ---

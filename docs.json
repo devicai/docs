@@ -57,12 +57,7 @@
                   "devic/mcps/my-mcps/integration-with-llms"
                 ]
               },
-              {
-                "group": "Import Third-Party MCPs",
-                "pages": [
-                  "devic/mcps/import-third-party-mcps/import-third-party-mcps"
-                ]
-              },
+              "devic/mcps/connected-mcps",
               {
                 "group": "Built-in Tools",
                 "expanded": false,
@@ -559,5 +554,11 @@
     "ga4": {
       "measurementId": "G-8K836ZN854"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/devic/mcps/import-third-party-mcps/import-third-party-mcps",
+      "destination": "/devic/mcps/connected-mcps"
+    }
+  ]
 }
