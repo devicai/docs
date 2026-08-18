@@ -1,0 +1,72 @@
+---
+title: "Multi-tenant"
+description: "Serving your own customers with one Devic account: who they are, what they consume, and what they are allowed."
+---
+
+If you embed Devic in a product, one Devic account serves many of *your* customers. Devic calls each of them a **tenant**, and each user or team inside them a **subtenant**.
+
+Everything that follows — cost, limits, memory, conversations, connected apps — is partitioned along those two axes.
+
+![Tenants](/images/tenants/list.png)
+
+---
+
+## Tenants register themselves
+
+You do not create tenants. The first time a message or an agent run carries a `tenantId`, Devic records it and starts attributing to it.
+
+```json
+POST /v1/assistants/support/messages
+{
+  "message": "Where is my order?",
+  "tenantId": "acme-corp",
+  "subtenantId": "alex@acme.com"
+}
+```
+
+From that call onwards, *acme-corp* appears in the tenants list with its conversations, its cost and its subtenants.
+
+<Note>
+  Attribution is forward-only. A tenant starts accumulating cost from the moment it first appears — traffic that arrived before it was identified is not retroactively assigned.
+</Note>
+
+---
+
+## What Devic keeps about them
+
+Devic fills in what it can and lets you correct it: a display name, an email, a logo, and the corporate domain inferred from the subtenants' addresses. The inference is deliberately conservative — it needs at least two distinct subtenants sharing a non-generic domain, so one person with a Gmail address never turns into a company. Edit a field by hand and the automatic detection stops touching it.
+
+---
+
+## The three things you get for free
+
+<Columns cols={3}>
+  <Card title="Cost per customer" icon="chart-line">
+    Daily and monthly cost by tenant and subtenant, broken down by agent and assistant.
+  </Card>
+  <Card title="Isolation" icon="shield-halved">
+    Memory, connected apps and conversations are partitioned by tenant by default.
+  </Card>
+  <Card title="Limits" icon="gauge">
+    Consumption ceilings per plan, enforced before the model is called.
+  </Card>
+</Columns>
+
+---
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Usage limits and plans" icon="gauge" href="/devic/multi-tenant/usage-limits">
+    Tiers, windows and what happens when someone runs out.
+  </Card>
+  <Card title="Tenant sessions" icon="key" href="/devic/multi-tenant/tenant-sessions">
+    Proving which customer is calling, instead of trusting the browser.
+  </Card>
+  <Card title="Memory buckets" icon="layer-group" href="/devic/memory/buckets">
+    How memory is partitioned along the same axes.
+  </Card>
+  <Card title="Integrations per end user" icon="plug" href="/devic/integrations/for-end-users">
+    Each customer connecting their own accounts.
+  </Card>
+</CardGroup>

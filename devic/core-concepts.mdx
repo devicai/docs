@@ -1,0 +1,109 @@
+---
+title: "Core concepts"
+description: "The eight things Devic is made of, and how they fit together."
+---
+
+Devic has a small number of building blocks. Everything else is a combination of them.
+
+---
+
+## The two things that do work
+
+<Columns cols={2}>
+  <Card title="Assistant" icon="comments">
+    Converses. Someone — or something — sends a message and gets an answer, in a conversation that persists. Real-time, embeddable, the natural fit for support, sales and any interface a person uses.
+  </Card>
+  <Card title="Agent" icon="robot">
+    Executes. It is given a task and works through it in a **thread**: planning, calling tools, pausing for approval, finishing. Long-running, autonomous, the natural fit for processes.
+  </Card>
+</Columns>
+
+The dividing line is not the model or the tools — both have the same access to those. It is the shape of the work: a conversation with turns, or a task with a beginning and an end.
+
+---
+
+## The four things they use
+
+| Block | What it is | Page |
+| --- | --- | --- |
+| **Tools** | What an agent can *do*: MCP servers, built-in tools, connected apps. | [MCPs](/devic/mcps/index) |
+| **Knowledge** | What it can *read*: documents you write and files you upload. | [Knowledge](/devic/knowledge/index) |
+| **Memory** | What it *remembers* between conversations. | [Memory](/devic/memory/index) |
+| **Environment** | Where it *runs*: shared tools, variables and a real Linux sandbox. | [Environments](/devic/environments/index) |
+
+---
+
+## The two things that organise it
+
+<Columns cols={2}>
+  <Card title="Project" icon="folder">
+    How work is divided **inside** your account: access, cost and traceability follow the project. See [Projects](/devic/projects/index).
+  </Card>
+  <Card title="Tenant" icon="building">
+    How work is divided **outside** it: your own customers, and the users inside them. See [Multi-tenant](/devic/multi-tenant/index).
+  </Card>
+</Columns>
+
+<Note>
+  These two are easy to confuse and are not the same axis. A project is your internal organisation — who on your team works on what. A tenant is your customer. A single project usually serves many tenants.
+</Note>
+
+---
+
+## How they compose
+
+A support assistant, embedded in your product:
+
+<Steps>
+  <Step title="An assistant">
+    with a prompt and a model.
+  </Step>
+  <Step title="Knowledge">
+    attached — return policy, product catalogue, tone of voice.
+  </Step>
+  <Step title="Tools">
+    from a connected app, so it can look up a real order.
+  </Step>
+  <Step title="Memory">
+    scoped by subtenant, so it remembers each customer and only that customer.
+  </Step>
+  <Step title="Embedded">
+    with `@devicai/ui`, authenticated with a [tenant session](/devic/multi-tenant/tenant-sessions) so the customer's identity is proven rather than declared.
+  </Step>
+</Steps>
+
+An overnight reconciliation process, instead:
+
+<Steps>
+  <Step title="An agent">
+    with a plan and a schedule.
+  </Step>
+  <Step title="An environment">
+    with the database CLI installed and the credentials as encrypted variables.
+  </Step>
+  <Step title="A sandbox snapshot">
+    so each night starts where the last one left off.
+  </Step>
+  <Step title="Human in the loop">
+    on the step that writes, so a person approves before anything moves.
+  </Step>
+  <Step title="A trigger">
+    or a schedule, so nobody has to start it.
+  </Step>
+</Steps>
+
+---
+
+## Three ways to reach all of it
+
+<Columns cols={3}>
+  <Card title="Console" icon="window" href="/devic/quickstart">
+    app.devic.ai — build, watch, review.
+  </Card>
+  <Card title="Public API" icon="code" href="/api-reference/introduction">
+    Everything the console does, and what your product calls.
+  </Card>
+  <Card title="CLI and SDK" icon="rectangle-terminal" href="/devic/cli/index">
+    The same API from a terminal or a Node backend.
+  </Card>
+</Columns>

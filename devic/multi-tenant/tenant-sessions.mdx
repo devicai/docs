@@ -1,0 +1,150 @@
+---
+title: "Tenant sessions"
+description: "A short-lived token that proves which of your customers is calling, instead of trusting what the page says."
+---
+
+A page that embeds a Devic widget has to carry an API key, and anyone who opens the browser's developer tools can read it. If the tenant travels *alongside* that key as a plain parameter, anyone holding the key can claim to be any of your customers:
+
+```
+GET /v1/tenant-usage/some-other-customer     ← 200, with a key read from your bundle
+GET /v1/assistants/x/chats?tenantId=…        ← somebody else's conversations
+```
+
+A **tenant session** closes that. Your backend mints a short-lived token that *contains* the tenant, signed by Devic; the browser uses that token instead of the key, and the tenant is no longer something the caller declares.
+
+---
+
+## The flow
+
+<Steps>
+  <Step title="Your backend asks for a session">
+    With a server-side API key, naming the tenant it has **already authenticated in your own system**. With [`@devicai/sdk`](/devic/cli/sdk):
+
+    ```ts
+    app.post('/api/devic-session', requireLogin, async (req, res) => {
+      const session = await devic
+        .auth(req.user.organisationId, req.user.id)
+        .session();
+
+      res.json(session);          // { token, expiresAt, … }
+    });
+    ```
+
+    Or against the endpoint directly:
+
+    ```bash
+    curl -X POST https://api.devic.ai/api/v1/tenant-sessions \
+      -H "Authorization: Bearer $DEVIC_SERVER_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{ "tenantId": "acme-corp", "subtenantId": "alex@acme.com", "ttlSeconds": 3600 }'
+    ```
+
+    <Warning>
+      Take the identity from your own session, never from the request body. An endpoint that mints a session for whatever tenant the caller names has reintroduced the problem it was built to solve.
+    </Warning>
+  </Step>
+  <Step title="You hand the token to the page">
+    In the response to your own login, in a cookie, wherever your session already lives.
+  </Step>
+  <Step title="The widget uses it">
+    Every Devic call carries the session token. The tenant comes from inside it, so no parameter can override it.
+  </Step>
+</Steps>
+
+<Note>
+  `/api/v1/tenant-sessions` is the one public route where the `/api` prefix is **required** — the gateway serves this endpoint itself instead of proxying it. The SDK handles that for you.
+</Note>
+
+---
+
+## What the token can and cannot do
+
+A session is a **narrowed copy** of the API key's own token: same account, same role, plus the tenant it is confined to. Everything downstream behaves as it did with the key — only the reach changes, which is what a session should be.
+
+What it reaches is an explicit list, closed by default:
+
+<Columns cols={2}>
+  <Card title="Allowed" icon="check">
+    Talk to an assistant, read its own conversations, follow a run, upload attachments, dictate, read and edit the assistant's memory about it, see its own usage, manage its own connected apps.
+  </Card>
+  <Card title="Refused" icon="ban">
+    Create assistants or agents, read costs, manage tool servers or projects, administer tenants, touch workspace integrations or the account's plans.
+  </Card>
+</Columns>
+
+<Note>
+  The list matches segment by segment, not by prefix. A rule over `/v1/assistants/*` written as a prefix would also grant `DELETE /v1/assistants/{id}` — precisely what the list exists to prevent. A new public endpoint is therefore born closed until it is deliberately added.
+</Note>
+
+---
+
+## Lifetime
+
+One hour by default, clamped to between 60 seconds and 12 hours. Asking for a year gets you twelve hours rather than an error.
+
+The upper bound is a working day on purpose. The useful pattern is not always "refresh every few minutes": you can issue the session inside your own login and hand it over in a cookie, with no endpoint to refresh it from — and then it has to last as long as the work session does.
+
+---
+
+## Two rules that keep it honest
+
+<Warning>
+  **A session cannot issue another session.** Otherwise the shortest-lived credential on the platform could renew itself forever, and an expiry the holder can extend is not an expiry.
+
+  **A session cannot be issued from a browser.** A request carrying an `Origin` header, or made with a key configured for browser domains, is refused. A page that could mint its own session could mint one for anybody.
+</Warning>
+
+---
+
+## Revocation
+
+Sessions are signed and expire on their own, but you do not have to wait for that. Every call made with a session re-checks that the key that issued it is still active, so **disabling the key ends its sessions within seconds**. Deleting a key does the same — otherwise deletion would be a suggestion.
+
+<Note>
+  Usage made with a session is attributed to the key that issued it, so moving from raw keys to sessions does not empty your usage metrics.
+</Note>
+
+---
+
+## In the widget
+
+`@devicai/ui` takes a session instead of an API key, and can refresh it before it expires:
+
+```jsx
+<DevicProvider
+  getTenantSession={async () => {
+    const r = await fetch('/api/devic-session', { credentials: 'include' });
+    return r.json();                    // { token, expiresAt }
+  }}
+  onSessionExpired={() => location.assign('/login')}
+>
+  <App />
+</DevicProvider>
+```
+
+The provider renews the session on its own before it expires. There is no `apiKey` in that snippet, and there should not be: a page using sessions has no reason to carry a key.
+
+See [Embedding in your product](/devic/embed/index).
+
+---
+
+## Making it impossible to get wrong
+
+Everything above is a convention until the key cannot do anything else. An API key has an **identity mode**:
+
+| Mode | What the key can do |
+| --- | --- |
+| `open` *(default)* | Anything it is allowed, for whichever tenant it declares beside itself. |
+| `signed` | Mint tenant sessions, and nothing else. Every other `/api/v1` call with the key alone answers `401`. |
+
+Put the session-minting key on `signed` and the mistake stops being possible: nobody can paste that key into a page and reach a customer's data with it, because the only thing it can do is ask for a token that pins the customer. Anything else your server does needs a second key left on `open` — two keys, two jobs. See [API keys](/devic/administration/api-keys).
+
+---
+
+## Reference
+
+| | |
+| --- | --- |
+| [`POST /v1/tenant-sessions`](/api-reference/endpoint/post-api-v1-tenant-sessions) | Issue a session. |
+| [`@devicai/sdk`](/devic/cli/sdk) | `devic.auth(tenantId, subtenantId).session()` |
+| [`@devicai/ui`](/devic/embed/index) | `<DevicProvider getTenantSession={…}>` |

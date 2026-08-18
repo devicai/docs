@@ -1,0 +1,72 @@
+---
+title: "Skills from GitHub"
+description: "Keep a skill in a repository and let Devic read it live, so the agent runs the version that is on the branch."
+---
+
+A skill that describes how to work on a codebase belongs *with* that codebase. Instead of copying it into Devic and watching the two drift apart, connect a folder skill to a folder in a GitHub repository: the repository stays the source of truth, and Devic reads from it.
+
+<Note>
+  This applies to **folder skills** only. The connected folder must contain a `SKILL.md` at its root — that file is what makes it a skill.
+</Note>
+
+---
+
+## Connecting one
+
+<Steps>
+  <Step title="Connect your GitHub account">
+    Once per user, from the account settings. Devic uses *your* token, which is also why you can connect a public repository that belongs to somebody else.
+  </Step>
+  <Step title="Pick the folder">
+    Create a skill and choose **from GitHub**. You browse the repository's tree rather than typing a path; folders holding a `SKILL.md` are marked and selectable, so the selection is valid by construction. A repository can hold many skills — one folder each — which is how public skill collections are laid out.
+  </Step>
+  <Step title="Choose the branch">
+    The skill follows a branch. Change it later from the skill's card and the content follows.
+  </Step>
+</Steps>
+
+The skill then behaves like any other: it appears in the catalogue, it is attached to agents and assistants the same way, and it is injected into the prompt the same way.
+
+![A skill connected to GitHub](/images/knowledge/skill-github.png)
+
+---
+
+## What "live" means
+
+Nothing is copied into Devic. When the agent loads the skill, Devic fetches the files from the repository and serves them, **cached for five minutes**.
+
+| Consequence | Detail |
+| --- | --- |
+| **The branch is the version** | Merge to the branch and the next run picks it up, within the cache window. No re-import, no sync button. |
+| **Read-only in Devic** | The viewer shows the files — markdown rendered, code in an editor with highlighting — but editing happens in the repository, where it belongs. |
+| **Text files only** | Markdown, code, config and other text (up to 256 KB each) are readable. Binaries are not fetched. |
+
+The agent walks the folder exactly as it walks any other skill: it reads `SKILL.md` first, then opens whatever that file points at. `grep_knowledge` works too, though on a connected skill it falls back to a lexical search over the repository files rather than a semantic one, since these files have no embeddings in Devic.
+
+---
+
+## Bringing it in
+
+Two operations sit on the skill's card, under **Advanced options**:
+
+| Action | What it does |
+| --- | --- |
+| **Import to Devic** | Copies the current state of the folder into editable Devic documents **and disconnects the link**. From that point it is an ordinary skill: versioned, editable, and no longer following the repository. |
+| **Disconnect** | Breaks the link without importing anything, leaving an empty skill behind. |
+
+<Warning>
+  Import is a fork, not a sync. Once imported, changes on the branch stop reaching Devic and edits in Devic never reach the repository. Import when you want to take a public skill and adapt it; stay connected when the repository is the version that must run.
+</Warning>
+
+---
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Skills" icon="bolt" href="/devic/knowledge/skills">
+    What a skill is, and how it reaches the model.
+  </Card>
+  <Card title="Organising knowledge" icon="folder-tree" href="/devic/knowledge/organising">
+    Folders, hierarchy and the document graph.
+  </Card>
+</CardGroup>

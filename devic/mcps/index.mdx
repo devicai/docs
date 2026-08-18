@@ -5,22 +5,44 @@ description: "Organize your integrations and tools under the Model Context Proto
 
 ## Overview
 
-The **Model Context Protocol (MCP)** extends the capabilities of language models by enabling them to execute actions on external or internal systems.  
+The **Model Context Protocol (MCP)** extends the capabilities of language models by enabling them to execute actions on external or internal systems.
 In Devic, MCPs act as **integration interfaces** that connect agents and assistants with APIs, services, or custom functions.
 
-Depending on their origin or purpose, you can work with three main types:
+![The MCP section](/my-mcps-import-third-party-built-in-tools.png)
 
-- **My MCPs:** transform your API into an MCP server with tools ready to be used by the models.  
-- **Third-party imported MCPs:** access a catalog of integrations such as Google Calendar, Hubspot, or Jira.  
-- **Built-in Tools:** leverage native tools such as sending emails via IMAP, generating PDFs from HTML, or reading spreadsheets.
+The **MCP** tab holds two sections, depending on who runs the server:
 
-![View of My MCPs](/my-mcps-import-third-party-built-in-tools.png)
+<Columns cols={2}>
+  <Card title="My MCPs" icon="wrench">
+    Servers you build. Point Devic at your own API — an OpenAPI definition is enough — and it becomes an MCP server whose tools the models can call. Devic hosts it.
+  </Card>
+  <Card title="Connected" icon="plug">
+    Servers somebody else runs. Give Devic the URL of a remote MCP server, authenticate once, and its tools join the catalogue as if they were local.
+  </Card>
+</Columns>
+
+---
+
+## The rest of the tabs
+
+Beside MCP, the same section carries everything else an agent can be given:
+
+| Tab | What it holds |
+| --- | --- |
+| **CLIs** | Command-line tools made available inside an [environment's sandbox](/devic/environments/clis). |
+| **Built-in Tools** | Native tools that need no server at all — sending email, generating a PDF from HTML, reading a spreadsheet. See [Built-in Tools](/devic/mcps/built-in-tools/index). |
+| **Integrations** | A catalogue of over a thousand ready-made apps — Google Calendar, HubSpot, Jira, Slack — connected by OAuth rather than configured by hand. See [Integrations](/devic/integrations/index). |
+| **Code Snippets** | Small pieces of code exposed as tools. Available in Developer Mode. |
+
+<Note>
+  **MCP Gateways** used to live here and now sit under [AI Governance](/devic/ai-governance), which is where the sessions and tool calls they record are reviewed. See [MCP Gateway](/devic/mcps/mcp-gateway).
+</Note>
 
 ---
 
 ## Using MCPs
 
-Once created or imported, MCPs become available to all agents and assistants in the environment.  
+Once created, connected or imported, MCPs become available to the agents and assistants you attach them to.
 They can be invoked through natural language or integrated into automated workflows.
 
 <Columns cols={2}>

@@ -1,0 +1,75 @@
+---
+title: "Organising knowledge"
+description: "Folders, the document graph, tags and the tools an agent uses to explore what you wrote."
+---
+
+A handful of documents needs no structure. A few hundred does — both for the people writing them and for the agent trying to find the right one.
+
+---
+
+## Folders
+
+Folders group documents the way you would expect, nest inside each other, and can carry a colour to make a section recognisable at a glance.
+
+Their real weight is elsewhere: **a folder can be attached to an agent as a unit**. Give an agent the *Support* folder and it gets everything in it, including documents your team adds next month. No one has to remember to attach them.
+
+<Tip>
+  Attach folders, not documents, wherever a team keeps writing into the same place. Attach individual documents when the set is deliberately fixed.
+</Tip>
+
+---
+
+## Tags
+
+Tags cut across folders. A document can carry any number of them, and the catalogue can be filtered by tag — useful when the same document belongs to two worlds at once (`legal` and `onboarding`) and the folder tree can only put it in one.
+
+---
+
+## The document graph
+
+Devic reads the links between your documents and draws them.
+
+The graph answers the question that folders cannot: *what depends on this page?* Before rewriting a definition, you can see which documents point at it. Two kinds of edge appear:
+
+| Edge | Meaning |
+| --- | --- |
+| **Parent** | A subdocument hangs below its parent. |
+| **Mention** | One document links to another with `[[…]]`. |
+
+---
+
+## How an agent explores knowledge
+
+An agent does not receive your documents as one large block of text. It is given tools to *look*, and it decides what to open — the same way a person would work through a shared drive.
+
+| Tool | What the agent does with it |
+| --- | --- |
+| `list_knowledge_directory` | Lists what is in a folder — documents and subfolders. Like `ls`. |
+| `read_knowledge_document` | Reads a document, or a range of lines from it. Like `cat`. |
+| `grep_knowledge` | Finds a pattern across documents, with surrounding context. Like `grep`. |
+| `search_knowledge` | Semantic search, scoped to a folder, to specific documents, or across everything the agent can reach. |
+
+This is why structure pays off. Clear folder names and document titles are not decoration — they are what the agent reads before deciding where to look, and a well-named folder saves it from reading ten documents to find one paragraph.
+
+<Note>
+  An agent can only reach what it was given. The scope is checked on every call: a folder that was never attached does not appear in a listing and cannot be read by naming its id.
+</Note>
+
+---
+
+## Finding things yourself
+
+The document list searches names and content, and can be narrowed by project, folder, file type and status. Breadcrumbs show where you are, and the back button retraces the documents you actually visited rather than dumping you at the root.
+
+---
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Versions" icon="clock-rotate-left" href="/devic/knowledge/versions">
+    What changed, when, and how to undo it.
+  </Card>
+  <Card title="Skills" icon="clipboard-list-check" href="/devic/skills/overview">
+    Turn a folder of documents into a reusable instruction pack.
+  </Card>
+</CardGroup>

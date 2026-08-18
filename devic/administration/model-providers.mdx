@@ -1,0 +1,64 @@
+---
+title: "Model providers"
+description: "Which models your agents can use, whose account pays for them, and how to add one Devic does not know."
+---
+
+Devic is model-agnostic: an agent names a model, and Devic calls whichever provider serves it with your credentials. Providers are configured once for the account.
+
+![Model providers](/images/admin/model-providers.png)
+
+---
+
+## Supported out of the box
+
+<Columns cols={3}>
+  <Card title="OpenAI" icon="robot" />
+  <Card title="Anthropic" icon="brain" />
+  <Card title="Google Gemini" icon="google" />
+  <Card title="xAI" icon="x" />
+  <Card title="DeepSeek" icon="magnifying-glass" />
+  <Card title="Kimi" icon="moon" />
+</Columns>
+
+Google can be reached either through the Gemini API with a key, or through **Vertex AI** with a service account — the same models, billed and governed through your Google Cloud project.
+
+---
+
+## Credentials
+
+Each provider takes its own key. Keys are encrypted at rest and masked on read, and can be held in [your own vault](/devic/administration/vault) instead, so the value never lives in Devic at all.
+
+<Tip>
+  Test the credential when you save it. A provider that is configured but whose key is wrong shows up as a failed run much later, in whatever agent happens to use it first.
+</Tip>
+
+---
+
+## Custom providers
+
+Anything with an OpenAI-compatible API can be added as a **custom provider**: a self-hosted model, a regional gateway, an internal inference service. You supply the base URL, the credential and the model names, and it appears in the model selector alongside the rest.
+
+<Note>
+  Custom providers are as good as their compatibility. If the endpoint does not return tool calls in the OpenAI shape, agents using tools on it will not work — an assistant that only converses will.
+</Note>
+
+---
+
+## Choosing a model per entity
+
+The provider is account-wide; the *model* is chosen per agent and per assistant. That is what lets a cheap model handle classification while an expensive one handles the reasoning, on the same account and the same key.
+
+Cost is recorded per model, per agent and per tenant, so the trade-off is measurable rather than assumed. See [Costs](/devic/agents/continuous-optimization/costs).
+
+---
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Secrets and vaults" icon="lock" href="/devic/administration/vault">
+    Keeping provider keys outside Devic.
+  </Card>
+  <Card title="Costs" icon="chart-line" href="/devic/agents/continuous-optimization/costs">
+    What each model is actually costing you.
+  </Card>
+</CardGroup>

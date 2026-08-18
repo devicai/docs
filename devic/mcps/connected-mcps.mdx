@@ -1,0 +1,68 @@
+---
+title: "Connected MCPs"
+description: "Point Devic at an MCP server somebody else runs, authenticate once, and hand its tools to your agents."
+---
+
+Not every MCP server has to be yours. A **connected MCP** is a remote server — a vendor's, an open-source one, another Devic account's — reached by URL. Devic authenticates against it, reads its tool list, and from that point its tools sit in the catalogue beside the ones you built yourself.
+
+They live under **Connect** in the MCP tab, next to [My MCPs](/devic/mcps/my-mcps/what-it-is).
+
+<Note>
+  For the well-known SaaS apps — Google Calendar, HubSpot, Jira, Slack and a thousand more — you almost certainly want [Integrations](/devic/integrations/index) instead. Those are already packaged, already authenticated by OAuth, and connectable per end user. Connecting a remote MCP is for servers that are not in that catalogue.
+</Note>
+
+---
+
+## Connecting one
+
+<Steps>
+  <Step title="Give it the URL">
+    **Connect Remote MCP** takes the server's endpoint — `https://mcp.example.com/sse` or its streamable-HTTP equivalent. If the server expects fixed headers (an API key, a tenant identifier), add them as JSON.
+  </Step>
+  <Step title="Test the connection">
+    Devic connects and reports back what it found. Three outcomes:
+
+    - **Connected** — no authentication needed, or your headers were enough.
+    - **OAuth required** — a button appears to authorise in the usual browser flow.
+    - **OAuth client required** — the server does not support dynamic client registration, so it wants a client of its own. Paste the client id, secret and scopes you registered with that provider and continue.
+  </Step>
+  <Step title="Name it and save">
+    A name and a description. The description is what the models read when deciding whether to reach for these tools, so it is worth writing properly.
+  </Step>
+</Steps>
+
+Once saved, the server behaves like any other tool group: attach it to an agent, an assistant or an [environment](/devic/environments/index), and narrow down which of its tools are enabled.
+
+---
+
+## What connecting does not give you
+
+A connected MCP is a *client* relationship: Devic calls the remote server on your behalf. It does not put Devic in front of that server for anybody else, and it does not let you rewrite what the server exposes.
+
+When you need that — hiding tools, showing different tools to different people, attributing every call to a person — the object you want is an [**MCP Gateway**](/devic/mcps/mcp-gateway), which re-publishes a remote server under your own governed address.
+
+| | Connected MCP | MCP Gateway |
+| --- | --- | --- |
+| **Who consumes it** | Your agents and assistants | Any MCP client, through a Devic address |
+| **Tool visibility** | All of them, minus what you disable | Per profile and per user |
+| **Attribution** | The workspace | The individual user |
+| **Lives under** | MCP → Connect | [AI Governance](/devic/ai-governance) |
+
+---
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="My MCPs" icon="wrench" href="/devic/mcps/my-mcps/what-it-is">
+    Building a server from your own API instead.
+  </Card>
+  <Card title="Integrations" icon="puzzle-piece" href="/devic/integrations/index">
+    The catalogue of ready-made apps.
+  </Card>
+  <Card title="MCP Gateway" icon="network-wired" href="/devic/mcps/mcp-gateway">
+    Re-publishing a remote server with control over it.
+  </Card>
+  <Card title="Tools in an agent" icon="screwdriver-wrench" href="/devic/agents/tools">
+    How a tool group reaches a run.
+  </Card>
+</CardGroup>

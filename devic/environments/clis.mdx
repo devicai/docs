@@ -1,0 +1,48 @@
+---
+title: "CLIs in an environment"
+description: "Command-line tools installed into the sandbox snapshot, so agents find them ready."
+---
+
+Agents that work at a terminal usually need more than the base image gives them: a cloud provider's CLI, a database client, a deployment tool.
+
+An environment can carry a list of CLIs, picked from a catalogue. Devic installs them **into the snapshot**, so every sandbox that starts from it already has them — no waiting for an install on each run, and no init script that reinstalls the same thing every time.
+
+![CLIs of an environment](/images/environments/clis.png)
+
+---
+
+## How installing works
+
+Changing the CLI list rebakes the snapshot: Devic starts a temporary sandbox, runs the install scripts, and re-snapshots if everything succeeded.
+
+<Steps>
+  <Step title="Adding a CLI">
+    Installed as a delta on top of the current snapshot — quick, and it keeps everything already there.
+  </Step>
+  <Step title="Removing a CLI">
+    Rebuilt from the base image with the remaining CLIs. The catalogue has install scripts, not uninstall scripts, so a clean rebuild is the only way to guarantee the snapshot holds exactly what the list says.
+  </Step>
+  <Step title="Watching it happen">
+    Progress streams step by step — the command running, its output, its exit code. A failed install tells you which step failed and why, rather than leaving a spinner and a summary.
+  </Step>
+</Steps>
+
+<Note>
+  CLIs are only changed through this flow. Editing the rest of the environment never triggers a rebake, so a name change does not cost you a snapshot rebuild.
+</Note>
+
+---
+
+## Versions
+
+A CLI can be updated to a newer version from the same screen, which rebakes the snapshot with the new one. The environment records what is actually installed, so the list you see is the state of the machine rather than an intention.
+
+---
+
+## Access
+
+For an account with guest users, the CLIs of an environment follow the environment's project. A guest with access to that project can use them; the catalogue itself is administered centrally.
+
+<Tip>
+  When the CLI catalogue is not configured for your deployment, this section is hidden entirely rather than shown empty.
+</Tip>

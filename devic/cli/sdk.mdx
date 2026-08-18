@@ -1,0 +1,131 @@
+---
+title: "Server-side SDK"
+description: "@devicai/sdk — the public API as a typed client, with your customers' identity built into the call."
+---
+
+[`@devicai/sdk`](https://www.npmjs.com/package/@devicai/sdk) is the official TypeScript client for the Devic public API. It runs on **your server**, never in a browser.
+
+```bash
+npm install @devicai/sdk
+```
+
+```ts
+import { Devic } from '@devicai/sdk';
+
+const devic = new Devic({ apiKey: process.env.DEVIC_API_KEY! });
+
+const reply = await devic.assistants.chat('support-bot', 'where is my order?');
+```
+
+---
+
+## The one idea
+
+`devic.*` speaks for **your workspace**. `devic.auth(tenantId)` speaks for **one of your customers** inside it.
+
+```ts
+// As the workspace — what an operator configures.
+await devic.assistants.list();
+await devic.toolServers.create({ /* … */ });
+await devic.projects.list();
+
+// On behalf of a customer — what an end user does.
+const acme = devic.auth('acme', 'user-7');
+await acme.assistants.chat('support-bot', 'where is my order?');
+await acme.integrations.list('support-bot');
+await acme.usage.get();
+```
+
+Everything reached through a scope carries that customer's identity, so it cannot be left off one call by accident — which is the failure with no symptom: the message goes through, the answer looks right, and the conversation is filed under your workspace instead of under your customer.
+
+And what a customer must not do is simply **not reachable** from there. There is no `acme.toolServers`, no `acme.projects`, no `acme.documents`.
+
+---
+
+## What is on it
+
+| On `devic` | |
+| --- | --- |
+| `assistants` | assistants, chatting, conversations, feedback |
+| `agents` | agents, runs, approvals, costs |
+| `toolServers` | tool servers and their tools |
+| `projects` | projects, their runs and their costs |
+| `documents` | knowledge documents, versions, folders |
+| `skills` | the [skill](/devic/knowledge/skills) catalogue, install and uninstall |
+| `integrations` | the app catalogue and the **workspace's** connected accounts |
+| `triggers` | starting agents and assistants from app events |
+| `tenantSessions` | minting tokens that prove which customer is calling |
+
+| On `devic.auth(tenantId, subtenantId?)` | |
+| --- | --- |
+| `assistants` / `agents` | the same, with the customer filled in |
+| `integrations` | the apps **that customer** connected for themselves |
+| `usage` | their limits and what they have consumed |
+
+---
+
+## Minting a session for the browser
+
+This is the reason most backends install it. Your page needs a credential, and it must not be your API key.
+
+```ts
+app.post('/api/devic-session', requireLogin, async (req, res) => {
+  const session = await devic
+    .auth(req.user.organisationId, req.user.id)
+    .session();
+
+  res.json(session);                    // { token, expiresAt, … }
+});
+```
+
+The identity comes from **your own login**, never from the request body — that is the whole security property. Then, in the page, with [`@devicai/ui`](/devic/embed/index):
+
+```tsx
+<DevicProvider
+  getTenantSession={async () => {
+    const r = await fetch('/api/devic-session', { credentials: 'include' });
+    return r.json();
+  }}
+  onSessionExpired={() => location.assign('/login')}
+>
+  <ChatDrawer assistantId="support-bot" />
+</DevicProvider>
+```
+
+See [Tenant sessions](/devic/multi-tenant/tenant-sessions) for what the token can and cannot do.
+
+<Tip>
+  You do not have to expose a renewal endpoint. Mint the session inside your own login with a lifetime matching your session (`session({ ttlSeconds: 8 * 3600 })`, up to 12 h) and put it in a cookie. Do set `onSessionExpired` if you take that route: there is nothing to renew from, so without it the chat goes quiet at the exact moment the user's login expires.
+</Tip>
+
+---
+
+## Making it compulsory
+
+All of the above is a convention until the key is unable to do anything else. Set the key's identity mode to `signed` in the console and it can mint sessions and nothing more — every other `/api/v1` call with that key alone answers `401`.
+
+```ts
+await devic.auth('acme', 'user-7').session();   // the one thing it can do
+await devic.assistants.list();                  // 401 — and that is the point
+```
+
+Which means a `signed` key is for exactly this: minting sessions in front of a browser. Anything else your server does — provisioning assistants, reading costs, running agents — needs a second key left on `open`. Two keys, two jobs. See [API keys](/devic/administration/api-keys).
+
+---
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="CLI" icon="rectangle-terminal" href="/devic/cli/index">
+    The same API from a terminal.
+  </Card>
+  <Card title="Tenant sessions" icon="key" href="/devic/multi-tenant/tenant-sessions">
+    What the minted token is allowed to do.
+  </Card>
+  <Card title="Embedding in your product" icon="code" href="/devic/embed/index">
+    The React side of the same flow.
+  </Card>
+  <Card title="API reference" icon="book" href="/api-reference/introduction">
+    Everything the SDK wraps.
+  </Card>
+</CardGroup>

@@ -26,7 +26,15 @@
             "expanded": true,
             "pages": [
               "devic/introduction",
-              "devic/quickstart"
+              "devic/quickstart",
+              "devic/core-concepts"
+            ]
+          },
+          {
+            "group": "Projects",
+            "icon": "folder",
+            "pages": [
+              "devic/projects/index"
             ]
           },
           {
@@ -49,12 +57,7 @@
                   "devic/mcps/my-mcps/integration-with-llms"
                 ]
               },
-              {
-                "group": "Import Third-Party MCPs",
-                "pages": [
-                  "devic/mcps/import-third-party-mcps/import-third-party-mcps"
-                ]
-              },
+              "devic/mcps/connected-mcps",
               {
                 "group": "Built-in Tools",
                 "expanded": false,
@@ -62,7 +65,8 @@
                   "devic/mcps/built-in-tools/index",
                   "devic/mcps/built-in-tools/tools-list"
                 ]
-              }
+              },
+              "devic/mcps/mcp-gateway"
             ]
           },
           {
@@ -87,6 +91,7 @@
                   "devic/agents/continuous-optimization/costs"
                 ]
               },
+              "devic/agents/environment-and-subagents",
               "devic/agents/other-options",
               {
                 "group": "Guardrails",
@@ -131,6 +136,29 @@
             ]
           },
           {
+            "group": "Knowledge",
+            "icon": "book",
+            "expanded": false,
+            "pages": [
+              "devic/knowledge/index",
+              "devic/knowledge/documents",
+              "devic/knowledge/organising",
+              "devic/knowledge/versions",
+              "devic/knowledge/skills",
+              "devic/knowledge/skills-from-github"
+            ]
+          },
+          {
+            "group": "Memory",
+            "icon": "brain",
+            "expanded": false,
+            "pages": [
+              "devic/memory/index",
+              "devic/memory/core-memory",
+              "devic/memory/buckets"
+            ]
+          },
+          {
             "group": "Databases",
             "icon": "database",
             "expanded": true,
@@ -141,13 +169,83 @@
             ]
           },
           {
-            "group": "Skills",
+            "group": "Environments",
+            "icon": "layer-group",
+            "expanded": false,
+            "pages": [
+              "devic/environments/index",
+              "devic/environments/configuration",
+              "devic/environments/sandbox",
+              "devic/environments/clis"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "icon": "plug",
+            "expanded": false,
+            "pages": [
+              "devic/integrations/index",
+              "devic/integrations/triggers",
+              "devic/integrations/for-end-users"
+            ]
+          },
+          {
+            "group": "Multi-tenant",
+            "icon": "building",
+            "expanded": false,
+            "pages": [
+              "devic/multi-tenant/index",
+              "devic/multi-tenant/usage-limits",
+              "devic/multi-tenant/tenant-sessions"
+            ]
+          },
+          {
+            "group": "Embed in your product",
+            "icon": "window-maximize",
+            "expanded": false,
+            "pages": [
+              "devic/embed/index",
+              "devic/embed/chat-widget"
+            ]
+          },
+          {
+            "group": "Skills for coding assistants",
             "icon": "clipboard-list-check",
             "pages": [
               "devic/skills/overview",
               "devic/skills/agents",
               "devic/skills/assistants",
               "devic/skills/tool-servers"
+            ]
+          },
+          {
+            "group": "CLI & SDK",
+            "icon": "rectangle-terminal",
+            "pages": [
+              "devic/cli/index",
+              "devic/cli/sdk"
+            ]
+          },
+          {
+            "group": "Operate",
+            "icon": "chart-line",
+            "expanded": false,
+            "pages": [
+              "devic/chats",
+              "devic/ai-governance"
+            ]
+          },
+          {
+            "group": "Administration",
+            "icon": "gear",
+            "expanded": false,
+            "pages": [
+              "devic/administration/users-and-roles",
+              "devic/administration/api-keys",
+              "devic/administration/model-providers",
+              "devic/administration/vault",
+              "devic/administration/channels",
+              "devic/administration/notifications"
             ]
           }
         ]
@@ -169,23 +267,58 @@
               "api-reference/endpoint/get-api-v1-agents-agentid",
               "api-reference/endpoint/patch-api-v1-agents-agentid",
               "api-reference/endpoint/delete-api-v1-agents-agentid",
-              "api-reference/endpoint/post-api-v1-agents-agentid-threads",
-              "api-reference/endpoint/get-api-v1-agents-agentid-threads",
+              "api-reference/endpoint/get-api-v1-agents-threads-tags",
               "api-reference/endpoint/get-api-v1-agents-threads-threadid",
               "api-reference/endpoint/patch-api-v1-agents-threads-threadid",
+              "api-reference/endpoint/get-api-v1-agents-agentid-threads",
+              "api-reference/endpoint/post-api-v1-agents-agentid-threads",
+              "api-reference/endpoint/get-api-v1-agents-agents-agentid-evaluation-config",
+              "api-reference/endpoint/put-api-v1-agents-agents-agentid-evaluation-config",
               "api-reference/endpoint/post-api-v1-agents-threads-threadid-approval",
               "api-reference/endpoint/post-api-v1-agents-threads-threadid-complete",
-              "api-reference/endpoint/post-api-v1-agents-threads-threadid-pause",
-              "api-reference/endpoint/post-api-v1-agents-threads-threadid-resume",
               "api-reference/endpoint/post-api-v1-agents-threads-threadid-evaluate",
               "api-reference/endpoint/get-api-v1-agents-threads-threadid-evaluation",
               "api-reference/endpoint/get-api-v1-agents-threads-threadid-evaluations",
-              "api-reference/endpoint/get-api-v1-agents-threads-threadid-evaluations-evaluationid",
-              "api-reference/endpoint/put-api-v1-agents-agents-agentid-evaluation-config",
-              "api-reference/endpoint/get-api-v1-agents-agents-agentid-evaluation-config",
+              "api-reference/endpoint/get-api-v1-agents-threads-threadid-feedback",
+              "api-reference/endpoint/post-api-v1-agents-threads-threadid-feedback",
+              "api-reference/endpoint/post-api-v1-agents-threads-threadid-messages",
+              "api-reference/endpoint/post-api-v1-agents-threads-threadid-pause",
+              "api-reference/endpoint/post-api-v1-agents-threads-threadid-resume",
+              "api-reference/endpoint/get-api-v1-agents-threads-threadid-search",
               "api-reference/endpoint/get-api-v1-agents-agents-agentid-costs-daily",
               "api-reference/endpoint/get-api-v1-agents-agents-agentid-costs-monthly",
-              "api-reference/endpoint/get-api-v1-agents-agents-agentid-costs-summary"
+              "api-reference/endpoint/get-api-v1-agents-agents-agentid-costs-summary",
+              "api-reference/endpoint/get-api-v1-agents-agents-agentid-threads-tags",
+              "api-reference/endpoint/get-api-v1-agents-threads-threadid-evaluations-evaluationid"
+            ]
+          },
+          {
+            "group": "Assistants",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-assistants",
+              "api-reference/endpoint/post-api-v1-assistants",
+              "api-reference/endpoint/post-api-v1-assistants-chats",
+              "api-reference/endpoint/get-api-v1-assistants-tags",
+              "api-reference/endpoint/get-api-v1-assistants-identifier",
+              "api-reference/endpoint/patch-api-v1-assistants-identifier",
+              "api-reference/endpoint/delete-api-v1-assistants-identifier",
+              "api-reference/endpoint/get-api-v1-assistants-identifier-chats",
+              "api-reference/endpoint/post-api-v1-assistants-identifier-messages",
+              "api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid",
+              "api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid-feedback",
+              "api-reference/endpoint/post-api-v1-assistants-identifier-chats-chatuid-feedback",
+              "api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid-search",
+              "api-reference/endpoint/post-api-v1-assistants-identifier-chats-chatuid-stop",
+              "api-reference/endpoint/post-api-v1-assistants-identifier-chats-chatuid-tool-response"
+            ]
+          },
+          {
+            "group": "Memory",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-memory-assistants-identifier-core",
+              "api-reference/endpoint/post-api-v1-memory-assistants-identifier-core",
+              "api-reference/endpoint/patch-api-v1-memory-assistants-identifier-core-entryid",
+              "api-reference/endpoint/delete-api-v1-memory-assistants-identifier-core-entryid"
             ]
           },
           {
@@ -196,29 +329,55 @@
               "api-reference/endpoint/get-api-v1-tool-servers-toolserverid",
               "api-reference/endpoint/patch-api-v1-tool-servers-toolserverid",
               "api-reference/endpoint/delete-api-v1-tool-servers-toolserverid",
+              "api-reference/endpoint/post-api-v1-tool-servers-toolserverid-clone",
+              "api-reference/endpoint/get-api-v1-tool-servers-toolserverid-definition",
+              "api-reference/endpoint/patch-api-v1-tool-servers-toolserverid-definition",
               "api-reference/endpoint/get-api-v1-tool-servers-toolserverid-tools",
               "api-reference/endpoint/post-api-v1-tool-servers-toolserverid-tools",
               "api-reference/endpoint/get-api-v1-tool-servers-toolserverid-tools-toolname",
               "api-reference/endpoint/patch-api-v1-tool-servers-toolserverid-tools-toolname",
               "api-reference/endpoint/delete-api-v1-tool-servers-toolserverid-tools-toolname",
-              "api-reference/endpoint/post-api-v1-tool-servers-toolserverid-tools-toolname-test",
-              "api-reference/endpoint/get-api-v1-tool-servers-toolserverid-definition",
-              "api-reference/endpoint/patch-api-v1-tool-servers-toolserverid-definition",
-              "api-reference/endpoint/post-api-v1-tool-servers-toolserverid-clone"
+              "api-reference/endpoint/post-api-v1-tool-servers-toolserverid-tools-toolname-test"
             ]
           },
           {
-            "group": "Assistants",
+            "group": "MCP Gateway",
             "pages": [
-              "api-reference/endpoint/get-api-v1-assistants",
-              "api-reference/endpoint/post-api-v1-assistants",
-              "api-reference/endpoint/get-api-v1-assistants-identifier",
-              "api-reference/endpoint/patch-api-v1-assistants-identifier",
-              "api-reference/endpoint/delete-api-v1-assistants-identifier",
-              "api-reference/endpoint/post-api-v1-assistants-identifier-messages",
-              "api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid",
-              "api-reference/endpoint/get-api-v1-assistants-identifier-chats",
-              "api-reference/endpoint/post-api-v1-assistants-chats"
+              "api-reference/endpoint/get-api-v1-tool-servers-toolserverid-profiles",
+              "api-reference/endpoint/post-api-v1-tool-servers-toolserverid-profiles",
+              "api-reference/endpoint/get-api-v1-tool-servers-toolserverid-users",
+              "api-reference/endpoint/patch-api-v1-tool-servers-toolserverid-profiles-profileid",
+              "api-reference/endpoint/delete-api-v1-tool-servers-toolserverid-profiles-profileid",
+              "api-reference/endpoint/patch-api-v1-tool-servers-toolserverid-users-useruid",
+              "api-reference/endpoint/delete-api-v1-tool-servers-toolserverid-users-useruid"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-integrations",
+              "api-reference/endpoint/get-api-v1-integrations-connected",
+              "api-reference/endpoint/get-api-v1-integrations-app",
+              "api-reference/endpoint/get-api-v1-integrations-app-auth",
+              "api-reference/endpoint/post-api-v1-integrations-app-connect",
+              "api-reference/endpoint/get-api-v1-integrations-app-connection-status",
+              "api-reference/endpoint/post-api-v1-integrations-app-servers",
+              "api-reference/endpoint/get-api-v1-integrations-app-triggers",
+              "api-reference/endpoint/get-api-v1-integrations-servers-id-tools",
+              "api-reference/endpoint/patch-api-v1-integrations-servers-id-tools",
+              "api-reference/endpoint/get-api-v1-integrations-app-triggers-slug",
+              "api-reference/endpoint/post-api-v1-integrations-servers-id-tools-toolname-test"
+            ]
+          },
+          {
+            "group": "Triggers",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-triggers",
+              "api-reference/endpoint/post-api-v1-triggers",
+              "api-reference/endpoint/get-api-v1-triggers-id",
+              "api-reference/endpoint/patch-api-v1-triggers-id",
+              "api-reference/endpoint/delete-api-v1-triggers-id",
+              "api-reference/endpoint/get-api-v1-triggers-id-events"
             ]
           },
           {
@@ -229,9 +388,9 @@
               "api-reference/endpoint/get-api-v1-projects-projectid",
               "api-reference/endpoint/patch-api-v1-projects-projectid",
               "api-reference/endpoint/delete-api-v1-projects-projectid",
+              "api-reference/endpoint/get-api-v1-projects-projectid-conversations",
               "api-reference/endpoint/get-api-v1-projects-projectid-stats",
               "api-reference/endpoint/get-api-v1-projects-projectid-threads",
-              "api-reference/endpoint/get-api-v1-projects-projectid-conversations",
               "api-reference/endpoint/get-api-v1-projects-projectid-costs-daily",
               "api-reference/endpoint/get-api-v1-projects-projectid-costs-monthly"
             ]
@@ -243,10 +402,28 @@
               "api-reference/endpoint/get-api-v1-tenants-tenantid",
               "api-reference/endpoint/patch-api-v1-tenants-tenantid",
               "api-reference/endpoint/delete-api-v1-tenants-tenantid",
-              "api-reference/endpoint/get-api-v1-tenants-tenantid-stats",
               "api-reference/endpoint/get-api-v1-tenants-tenantid-costs",
+              "api-reference/endpoint/get-api-v1-tenants-tenantid-stats",
               "api-reference/endpoint/get-api-v1-tenants-tenantid-subtenants",
-              "api-reference/endpoint/get-api-v1-tenants-tenantid-subtenants-subtenantid"
+              "api-reference/endpoint/get-api-v1-tenants-tenantid-subtenants-subtenantid",
+              "api-reference/endpoint/patch-api-v1-tenants-tenantid-subtenants-subtenantid"
+            ]
+          },
+          {
+            "group": "Tenant Sessions",
+            "pages": [
+              "api-reference/endpoint/post-api-v1-tenant-sessions"
+            ]
+          },
+          {
+            "group": "Tenant Integrations",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-tenant-integrations",
+              "api-reference/endpoint/post-api-v1-tenant-integrations-refresh",
+              "api-reference/endpoint/delete-api-v1-tenant-integrations-accounts-accountid",
+              "api-reference/endpoint/get-api-v1-tenant-integrations-app-accounts",
+              "api-reference/endpoint/get-api-v1-tenant-integrations-app-auth",
+              "api-reference/endpoint/post-api-v1-tenant-integrations-app-connect"
             ]
           },
           {
@@ -262,40 +439,55 @@
           {
             "group": "Tenant Admin",
             "pages": [
-              "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-usage-limits-reset",
-              "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-subtenants-subtenantid-usage-limits-reset",
               "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-tier",
-              "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-subtenants-subtenantid-tier"
+              "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-usage-limits-reset",
+              "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-subtenants-subtenantid-tier",
+              "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-subtenants-subtenantid-usage-limits-reset"
             ]
           },
           {
             "group": "Knowledge",
             "pages": [
+              "api-reference/endpoint/get-api-v1-document-folders",
+              "api-reference/endpoint/post-api-v1-document-folders",
               "api-reference/endpoint/get-api-v1-documents",
               "api-reference/endpoint/post-api-v1-documents",
+              "api-reference/endpoint/patch-api-v1-document-folders-id",
+              "api-reference/endpoint/delete-api-v1-document-folders-id",
+              "api-reference/endpoint/get-api-v1-documents-graph",
               "api-reference/endpoint/get-api-v1-documents-id",
               "api-reference/endpoint/patch-api-v1-documents-id",
               "api-reference/endpoint/delete-api-v1-documents-id",
-              "api-reference/endpoint/get-api-v1-documents-graph",
-              "api-reference/endpoint/get-api-v1-documents-id-versions",
-              "api-reference/endpoint/get-api-v1-documents-id-versions-version",
-              "api-reference/endpoint/post-api-v1-documents-id-revert-version",
-              "api-reference/endpoint/get-api-v1-documents-id-subdocuments",
-              "api-reference/endpoint/get-api-v1-documents-id-usage",
+              "api-reference/endpoint/post-api-v1-document-folders-folderid-attach",
+              "api-reference/endpoint/post-api-v1-document-folders-folderid-detach",
               "api-reference/endpoint/post-api-v1-documents-id-attach",
               "api-reference/endpoint/post-api-v1-documents-id-detach",
-              "api-reference/endpoint/get-api-v1-document-folders",
-              "api-reference/endpoint/post-api-v1-document-folders",
-              "api-reference/endpoint/patch-api-v1-document-folders-id",
-              "api-reference/endpoint/delete-api-v1-document-folders-id",
-              "api-reference/endpoint/post-api-v1-document-folders-folderid-attach",
-              "api-reference/endpoint/post-api-v1-document-folders-folderid-detach"
+              "api-reference/endpoint/get-api-v1-documents-id-subdocuments",
+              "api-reference/endpoint/get-api-v1-documents-id-usage",
+              "api-reference/endpoint/get-api-v1-documents-id-versions",
+              "api-reference/endpoint/post-api-v1-documents-id-revert-version",
+              "api-reference/endpoint/get-api-v1-documents-id-versions-version"
+            ]
+          },
+          {
+            "group": "Skills",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-documents-skills",
+              "api-reference/endpoint/post-api-v1-documents-skills-scaffold",
+              "api-reference/endpoint/get-api-v1-documents-skills-tags"
             ]
           },
           {
             "group": "Files",
             "pages": [
               "api-reference/endpoint/post-api-v1-files-upload"
+            ]
+          },
+          {
+            "group": "Speech to Text",
+            "pages": [
+              "api-reference/endpoint/post-api-v1-whisper",
+              "api-reference/endpoint/get-api-v1-whisper-transcriptid"
             ]
           },
           {
@@ -362,5 +554,11 @@
     "ga4": {
       "measurementId": "G-8K836ZN854"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/devic/mcps/import-third-party-mcps/import-third-party-mcps",
+      "destination": "/devic/mcps/connected-mcps"
+    }
+  ]
 }

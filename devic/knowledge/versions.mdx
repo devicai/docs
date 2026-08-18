@@ -1,0 +1,65 @@
+---
+title: "Versions and usage"
+description: "Every edit to a document is kept, comparable and revertible — and you can always see who is relying on it."
+---
+
+Knowledge that agents act on is not something you want to change blindly. Devic keeps the history for you, and tells you who depends on a page before you touch it.
+
+---
+
+## A version per change
+
+Every time a document's content changes, Devic stores a new version. Nothing to enable, nothing to remember.
+
+![Version history of a document](/images/knowledge/versions.png)
+
+Each version records what changed — lines added and removed — so the history reads as a list of edits rather than a list of timestamps.
+
+<Steps>
+  <Step title="Open the history">
+    From the document, open its version history.
+  </Step>
+  <Step title="Compare">
+    Pick a version to see its content and what changed against the one before it.
+  </Step>
+  <Step title="Revert">
+    Restoring an old version does not erase anything: it writes the old content as a **new** version. The history stays complete, and the revert itself is part of it.
+  </Step>
+</Steps>
+
+<Note>
+  Renaming a document, moving it or editing its properties does not create a version. Only content does.
+</Note>
+
+---
+
+## Who is using this document
+
+Before you edit — and certainly before you delete — check the usage panel. It lists the agents and assistants that have this document attached, directly or through a folder.
+
+![Document usage](/images/knowledge/usage.png)
+
+It is the difference between "this page looks stale" and "this page is quoted by the support assistant forty times a day".
+
+---
+
+## Deleting
+
+Deleting a document removes it from every agent and assistant that referenced it, and takes its subdocuments with it — the whole tree below the document goes.
+
+<Warning>
+  Deleting a folder leaves the documents inside it unfiled unless you explicitly ask for them to go too. Deleting a **document**, on the other hand, always takes its subdocuments with it. The two differ on purpose: a folder is a container, a subdocument is part of its parent.
+</Warning>
+
+---
+
+## Through the API
+
+The same history is available programmatically, which is what makes it usable from a pipeline that keeps Devic in step with a repository:
+
+| Call | Purpose |
+| --- | --- |
+| [`GET /v1/documents/{id}/versions`](/api-reference/endpoint/get-api-v1-documents-id-versions) | List the versions of a document. |
+| [`GET /v1/documents/{id}/versions/{version}`](/api-reference/endpoint/get-api-v1-documents-id-versions-version) | Read one version. |
+| [`POST /v1/documents/{id}/revert/{version}`](/api-reference/endpoint/post-api-v1-documents-id-revert-version) | Restore a version as the newest one. |
+| [`GET /v1/documents/{id}/usage`](/api-reference/endpoint/get-api-v1-documents-id-usage) | Who references this document. |

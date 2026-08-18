@@ -1,0 +1,71 @@
+---
+title: "Environments"
+description: "A reusable execution package — tools, knowledge, variables and a sandbox — that several agents and assistants share."
+---
+
+An **Environment** is everything an agent needs to *run*, packaged once and connected to as many agents and assistants as you like.
+
+Without it, each agent carries its own copy of the same setup: the same MCPs, the same documents, the same API keys, the same terminal configuration. Change something and you change it in ten places, or in nine and forget the tenth.
+
+![Environments](/images/environments/list.png)
+
+---
+
+## What an environment carries
+
+<Columns cols={2}>
+  <Card title="Tools" icon="screwdriver-wrench">
+    The MCPs and tool groups every connected entity gets.
+  </Card>
+  <Card title="Knowledge" icon="book">
+    Documents and folders the connected agents can read.
+  </Card>
+  <Card title="Environment variables" icon="key">
+    Values available at runtime, encrypted at rest and shown masked.
+  </Card>
+  <Card title="Sandbox" icon="terminal">
+    A real Linux machine: runtime, init script, installed CLIs and its snapshot.
+  </Card>
+</Columns>
+
+---
+
+## How connecting works
+
+An agent or assistant connects to **one** environment; an environment serves many. The connection is **additive**: what the environment brings is added to what the entity already had, so connecting one never takes tools or documents away.
+
+The connection itself can carry variables of its own, for values that differ per agent while everything else is shared. Precedence runs from most specific to least: **connection → environment → sandbox**.
+
+<Warning>
+  The sandbox is the exception to "additive". When an environment with a sandbox is connected, **the environment governs the sandbox completely** — the entity's own terminal configuration is ignored at runtime, not merged. The interface makes it read-only and says so, because a setting that looks editable but has no effect is worse than one that is visibly locked.
+</Warning>
+
+---
+
+## When to use one
+
+| Situation | Environment? |
+| --- | --- |
+| Several agents work on the same systems with the same credentials | **Yes.** One place to rotate a key. |
+| A team of agents shares a codebase or a working directory | **Yes.** They share a sandbox snapshot. |
+| A single assistant with two documents and no tools | Not worth it. |
+| Agents that must not see each other's credentials | Separate environments. |
+
+---
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Configuration" icon="sliders" href="/devic/environments/configuration">
+    Variables, secrets, tools and knowledge.
+  </Card>
+  <Card title="Sandbox" icon="terminal" href="/devic/environments/sandbox">
+    The machine agents run commands on, and its snapshots.
+  </Card>
+  <Card title="CLIs" icon="rectangle-terminal" href="/devic/environments/clis">
+    Command-line tools baked into the snapshot.
+  </Card>
+  <Card title="Projects" icon="folder" href="/devic/projects/index">
+    Environments belong to a project, like everything else.
+  </Card>
+</CardGroup>
