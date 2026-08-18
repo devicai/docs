@@ -1,0 +1,76 @@
+---
+title: "Configuring an environment"
+description: "Variables and secrets, shared tools, shared knowledge and the connection to each agent."
+---
+
+An environment is configured once and inherited by everything connected to it. This page covers everything except the sandbox, which has [its own page](/devic/environments/sandbox).
+
+---
+
+## Environment variables
+
+Variables defined here are available at runtime to every connected agent — inside the sandbox, and to the tools that need them.
+
+![Environment variables](/images/environments/variables.png)
+
+They are **encrypted at rest** and returned masked (`••••••••`) whenever they are read back. Saving a form that contains a masked value leaves the stored secret untouched, so editing an unrelated field cannot silently blank out a key.
+
+### Which value wins
+
+The same variable can be set in three places. Most specific wins:
+
+<Steps>
+  <Step title="On the connection">
+    Set for one agent's link to this environment. Use it for what genuinely differs per agent.
+  </Step>
+  <Step title="On the environment">
+    The shared value, used by everything connected.
+  </Step>
+  <Step title="On the sandbox">
+    The fallback, for values that only make sense inside the machine.
+  </Step>
+</Steps>
+
+<Tip>
+  For credentials that already live in a corporate secret store, use the [vault](/devic/administration/vault) instead of pasting the value here. The environment then holds a reference, not the secret.
+</Tip>
+
+---
+
+## Shared tools
+
+Tool groups and MCPs added to an environment become available to every connected agent and assistant. This is the usual way to give a fleet of agents the same set of integrations without configuring each one.
+
+The behaviour is additive: an agent keeps the tools it had, plus the environment's.
+
+---
+
+## Shared knowledge
+
+Documents and folders attached to an environment reach every connected entity, exactly as if they had been attached individually. It is the right level for the material that everyone needs — the style guide, the glossary, the standard operating procedures.
+
+See [Knowledge](/devic/knowledge/index).
+
+---
+
+## Per-tenant integrations
+
+An environment can also define which third-party apps the **end users** of its assistants are offered, so the catalogue is set once for a whole product rather than per assistant. See [Integrations for your end users](/devic/integrations/for-end-users).
+
+---
+
+## Connecting an agent
+
+From the agent's configuration, pick the environment. From the environment, see everything connected to it.
+
+![The environment section of an agent](/images/agents/environment.png)
+
+<Note>
+  If the agent already had its own terminal sandbox configured, connecting an environment that brings a sandbox will supersede it. Devic warns you at that moment — the earlier configuration is not deleted, it simply stops being used.
+</Note>
+
+---
+
+## Projects and access
+
+An environment belongs to a project, and inherits its access rules. A guest with access to one project sees that project's environments and no others. See [Projects](/devic/projects/index) and [Users and roles](/devic/administration/users-and-roles).

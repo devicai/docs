@@ -1,0 +1,61 @@
+---
+title: "Email channels"
+description: "Connect a mailbox so agents can send mail — and be started by the mail that arrives."
+---
+
+A **channel** is a way in and out of Devic that is not the API. Today that means email: a mailbox an agent can send from, and whose incoming messages can start a run.
+
+![Channels](/images/admin/channels.png)
+
+---
+
+## Connecting a mailbox
+
+<Columns cols={2}>
+  <Card title="Gmail or Outlook" icon="envelope">
+    One click. Authorise once and both sending and receiving are configured for you, with the right hosts, ports and OAuth.
+  </Card>
+  <Card title="Any other provider" icon="server">
+    Configure SMTP and IMAP by hand: host, port, TLS and credentials.
+  </Card>
+</Columns>
+
+<Note>
+  Gmail and Outlook have retired or restricted basic authentication, which is why the guided flow exists. If you are configuring either of them by hand and hitting authentication failures, use the native connection instead.
+</Note>
+
+Devic can use its own registered application, or yours — bring your own OAuth client when your organisation requires the consent to be granted to an app you control.
+
+---
+
+## Aliases
+
+A Gmail account can send as any of its configured aliases, and mail arriving at an alias is picked up as belonging to that mailbox. This is what lets one connected account serve `support@`, `billing@` and `hello@` without three mailboxes.
+
+---
+
+## Incoming mail
+
+An inbound message can start an agent or continue a conversation:
+
+- **Threading** follows the standard mail headers, so a reply lands in the conversation it belongs to rather than opening a new one.
+- **The tenant** is resolved from the sender, so a customer writing in is attributed to their own tenant automatically. See [Multi-tenant](/devic/multi-tenant/index).
+
+---
+
+## When a connection breaks
+
+Tokens expire and passwords get changed. A mailbox that can no longer authenticate is marked as needing re-authorisation rather than failing silently, so the fix is one click and not an investigation into why an agent stopped answering.
+
+---
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Triggers" icon="bolt" href="/devic/integrations/triggers">
+    Starting agents from other apps' events, not just mail.
+  </Card>
+  <Card title="Notifications" icon="bell" href="/devic/administration/notifications">
+    What Devic sends *you*, as opposed to what your agents send.
+  </Card>
+</CardGroup>

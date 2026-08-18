@@ -26,7 +26,15 @@
             "expanded": true,
             "pages": [
               "devic/introduction",
-              "devic/quickstart"
+              "devic/quickstart",
+              "devic/core-concepts"
+            ]
+          },
+          {
+            "group": "Projects",
+            "icon": "folder",
+            "pages": [
+              "devic/projects/index"
             ]
           },
           {
@@ -62,7 +70,8 @@
                   "devic/mcps/built-in-tools/index",
                   "devic/mcps/built-in-tools/tools-list"
                 ]
-              }
+              },
+              "devic/mcps/mcp-gateway"
             ]
           },
           {
@@ -87,6 +96,7 @@
                   "devic/agents/continuous-optimization/costs"
                 ]
               },
+              "devic/agents/environment-and-subagents",
               "devic/agents/other-options",
               {
                 "group": "Guardrails",
@@ -131,6 +141,27 @@
             ]
           },
           {
+            "group": "Knowledge",
+            "icon": "book",
+            "expanded": false,
+            "pages": [
+              "devic/knowledge/index",
+              "devic/knowledge/documents",
+              "devic/knowledge/organising",
+              "devic/knowledge/versions"
+            ]
+          },
+          {
+            "group": "Memory",
+            "icon": "brain",
+            "expanded": false,
+            "pages": [
+              "devic/memory/index",
+              "devic/memory/core-memory",
+              "devic/memory/buckets"
+            ]
+          },
+          {
             "group": "Databases",
             "icon": "database",
             "expanded": true,
@@ -141,6 +172,46 @@
             ]
           },
           {
+            "group": "Environments",
+            "icon": "layer-group",
+            "expanded": false,
+            "pages": [
+              "devic/environments/index",
+              "devic/environments/configuration",
+              "devic/environments/sandbox",
+              "devic/environments/clis"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "icon": "plug",
+            "expanded": false,
+            "pages": [
+              "devic/integrations/index",
+              "devic/integrations/triggers",
+              "devic/integrations/for-end-users"
+            ]
+          },
+          {
+            "group": "Multi-tenant",
+            "icon": "building",
+            "expanded": false,
+            "pages": [
+              "devic/multi-tenant/index",
+              "devic/multi-tenant/usage-limits",
+              "devic/multi-tenant/tenant-sessions"
+            ]
+          },
+          {
+            "group": "Embed in your product",
+            "icon": "window-maximize",
+            "expanded": false,
+            "pages": [
+              "devic/embed/index",
+              "devic/embed/chat-widget"
+            ]
+          },
+          {
             "group": "Skills",
             "icon": "clipboard-list-check",
             "pages": [
@@ -148,6 +219,35 @@
               "devic/skills/agents",
               "devic/skills/assistants",
               "devic/skills/tool-servers"
+            ]
+          },
+          {
+            "group": "CLI",
+            "icon": "rectangle-terminal",
+            "pages": [
+              "devic/cli/index"
+            ]
+          },
+          {
+            "group": "Operate",
+            "icon": "chart-line",
+            "expanded": false,
+            "pages": [
+              "devic/chats",
+              "devic/ai-governance"
+            ]
+          },
+          {
+            "group": "Administration",
+            "icon": "gear",
+            "expanded": false,
+            "pages": [
+              "devic/administration/users-and-roles",
+              "devic/administration/api-keys",
+              "devic/administration/model-providers",
+              "devic/administration/vault",
+              "devic/administration/channels",
+              "devic/administration/notifications"
             ]
           }
         ]

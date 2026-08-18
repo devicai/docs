@@ -1,0 +1,86 @@
+---
+title: "API keys"
+description: "Credentials for the public API, and the three ways to keep one from doing more than it should."
+---
+
+Every call to the Devic public API carries an API key. Keys are created and revoked from **API keys** in the console.
+
+![API keys](/images/admin/api-keys.png)
+
+```bash
+curl https://api.devic.ai/v1/assistants \
+  -H "Authorization: Bearer devic-your-key"
+```
+
+---
+
+## Three restrictions worth using
+
+A key with no restrictions can do everything the account can. That is the right shape for a key on your own server and the wrong shape for anything else.
+
+### Endpoints
+
+Grant a key only the groups of endpoints it needs — assistants, agents, documents, memory, per-tenant integrations, and so on.
+
+![API key scopes](/images/admin/api-key-scopes.png)
+
+There is a ready-made **devic-ui** selection covering exactly what an embedded widget calls. It deliberately leaves out the privileged surfaces: tenant administration, and the ability to issue tenant sessions.
+
+### Domains
+
+A key can be restricted to the domains it may be used from. Beyond limiting where it works, declaring the domains tells Devic the key is meant for a browser — which is what makes it refuse to mint [tenant sessions](/devic/multi-tenant/tenant-sessions).
+
+### Tenant identity mode
+
+The one that matters most for a multi-customer product:
+
+| Mode | Meaning |
+| --- | --- |
+| **open** *(default)* | The tenant travels beside the key as a parameter. Whoever holds the key can claim to be any tenant of the account — fine for a key that never leaves your server. |
+| **signed** | Only a tenant session is accepted. The key itself can do nothing but mint one, so a copy lifted out of your page's JavaScript is worth nothing. |
+
+<Note>
+  Keys created before this setting existed behave as `open`. Tightening them silently would have taken working integrations down, so the change is yours to make.
+</Note>
+
+---
+
+## Which key for which job
+
+<Columns cols={2}>
+  <Card title="Server key" icon="server">
+    Unrestricted, or scoped to what your backend calls. Never shipped to a browser. This is the key that mints tenant sessions.
+  </Card>
+  <Card title="Browser key" icon="window-maximize">
+    Endpoint-restricted, domain-restricted, `signed`. It can start a session and nothing else.
+  </Card>
+</Columns>
+
+<Warning>
+  A key that has ever been in a bundle is public, whatever you do afterwards. Removing it from the code does not invalidate it — rotate it in the console.
+</Warning>
+
+---
+
+## Watching how they are used
+
+![API usage logs](/images/admin/api-usage-logs.png)
+
+The usage log records calls per key: the endpoint, the response code and when. It answers both the operational question ("what is failing") and the security one ("what is this key actually doing").
+
+<Note>
+  Calls made with a tenant session are attributed to the key that issued it, so moving an integration to sessions does not empty the key's metrics.
+</Note>
+
+---
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Tenant sessions" icon="key" href="/devic/multi-tenant/tenant-sessions">
+    The credential to use in a browser.
+  </Card>
+  <Card title="API reference" icon="code" href="/api-reference/introduction">
+    Everything a key can reach.
+  </Card>
+</CardGroup>

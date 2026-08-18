@@ -1,0 +1,117 @@
+---
+title: "The chat widget"
+description: "Configuring ChatDrawer: appearance, attachments, tools, memory and the apps your users connect."
+---
+
+`ChatDrawer` is the complete chat panel: history, attachments, voice input, a timeline of the tools the assistant used, and per-message feedback.
+
+![Widget configuration](/images/embed/widget-config.png)
+
+---
+
+## Appearance and behaviour
+
+```jsx
+<ChatDrawer
+  assistantId="support-assistant"
+  chatUid="optional-existing-chat"
+  options={{
+    position: 'right',            // 'left' | 'right'
+    width: 400,
+    defaultOpen: false,
+    color: '#4764e6',
+    title: 'Support',
+    welcomeMessage: 'Hello! How can I help?',
+    suggestedMessages: ['Where is my order?', 'I need an invoice'],
+    inputPlaceholder: 'Type a message…',
+    enableFileUploads: true,
+    allowedFileTypes: { images: true, documents: true },
+    showToolTimeline: true,
+  }}
+/>
+```
+
+Callbacks cover the moments your application usually cares about: `onMessageSent`, `onMessageReceived`, `onToolCall`, `onChatCreated`, `onError`, `onOpen`, `onClose`. Passing `isOpen` puts the drawer in controlled mode, so your own button can open it.
+
+---
+
+## Identifying the user
+
+The drawer takes the tenant and subtenant, either from the provider or per component:
+
+```jsx
+<ChatDrawer
+  assistantId="support-assistant"
+  tenantId="acme-corp"
+  subtenantId="alex@acme.com"
+/>
+```
+
+That is what partitions conversations, cost, memory and connected apps for this user. With [tenant sessions](/devic/multi-tenant/tenant-sessions), it comes from the session instead and cannot be overridden from the page — which is the point.
+
+---
+
+## Showing what the assistant remembered
+
+For an assistant with memory, the drawer shows a collapsible **Recalled memories** strip beside the message that brought them in — including while the first answer is still being produced.
+
+```jsx
+options={{
+  showRecalledMemories: true,          // default
+  recalledMemoriesRenderer: ({ records, isLoading }) => (
+    <MyMemoryChip facts={records.flatMap((r) => r.facts ?? [])} />
+  ),
+  showCoreMemoryButton: true,          // brain icon opening CoreMemoryModal
+}}
+```
+
+The same records are on the hook: `useDevicChat().recalledMemories`. See [Memory](/devic/memory/index).
+
+---
+
+## Letting users connect their own apps
+
+When the assistant offers apps to its tenants, a stack of their logos appears in the header, opening the modal where the user connects their own accounts.
+
+![Connected apps in the widget](/images/embed/connected-apps.png)
+
+```jsx
+options={{
+  showIntegrationsButton: true,        // default; only appears if there is something behind it
+  integrationsLabel: 'Connected apps',
+  maxIntegrationLogos: 6,
+  showIntegrationsHint: true,          // strip above the composer, dismissed per user
+}}
+```
+
+<Note>
+  The control costs no extra request when there is nothing behind it: the assistant itself reports whether it offers apps, on the call the drawer already makes for its header. Connected apps come first in the stack and unconnected ones are dimmed, so the row doubles as the status.
+</Note>
+
+See [Integrations for your end users](/devic/integrations/for-end-users).
+
+---
+
+## Polling cadence
+
+While an answer is being produced, the widget asks the API what has been produced so far — once a second by default.
+
+```jsx
+<DevicProvider apiKey="devic-xxx" pollingInterval={3000}>
+```
+
+The default answers as fast as the API produces tokens. Raise it when the cost of the requests matters more than the latency of the answer.
+
+---
+
+## Building your own interface
+
+Everything the drawer does is available from `useDevicChat`, so a bespoke interface is not a downgrade:
+
+```jsx
+const { messages, isLoading, sendMessage, recalledMemories } = useDevicChat({
+  assistantId: 'support-assistant',
+});
+```
+
+Companion hooks cover the rest: `useAssistantInfo`, `useModelInterface`, `useAICommandBar`, `useAIGenerationButton`, `usePolling`.

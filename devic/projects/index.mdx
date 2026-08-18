@@ -1,0 +1,72 @@
+---
+title: "Projects"
+description: "Group agents, assistants, knowledge and environments into a unit with its own access and its own cost."
+---
+
+A **project** is how work is divided in Devic. Agents, assistants, tool servers, documents and environments each belong to one, and everything that follows — who can see it, what it costs, what it produced — follows the project.
+
+![Projects](/images/projects/list.png)
+
+---
+
+## Why they exist
+
+<Columns cols={2}>
+  <Card title="Access" icon="lock">
+    Access is granted per project. Give someone the *Support* project and they see its agents and nothing else.
+  </Card>
+  <Card title="Cost" icon="chart-line">
+    Every run is attributed to a project, so "what does the support automation cost us" is a question with an answer.
+  </Card>
+  <Card title="Focus" icon="filter">
+    Choosing a project filters the interface to it. Fewer things on screen, and no chance of editing the wrong agent.
+  </Card>
+  <Card title="Traceability" icon="list-check">
+    Threads and conversations are listed per project, whichever agent produced them.
+  </Card>
+</Columns>
+
+---
+
+## Visibility
+
+A project is either **public** — visible to everyone in the account — or **private**, visible only to those explicitly given access. Administrators see everything either way.
+
+![Project access](/images/projects/access.png)
+
+Access is granted per user, from the project's settings. See [Users and roles](/devic/administration/users-and-roles) for what each role can do once inside.
+
+---
+
+## What a project tells you
+
+![Project detail](/images/projects/detail.png)
+
+| View | What it answers |
+| --- | --- |
+| **Stats** | How much is running here, and how much has run. |
+| **Threads** | Every agent run in this project, whichever agent. |
+| **Conversations** | Every assistant conversation in this project. |
+| **Costs** | Daily and monthly cost, in tokens and in money. |
+
+---
+
+## Entities without a project
+
+An agent can also live outside any project — "All Projects" — which makes it visible account-wide. It is the right choice for something genuinely shared, and the wrong one for anything that should be confined.
+
+<Note>
+  Project-less entities are treated differently depending on where you are looking. In the console, which always has a project selected, they show up in every project. Through the public API they are excluded from a non-administrator's listing, so a scoped token cannot pull the whole account by listing without a filter.
+</Note>
+
+---
+
+## Archiving
+
+Projects are archived, not deleted. An archived project disappears from the usual lists while its history — threads, conversations, cost — stays intact and queryable.
+
+---
+
+## Through the API
+
+Projects are fully available in the [public API](/api-reference/endpoint/get-api-v1-projects): create them, list their threads and conversations, and pull their cost series to bill or report on them.

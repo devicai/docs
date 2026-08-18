@@ -1,0 +1,58 @@
+---
+title: "AI Governance"
+description: "One place to see everything in your account that other people and other systems can reach."
+---
+
+Most of Devic is about building things. **AI Governance** is about knowing what you have already built and who is using it — the surfaces that face outward, gathered on one screen.
+
+![AI Governance](/images/governance/overview.png)
+
+<Note>
+  This section is for administrators.
+</Note>
+
+---
+
+## What it covers
+
+<Columns cols={3}>
+  <Card title="MCP Gateways" icon="server">
+    How many, their addresses, sessions and tool calls. See [MCP Gateway](/devic/mcps/mcp-gateway).
+  </Card>
+  <Card title="Published MCPs" icon="upload">
+    The tool servers you publish as public MCPs, with the same activity figures.
+  </Card>
+  <Card title="Governed CLIs" icon="rectangle-terminal">
+    Command-line tools, the users who hold them and the policies applied.
+  </Card>
+</Columns>
+
+Each block shows counts, recent activity and the individual entries, so a spike is one click from the thing that caused it.
+
+---
+
+## The questions it answers
+
+- **What is reachable from outside?** Every published MCP and gateway, with its address.
+- **Who is using it?** Sessions and tool calls, attributable to a person when user management is on.
+- **What did they run?** Tool calls with their arguments and outcome, searchable.
+- **What is unused?** A published surface with no activity is a surface to retire.
+
+---
+
+## Attribution
+
+Activity is attributed to a Devic user only when the gateway has **user management** enabled. Without it, sessions still appear but the user column shows as unavailable rather than empty — the difference between "nobody" and "not recorded" matters when you are reading a log.
+
+---
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Guardrails" icon="shield" href="/devic/agents/guardrails/index">
+    Controls on what a model is allowed to say and do.
+  </Card>
+  <Card title="API usage" icon="chart-line" href="/devic/administration/api-keys">
+    The other outward surface: your API keys.
+  </Card>
+</CardGroup>

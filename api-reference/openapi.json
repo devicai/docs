@@ -13331,13 +13331,13 @@
         }
       }
     },
-    "/v1/tenant-sessions": {
+    "/api/v1/tenant-sessions": {
       "post": {
         "tags": [
           "Tenant Sessions"
         ],
         "summary": "Issue a tenant session",
-        "description": "Mints a short-lived token that **proves** which end user is calling, instead of trusting what the page claims. Your backend asks for it with a server-side API key and hands it to the browser; from then on the widget calls Devic with the session token and the tenant can no longer be forged.\n\nTwo rules keep the guarantee honest, and both are enforced:\n\n- A session cannot issue another session. An expiry that the holder can extend is not an expiry.\n- The call must come from a server. A request carrying an `Origin` header, or made with a key configured for browser domains, is refused — a session minted with a key that ships in a bundle would prove nothing.\n\n`ttlSeconds` is clamped into the allowed range rather than rejected: ask for a year and you get twelve hours.",
+        "description": "Mints a short-lived token that **proves** which end user is calling, instead of trusting what the page claims. Your backend asks for it with a server-side API key and hands it to the browser; from then on the widget calls Devic with the session token and the tenant can no longer be forged.\n\nTwo rules keep the guarantee honest, and both are enforced:\n\n- A session cannot issue another session. An expiry that the holder can extend is not an expiry.\n- The call must come from a server. A request carrying an `Origin` header, or made with a key configured for browser domains, is refused — a session minted with a key that ships in a bundle would prove nothing.\n\n`ttlSeconds` is clamped into the allowed range rather than rejected: ask for a year and you get twelve hours.\n\n**Note the path.** This is the one public endpoint served by the gateway itself rather than proxied, so it is reached at `/api/v1/tenant-sessions` — the `/api` prefix that the rest of the API accepts optionally is required here.",
         "operationId": "issueTenantSession",
         "security": [
           {

@@ -1,0 +1,58 @@
+---
+title: "Conversations console"
+description: "Every conversation and every run in one place, with what the assistant did and what it cost."
+---
+
+The **Chats** section is the account's activity in one list: conversations from every assistant, wherever they came from — the console, an embedded widget, the API, an inbound email or a trigger.
+
+![Chats console](/images/chats/console.png)
+
+---
+
+## Finding a conversation
+
+Filters narrow the list along the axes that matter in practice:
+
+| Filter | Use it to |
+| --- | --- |
+| **Assistant** | Look at one deployment at a time. |
+| **Tenant / subtenant** | See what one customer, or one of their users, experienced. |
+| **Tags** | Group conversations your own integration labelled. |
+| **Date** | Bound the window. |
+
+There is also full-text search inside a conversation's messages, for when you remember what was said but not where.
+
+---
+
+## Reading one
+
+![Conversation detail](/images/chats/detail.png)
+
+A conversation shows more than the transcript:
+
+- **Tool calls**, expandable to their arguments and results — the fastest way to see why an answer was wrong.
+- **Recalled memories**, when the assistant used [memory](/devic/memory/index): what it brought in and from where.
+- **Cost and tokens** for the conversation.
+- **Feedback** left on individual messages, thumbs and comments.
+
+<Tip>
+  When an answer is wrong, the tool calls usually explain it before the prompt does. A tool that returned an error, or was never called at all, is a different fix from a prompt that asked for the wrong thing.
+</Tip>
+
+---
+
+## Conversations that were blocked
+
+A conversation stopped by a [usage limit](/devic/multi-tenant/usage-limits) is marked as such, with the rule that blocked it, the current value, the ceiling and when the window resets. The mark clears itself as soon as a later message goes through.
+
+---
+
+## Agent runs
+
+Agent threads have their own equivalent view, with the run's state, its tasks, approvals and pauses. See [Logs](/devic/agents/continuous-optimization/logs).
+
+---
+
+## Through the API
+
+Everything here is available programmatically — [list conversations](/api-reference/endpoint/get-api-v1-assistants-identifier-chats), [read one](/api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid), [search inside it](/api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid-search) and [submit feedback](/api-reference/endpoint/post-api-v1-assistants-identifier-chats-chatuid-feedback) — which is how you build your own review workflow or export the lot.

@@ -46,6 +46,30 @@ The Devic API is ideal for backend automation, SaaS integrations and systems tha
     Retrieve daily, monthly and aggregated cost data for each agent.
   </Card>
 
+  <Card title="Connect third-party apps" icon="plug">
+    Browse the catalogue, connect an account, build a tool server from it and choose which of its tools your agents get.
+  </Card>
+
+  <Card title="React to app events" icon="bolt">
+    Subscribe an agent or assistant to an event from a connected app, and read what each delivery did.
+  </Card>
+
+  <Card title="Serve your own customers" icon="building">
+    Tenants and subtenants, their consumption against plan limits, and the apps each end user connects for themselves.
+  </Card>
+
+  <Card title="Prove who is calling" icon="key">
+    Mint short-lived tenant sessions from your backend, so an embedded widget carries no API key.
+  </Card>
+
+  <Card title="Read and edit memory" icon="brain">
+    The standing core-memory block an assistant is given for a tenant, readable and editable.
+  </Card>
+
+  <Card title="Transcribe audio" icon="microphone">
+    Speech-to-text, so a voice message becomes a message like any other.
+  </Card>
+
   <Card title="Health checks" icon="heartbeat">
     Verify API availability using a dedicated health endpoint.
   </Card>
@@ -88,6 +112,43 @@ The Devic API is divided into the following groups:
 - Organise documents into folders
 - Attach documents or folders to agents or assistants for RAG indexing
 - Inspect document usage, versions and link graph
+
+### **Memory**
+- Read the core-memory block of an assistant for a tenant
+- Add, supersede and delete entries
+
+### **MCP Gateway**
+- Manage visibility profiles
+- Grant per-user access and per-user tool visibility
+
+### **Integrations**
+- Browse connectable apps and their event types
+- Connect an account and build a tool server from it
+- Choose and test the tools an integration exposes
+
+### **Triggers**
+- Subscribe an agent or assistant to an app event
+- Configure the message template and rate limits
+- Read recent deliveries
+
+### **Tenants**
+- List tenants and subtenants, and their stats and costs
+- Read consumption against plan limits
+- Change a tenant's plan and reset its counters
+
+### **Tenant Sessions**
+- Issue a short-lived token that proves which end user is calling
+
+### **Tenant Integrations**
+- The apps an assistant offers its end users
+- Connect and disconnect an end user's own accounts
+
+### **Skills**
+- List the skills catalogue and its tags
+- Scaffold a folder-skill
+
+### **Speech to Text**
+- Transcribe audio and retrieve a transcript
 
 ### **Files**
 - Upload files and receive shareable download URLs
@@ -296,6 +357,56 @@ Invalid or missing tokens return `401 Unauthorized`.
 
 <Card title="Start with tool servers" icon="wrench" href="/api-reference/endpoint/post-api-v1-tool-servers">
   Create and configure tool servers programmatically.
+</Card>
+
+---
+
+### 7. Connecting an app and reacting to its events
+
+1. **Find the app and see what it needs**
+
+        GET /v1/integrations?search=gmail
+        GET /v1/integrations/gmail/auth
+
+2. **Connect an account** (open `authorizationUrl` when one is returned)
+
+        POST /v1/integrations/gmail/connect
+        GET  /v1/integrations/gmail/connection-status
+
+3. **Build the tool server and choose its tools**
+
+        POST  /v1/integrations/gmail/servers
+        PATCH /v1/integrations/servers/{id}/tools
+
+4. **Start an agent from one of its events**
+
+        GET  /v1/integrations/gmail/triggers
+        POST /v1/triggers
+        GET  /v1/triggers/{id}/events
+
+<Card title="Connect an app" icon="plug" href="/api-reference/endpoint/get-api-v1-integrations">
+  Browse the catalogue of connectable applications.
+</Card>
+
+---
+
+### 8. Serving your own customers
+
+1. **Issue a session for the end user** — from your server, never from the browser
+
+        POST /api/v1/tenant-sessions
+
+2. **Let the widget use it**, then read that user's own view
+
+        GET /v1/tenant-usage/{tenantId}
+        GET /v1/tenant-integrations?assistantId=…
+
+3. **Move them between plans from your checkout**
+
+        POST /v1/tenant-admin/{tenantId}/tier
+
+<Card title="Issue a tenant session" icon="key" href="/api-reference/endpoint/post-api-v1-tenant-sessions">
+  The credential an embedded widget should carry.
 </Card>
 
 ---

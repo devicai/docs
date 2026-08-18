@@ -1,0 +1,111 @@
+---
+title: "MCP Gateway"
+description: "Re-publish a remote MCP server through Devic, with control over which tools each user sees."
+---
+
+An **MCP Gateway** puts Devic in front of an existing MCP server. The upstream server is reached through Devic's own MCP endpoint, and along the way you get three things it did not have: control over which tools are visible, per-user access, and a record of what was called.
+
+![MCP Gateways](/images/mcp-gateway/list.png)
+
+---
+
+## Why put a gateway in front
+
+<Columns cols={2}>
+  <Card title="Fewer tools, better answers" icon="eye-slash">
+    A server with 200 tools makes any model worse. Hide what nobody needs and the remaining ones get chosen correctly.
+  </Card>
+  <Card title="Different views per user" icon="users">
+    The same server can expose ten tools to support and three to interns.
+  </Card>
+  <Card title="Safer descriptions" icon="pen">
+    Descriptions and permission hints can be overridden without touching the upstream server.
+  </Card>
+  <Card title="Visibility" icon="chart-line">
+    Sessions, tool calls and their outcomes, attributable to a person.
+  </Card>
+</Columns>
+
+---
+
+## Setting one up
+
+<Steps>
+  <Step title="Connect the upstream">
+    Point the gateway at the remote MCP server and authorise it. Servers without dynamic client registration can be given a pre-registered OAuth client.
+  </Step>
+  <Step title="Discover the tools">
+    Devic reads the upstream's tool list, with descriptions and permission hints.
+  </Step>
+  <Step title="Adjust what is exposed">
+    Hide tools, rewrite a description, correct a permission hint — `readOnlyHint`, `destructiveHint`, `idempotentHint`, `openWorldHint`.
+  </Step>
+  <Step title="Publish">
+    The gateway is served under its own address on `*.mcp.devic.ai`, ready to be added to any MCP client.
+  </Step>
+</Steps>
+
+![Gateway detail](/images/mcp-gateway/detail.png)
+
+---
+
+## How the upstream is authenticated
+
+| Mode | Behaviour |
+| --- | --- |
+| **Per-user** *(default)* | Each user authorises the upstream themselves. Their identity reaches the upstream, and their access there is their own. |
+| **Shared** | One credential serves everyone through the gateway. |
+
+---
+
+## User management
+
+Turning **user management** on is what makes the gateway a governed surface rather than a shared pipe. With it, every session and every tool call is attributed to a Devic user — and the access controls below come alive.
+
+<Note>
+  With user management off, the profile and per-user sections are inert, the by-user views are disabled and the tool-call search is hidden. There is no attribution to filter on, so showing the controls would be showing a promise that cannot be kept.
+</Note>
+
+---
+
+## Visibility profiles
+
+A **profile** is a named set of hidden tools — *Support*, *Read-only*, *Interns* — assigned to users.
+
+![Visibility profiles](/images/mcp-gateway/profiles.png)
+
+On top of a profile, a single user can be given their own extra hidden tools, so an exception does not require inventing a profile for one person.
+
+![Gateway users](/images/mcp-gateway/users.png)
+
+Deleting a profile does not lock anyone out: the users assigned to it fall back to their own per-user settings.
+
+<Warning>
+  Hiding a tool changes what the model is offered, which is a usability control and a cost control. Do not confuse it with a permission: a user who can reach the upstream server directly is not stopped by a hidden tool. For that, use per-user upstream authentication.
+</Warning>
+
+---
+
+## Through the API
+
+Profiles and per-user access are fully manageable through the public API:
+
+| Call | Purpose |
+| --- | --- |
+| [`GET /v1/tool-servers/{id}/profiles`](/api-reference/endpoint/get-api-v1-tool-servers-toolserverid-profiles) | List profiles. |
+| [`POST /v1/tool-servers/{id}/profiles`](/api-reference/endpoint/post-api-v1-tool-servers-toolserverid-profiles) | Create one. |
+| [`GET /v1/tool-servers/{id}/users`](/api-reference/endpoint/get-api-v1-tool-servers-toolserverid-users) | Who can reach the gateway, and what they see. |
+| [`PATCH /v1/tool-servers/{id}/users/{userUID}`](/api-reference/endpoint/patch-api-v1-tool-servers-toolserverid-users-useruid) | Set one user's access and visibility. |
+
+---
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Publishing your own MCP" icon="upload" href="/devic/mcps/my-mcps/publish">
+    Turning a tool server of your own into a public MCP.
+  </Card>
+  <Card title="AI Governance" icon="shield-halved" href="/devic/ai-governance">
+    Where gateway activity is reviewed alongside everything else.
+  </Card>
+</CardGroup>

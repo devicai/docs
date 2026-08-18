@@ -1,0 +1,88 @@
+---
+title: "Writing documents"
+description: "The markdown editor: properties, links between documents and subdocuments."
+---
+
+Markdown documents are written directly in Devic, in the same editor used for system prompts. What you type is what the agent reads — there is no separate "source" view to keep in sync.
+
+![The document editor](/images/knowledge/document-editor.png)
+
+---
+
+## The editor
+
+It is a rich-text editor over markdown: headings, lists, tables, code blocks and links behave as you would expect, and the file stays plain markdown underneath. That matters because the same text is what gets indexed and what an agent quotes back.
+
+<Tip>
+  Write for the reader you actually have. An agent retrieves *fragments*, not whole documents, so a page split into short, well-titled sections is retrieved far more accurately than one long wall of text.
+</Tip>
+
+---
+
+## Properties
+
+Above the content sits a properties panel — the document's frontmatter, edited as fields rather than as raw YAML.
+
+| Type | Use it for |
+| --- | --- |
+| **Text** | Free-form values: owner, department, status. |
+| **Link** / **Links** | References to a URL or to other documents. |
+| **Date** | Review dates, effective dates, expiry. |
+| **Tags** | Categories used to filter the catalogue. |
+| **List** | Any repeated plain value. |
+
+Properties travel with the document and are visible to the agent, so a `status: draft` or `valid-until: 2026-12-31` is something the model can take into account when it quotes the page.
+
+---
+
+## Linking documents to each other
+
+Type `@` anywhere in the document to search your other documents and insert a link to one. It becomes a chip in the editor and `[[document-name]]` in the markdown.
+
+![Linking to another document](/images/knowledge/mentions.png)
+
+Clicking a link opens the target document, and the back button walks the trail you came in by — you can follow a chain of references and get back out.
+
+<Note>
+  Links are more than navigation. Devic reads them to build the [document graph](/devic/knowledge/organising#the-document-graph), which is how you see what a page depends on before you change it.
+</Note>
+
+---
+
+## Subdocuments
+
+A document can hang below another one, to any depth. Use it when a subject is genuinely one thing with parts: a handbook with chapters, a product with variants, a process with stages.
+
+The hierarchy is not only presentational. **When an agent is given a document, it is given the whole tree underneath it.** Attaching *Returns policy* also gives the agent *Returns policy → EU*, *Returns policy → US*, and anything below those — without listing them one by one, and including the ones added tomorrow.
+
+---
+
+## Importing what you already have
+
+Documentation that lives elsewhere can come in as a bundle rather than file by file:
+
+- A **`.zip`** of markdown files — an Obsidian vault, a docs folder out of a repository — keeping its folder structure.
+- A **skill** exported from Claude: a single `SKILL.md`, or a `.skill`/`.zip` bundle with one folder per skill. Referenced files, such as `references/` and `scripts/`, come along. Up to 100 MB.
+
+Imported skills land as [Skills](/devic/skills/overview), ready to be assigned to an agent.
+
+---
+
+## Uploading files
+
+For content authored outside Devic — signed contracts, supplier PDFs, exported reports — upload the file instead. `.pdf`, `.docx`, `.txt` and `.md`, up to 25 MB each, ten at a time.
+
+Devic extracts the text and writes a summary. **Review the summary**: it is what an agent reads when deciding whether the document is relevant, and a vague summary is the usual reason a document never gets retrieved. Edit it to say what the document is for, in the words someone would use when asking for it.
+
+---
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Organising knowledge" icon="folder-tree" href="/devic/knowledge/organising">
+    Folders, the graph and finding things again.
+  </Card>
+  <Card title="Versions" icon="clock-rotate-left" href="/devic/knowledge/versions">
+    Every edit kept, and how to go back.
+  </Card>
+</CardGroup>

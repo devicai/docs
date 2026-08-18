@@ -1,0 +1,88 @@
+---
+title: "Knowledge"
+description: "The written knowledge of your organisation, kept in one place and handed to the agents and assistants that need it."
+---
+
+**Knowledge** is where Devic keeps what your agents and assistants need to *know* — procedures, policies, product catalogues, tone-of-voice guides, internal glossaries.
+
+It is deliberately separate from the agents themselves. A document is written once and attached wherever it is needed, so updating a return policy fixes every assistant that quotes it, in the same edit.
+
+![Knowledge overview](/images/knowledge/overview.png)
+
+---
+
+## Two kinds of document
+
+<Columns cols={2}>
+  <Card title="Markdown documents" icon="file-pen">
+    Written and edited inside Devic. Versioned on every change, linkable to each other, and organised in folders. This is the format to prefer for anything your team maintains.
+  </Card>
+  <Card title="Uploaded files" icon="file-arrow-up">
+    `.pdf`, `.docx`, `.txt` and `.md` files, up to 25 MB each. Devic extracts the text, summarises it and indexes it for retrieval.
+  </Card>
+</Columns>
+
+Both end up in the same place and are attached the same way. The difference is who maintains them: a markdown document is a living page you edit in Devic, an uploaded file is a snapshot of something authored elsewhere.
+
+---
+
+## What happens when you add a document
+
+Every document goes through the same pipeline before an agent can use it:
+
+<Steps>
+  <Step title="Text extraction">
+    The content is read out of the file — PDF, Word, plain text or markdown.
+  </Step>
+  <Step title="Summarisation">
+    Devic writes a summary of the document. The summary is what an agent reads first when deciding whether a document is worth opening, so it is worth reviewing and editing.
+  </Step>
+  <Step title="Indexing">
+    The text is split into fragments and indexed for semantic search, each document into its own index.
+  </Step>
+</Steps>
+
+While this runs, the document shows as `pending`; agents ignore it until it is `ready`. Progress appears live in the interface — you can close the upload dialog and it keeps going in the background.
+
+<Note>
+  Each document is indexed on its own rather than merged into a single per-agent index. That is why attaching and detaching are instant, and why editing a document only re-indexes that one document.
+</Note>
+
+---
+
+## Giving a document to an agent
+
+Attach it. Open the agent or assistant, go to its context section and pick the documents or folders it may read.
+
+![Attaching knowledge to an agent](/images/knowledge/attach-to-agent.png)
+
+A document can be attached to:
+
+| Target | What it means |
+| --- | --- |
+| **Agent** | The agent can search this document during a run. |
+| **Assistant** | The assistant can search it during a conversation. |
+| **Environment** | Every agent and assistant connected to that environment inherits it. See [Environments](/devic/environments/index). |
+
+Attaching a **folder** attaches everything inside it, including documents added later — the useful shape when a team keeps writing into the same place.
+
+Retrieval follows the hierarchy: attaching a document also gives the agent its subdocuments, all the way down. See [Organising knowledge](/devic/knowledge/organising).
+
+---
+
+## Where it fits
+
+<CardGroup cols={2}>
+  <Card title="Writing documents" icon="pen-to-square" href="/devic/knowledge/documents">
+    The editor, frontmatter, links between documents and subdocuments.
+  </Card>
+  <Card title="Organising knowledge" icon="folder-tree" href="/devic/knowledge/organising">
+    Folders, hierarchy, the document graph and search.
+  </Card>
+  <Card title="Versions" icon="clock-rotate-left" href="/devic/knowledge/versions">
+    Every change kept, compared and revertible.
+  </Card>
+  <Card title="RAG in agents" icon="book-open" href="/devic/agents/rag">
+    How an agent decides what to retrieve, and when.
+  </Card>
+</CardGroup>
