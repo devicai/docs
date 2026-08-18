@@ -74,9 +74,14 @@ It is the safety net for the thing that actually breaks agents: a prompt edit th
 
 | Action | What it does |
 | --- | --- |
-| **Save** | Stores the current configuration with a name and description. |
+| **Create** | Stores the current configuration as a numbered version, with who saved it and when. |
+| **Compare** | Shows what changed between a snapshot and the configuration in place now. |
 | **Restore** | Puts the entity back to that configuration. |
-| **Clone** | Creates a *new* agent or assistant from the snapshot, leaving the original alone. |
+| **Fork** | Creates a *new* agent or assistant from the snapshot, leaving the original alone. |
+
+<Tip>
+  Compare before you restore. A snapshot from three weeks ago also rolls back everything else that changed since — the tool you added on Tuesday included.
+</Tip>
 
 <Warning>
   This is unrelated to a **sandbox** snapshot, which is a copy of a machine's filesystem and lives on the [environment](/devic/environments/sandbox). Same word, different thing: one versions what the agent *is*, the other what its computer *contains*.
