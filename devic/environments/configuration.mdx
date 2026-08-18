@@ -15,6 +15,18 @@ Variables defined here are available at runtime to every connected agent — ins
 
 They are **encrypted at rest** and returned masked (`••••••••`) whenever they are read back. Saving a form that contains a masked value leaves the stored secret untouched, so editing an unrelated field cannot silently blank out a key.
 
+### Values that depend on the run
+
+A variable's value can be a template, resolved when the sandbox starts:
+
+| Template | Resolves to |
+| --- | --- |
+| `{{metadata.<field>}}` | A field of the thread's or conversation's metadata. |
+| `{{chatUID}}` | The current conversation id. |
+| `{{threadId}}` | The current run id. |
+
+That is how one environment serves many customers from a single configuration: `{{metadata.tenantApiKey}}` is a different value on every run, without a variable per tenant.
+
 ### Which value wins
 
 The same variable can be set in three places. Most specific wins:

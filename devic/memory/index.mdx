@@ -58,6 +58,23 @@ There is also a choice of what gets distilled: a **knowledge graph** of facts pl
 
 ---
 
+## Looking at what it knows
+
+A memory bucket opens onto four views:
+
+| View | What it is for |
+| --- | --- |
+| **Entities & graph** | Who and what the assistant knows about, and how they are connected. |
+| **Facts** | The individual statements, with their history — including the ones a later fact invalidated. |
+| **Core memory** | The standing block, editable. |
+| **Recall test** | A playground: ask a question and see exactly what memory would return for it. |
+
+<Tip>
+  Recall test is the fastest way to answer "why did it not remember that?". If the fact is in the bucket but the query does not surface it, the problem is retrieval, not storage.
+</Tip>
+
+---
+
 ## The part that matters most
 
 Memory is only useful if it remembers the right things *for the right person*. An assistant serving a hundred customers must never answer one of them with another's facts.

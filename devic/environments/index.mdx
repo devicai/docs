@@ -34,8 +34,6 @@ Without it, each agent carries its own copy of the same setup: the same MCPs, th
 
 An agent or assistant connects to **one** environment; an environment serves many. The connection is **additive**: what the environment brings is added to what the entity already had, so connecting one never takes tools or documents away.
 
-![Environment detail](/images/environments/detail.png)
-
 The connection itself can carry variables of its own, for values that differ per agent while everything else is shared. Precedence runs from most specific to least: **connection → environment → sandbox**.
 
 <Warning>

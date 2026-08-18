@@ -46,6 +46,14 @@ A **tier** is a named set of rules — *Free*, *Pro*, *Enterprise* — assigned 
 
 One tier can be marked as the default, which is what a newly seen tenant gets without anyone assigning anything.
 
+A tenant's own page shows the plan it is on, what it has consumed against each applicable rule, any ad-hoc override, and the history window by window:
+
+![A tenant's usage against its limits](/images/tenants/detail.png)
+
+<Note>
+  Each closed window is snapshotted with its consumption and its limit at the time, so utilisation stays meaningful even for sub-day windows that a cost aggregate could not reconstruct afterwards.
+</Note>
+
 ---
 
 ## What happens at the ceiling

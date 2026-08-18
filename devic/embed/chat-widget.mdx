@@ -1,11 +1,13 @@
 ---
-title: "The chat widget"
-description: "Configuring ChatDrawer: appearance, attachments, tools, memory and the apps your users connect."
+title: "The chat drawer"
+description: "Configuring ChatDrawer from @devicai/ui: appearance, attachments, tools, memory and the apps your users connect."
 ---
 
-`ChatDrawer` is the complete chat panel: history, attachments, voice input, a timeline of the tools the assistant used, and per-message feedback.
+`ChatDrawer` is the complete chat panel from `@devicai/ui`: history, attachments, voice input, a timeline of the tools the assistant used, and per-message feedback.
 
-![Widget configuration](/images/embed/widget-config.png)
+<Note>
+  If you are not writing React, you want the [hosted widget](/devic/embed/index#without-code-the-hosted-widget) instead — configured from the assistant, pasted into your page as a snippet.
+</Note>
 
 ---
 
@@ -72,8 +74,6 @@ The same records are on the hook: `useDevicChat().recalledMemories`. See [Memory
 ## Letting users connect their own apps
 
 When the assistant offers apps to its tenants, a stack of their logos appears in the header, opening the modal where the user connects their own accounts.
-
-![Connected apps in the widget](/images/embed/connected-apps.png)
 
 ```jsx
 options={{

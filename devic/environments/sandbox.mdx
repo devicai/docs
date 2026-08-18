@@ -5,11 +5,11 @@ description: "A real Linux machine your agents can work on, and the snapshot tha
 
 The sandbox is a genuine isolated Linux machine. An agent connected to an environment can run commands on it, write files, install packages, start a server — the things you would do yourself at a terminal.
 
-![Sandbox terminal](/images/environments/sandbox.png)
-
 ---
 
 ## Configuring it
+
+![Sandbox configuration](/images/environments/detail.png)
 
 | Setting | What it does |
 | --- | --- |
@@ -23,8 +23,6 @@ The sandbox is a genuine isolated Linux machine. An agent connected to an enviro
 ## Snapshots: giving the machine a memory
 
 By default, a sandbox is thrown away when the session ends. Enable snapshots and the filesystem is saved instead, so the next session starts where the last one left off — dependencies already installed, working directory intact.
-
-![Snapshots](/images/environments/snapshots.png)
 
 The snapshot lives on the **environment**, not on any single agent. That is what makes a team of agents work on the same material: they share one machine state.
 
@@ -40,6 +38,10 @@ The snapshot lives on the **environment**, not on any single agent. That is what
 ### One snapshot per tenant
 
 For multi-tenant products, snapshots can be split **per tenant**: each customer's first session starts from the shared base snapshot and, from then on, keeps its own. Sessions with no tenant keep using the shared one. It is opt-in, and it is the setting that lets one environment serve many customers without their files ever meeting.
+
+<Note>
+  A sandbox snapshot is a copy of the **machine**, and it is configured here, on the environment. It has nothing to do with the *Snapshots* section of an agent or assistant, which versions that entity's **configuration** — see [Configuration snapshots](/devic/agents/environment-and-subagents#configuration-snapshots).
+</Note>
 
 ---
 
@@ -71,7 +73,11 @@ By default, visiting the public URL restores the sandbox when no session is runn
 
 ## Files and terminal
 
-From the environment you get a read-only view of the last session's commands, and a terminal of your own to work on the machine directly. The file explorer supports browsing, editing and exporting or importing a folder as a ZIP.
+From the environment you get a read-only view of the last session's commands, a terminal of your own to work on the machine directly, and a file explorer.
+
+![The sandbox file explorer](/images/environments/sandbox.png)
+
+The explorer browses and edits files, uploads into the machine, and exports or imports a folder as a ZIP. While a session is live it also shows the time left and lets you renew or close it.
 
 ---
 

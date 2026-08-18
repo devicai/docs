@@ -1,7 +1,27 @@
 ---
 title: "Embedding Devic in your product"
-description: "React components that put an assistant inside your own application, connected to the public API."
+description: "Two ways to put an assistant inside your product: a hosted widget you paste in, or React components you build with."
 ---
+
+There are two ways to put a Devic assistant inside your product, and which one you want depends on whether you are writing React.
+
+---
+
+## Without code: the hosted widget
+
+Every assistant has a **Chat Widget** section in its configuration: appearance, welcome message, suggested messages, file uploads, language and access — with a live preview beside it and a **Get Code** button that hands you the snippet to paste into your page.
+
+![Widget configuration](/images/embed/widget-config.png)
+
+Nothing to install and nothing to build. It is the right choice for a marketing site, a help centre, or anywhere the chat is a self-contained thing sitting on top of the page.
+
+![The chat widget in a product](/images/embed/widget-live.png)
+
+---
+
+## With React: `@devicai/ui`
+
+When the assistant needs to be *part of* your interface rather than sitting on it — reading the form the user is filling in, writing into a field, or looking like the rest of your product — use the library.
 
 `@devicai/ui` is a React library that puts a Devic assistant inside your product: a chat drawer, a command bar, a generation button — connected to the public API, styled to your application.
 
@@ -28,8 +48,6 @@ export default function App() {
   );
 }
 ```
-
-![The chat widget in a product](/images/embed/widget-live.png)
 
 ---
 
@@ -128,7 +146,7 @@ For a single accent colour, `options={{ color: '#4764e6' }}` is enough.
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Configuring the widget" icon="sliders" href="/devic/embed/chat-widget">
+  <Card title="Configuring the chat drawer" icon="sliders" href="/devic/embed/chat-widget">
     Options, callbacks, memory and connected apps.
   </Card>
   <Card title="Tenant sessions" icon="key" href="/devic/multi-tenant/tenant-sessions">

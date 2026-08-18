@@ -20,7 +20,9 @@ That makes it the right place for the handful of things the assistant must never
 | **Decisions** | Things settled earlier that should not be relitigated. *"We chose the Postgres option."* |
 | **Profile** | Who the assistant is talking to. Name, plan, timezone, preferences. |
 
-Entries can be **pinned**, which keeps them at the top of the block when space is tight.
+Entries can be **pinned**, and pinning does two things worth knowing. A pinned entry is the last to be dropped when the block exceeds its render budget, and **the assistant's own proactive tool can never touch it** — so a rule you set by hand cannot be quietly rewritten by the model that has to follow it.
+
+The panel shows the budget alongside the entries — how many are being injected and how many characters they take — so you can see what the block is costing before it starts costing it.
 
 <Warning>
   Core memory competes with the conversation for the model's attention, and it is paid for on every single turn. Keep it to statements that change how the assistant behaves. Anything that is merely *true* belongs in long-term memory or in [Knowledge](/devic/knowledge/index).
@@ -43,6 +45,8 @@ Three things can write to core memory, and they are deliberately different:
     When **proactive** core memory is on, the assistant gets a tool to record a standing decision itself, mid-conversation.
   </Card>
 </Columns>
+
+Every entry is labelled with where it came from — you, the API, or the assistant — so a block you did not write is readable as such.
 
 Edits are append-only: changing an entry writes a new one that supersedes the old, rather than overwriting it. The history stays readable, and an archived entry can still be listed when you ask for it.
 

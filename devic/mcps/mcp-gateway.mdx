@@ -78,7 +78,7 @@ On top of a profile, a single user can be given their own extra hidden tools, so
 
 ![Gateway users](/images/mcp-gateway/users.png)
 
-Deleting a profile does not lock anyone out: the users assigned to it fall back to their own per-user settings.
+Users with no row of their own follow the gateway's default policy, which is stated at the top of the list rather than left implicit. Deleting a profile does not lock anyone out either: the users assigned to it fall back to their own per-user settings.
 
 <Warning>
   Hiding a tool changes what the model is offered, which is a usability control and a cost control. Do not confuse it with a permission: a user who can reach the upstream server directly is not stopped by a hidden tool. For that, use per-user upstream authentication.

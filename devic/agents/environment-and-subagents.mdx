@@ -1,9 +1,9 @@
 ---
 title: "Environment, memory and subagents"
-description: "Three settings that turn a single agent into part of a working system."
+description: "The settings that turn a single agent into part of a working system — and the safety net underneath them."
 ---
 
-An agent configured on its own is fine for one job. These three settings are what let several of them share a workplace, remember what happened, and call each other.
+An agent configured on its own is fine for one job. These settings are what let several of them share a workplace, remember what happened, and call each other — plus the one that lets you undo a configuration change you regret.
 
 ---
 
@@ -45,9 +45,13 @@ An agent can be made callable **by another agent**, as if it were a tool.
 
 This is how a long process gets decomposed: a coordinator that plans and delegates, and specialists that each do one thing well and hand back a result. Each keeps its own prompt, its own tools and its own model — a cheap model can do the retrieval while an expensive one does the reasoning.
 
+### The description is the interface
+
+A subagent carries a description written **for other agents**: what it does, what it expects and what it gives back. That text is what a calling agent reads when deciding whether to delegate, so it is the difference between a specialist that gets used correctly and one that gets used at the wrong moment or not at all.
+
 ### Contracts
 
-A subagent declares what it takes and what it returns:
+A subagent also declares what it takes and what it returns:
 
 | Setting | Options |
 | --- | --- |
@@ -57,6 +61,26 @@ A subagent declares what it takes and what it returns:
 <Tip>
   Use `json` on both ends for anything a caller will parse. A text answer forces the caller to interpret prose, which is exactly the step that goes wrong at three in the morning.
 </Tip>
+
+---
+
+## Configuration snapshots
+
+A **snapshot** saves an agent's or assistant's whole configuration — prompt, model, tools, everything — under a name you give it.
+
+![Configuration snapshots](/images/agents/snapshots.png)
+
+It is the safety net for the thing that actually breaks agents: a prompt edit that seemed like an improvement. Save a snapshot before a round of changes and you can compare, restore, or start a **new** agent from it when the change turns out to be a different agent rather than a better one.
+
+| Action | What it does |
+| --- | --- |
+| **Save** | Stores the current configuration with a name and description. |
+| **Restore** | Puts the entity back to that configuration. |
+| **Clone** | Creates a *new* agent or assistant from the snapshot, leaving the original alone. |
+
+<Warning>
+  This is unrelated to a **sandbox** snapshot, which is a copy of a machine's filesystem and lives on the [environment](/devic/environments/sandbox). Same word, different thing: one versions what the agent *is*, the other what its computer *contains*.
+</Warning>
 
 ---
 
