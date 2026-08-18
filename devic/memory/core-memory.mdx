@@ -58,7 +58,7 @@ Edits are append-only: changing an entry writes a new one that supersedes the ol
 
 ## Letting the end user edit their own
 
-In an embedded assistant, core memory is often *the user's own profile*. The widget can show it and let them change it:
+In an embedded assistant, core memory is often *the user's own profile*. The [`@devicai/ui`](/devic/embed/index) chat drawer can show it and let them change it:
 
 ```jsx
 <ChatDrawer
@@ -67,7 +67,13 @@ In an embedded assistant, core memory is often *the user's own profile*. The wid
 />
 ```
 
-That renders a button in the chat header opening the core memory of the bucket **that user** resolves to — never anyone else's. What they can see and edit is exactly what their assistant is given. See [Embedding in your product](/devic/embed/index).
+That renders a brain button in the drawer header, opening the core memory of the bucket **that user** resolves to — never anyone else's. What they see and edit is exactly what their assistant is given.
+
+The same panel is available on its own as `CoreMemoryModal`, with `editable={false}` for a read-only view of what the assistant remembers about them.
+
+<Note>
+  Two requirements. The API key or [tenant session](/devic/multi-tenant/tenant-sessions) the page uses must be allowed to reach `/api/v1/memory/*` — see [API keys](/devic/administration/api-keys). And this is a React component: the [hosted widget](/devic/embed/index) has no equivalent control.
+</Note>
 
 ---
 

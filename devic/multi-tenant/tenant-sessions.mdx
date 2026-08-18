@@ -18,7 +18,19 @@ A **tenant session** closes that. Your backend mints a short-lived token that *c
 
 <Steps>
   <Step title="Your backend asks for a session">
-    With a server-side API key, naming the tenant it has already authenticated in your own system.
+    With a server-side API key, naming the tenant it has **already authenticated in your own system**. With [`@devicai/sdk`](/devic/cli/sdk):
+
+    ```ts
+    app.post('/api/devic-session', requireLogin, async (req, res) => {
+      const session = await devic
+        .auth(req.user.organisationId, req.user.id)
+        .session();
+
+      res.json(session);          // { token, expiresAt, … }
+    });
+    ```
+
+    Or against the endpoint directly:
 
     ```bash
     curl -X POST https://api.devic.ai/api/v1/tenant-sessions \
@@ -26,6 +38,10 @@ A **tenant session** closes that. Your backend mints a short-lived token that *c
       -H "Content-Type: application/json" \
       -d '{ "tenantId": "acme-corp", "subtenantId": "alex@acme.com", "ttlSeconds": 3600 }'
     ```
+
+    <Warning>
+      Take the identity from your own session, never from the request body. An endpoint that mints a session for whatever tenant the caller names has reintroduced the problem it was built to solve.
+    </Warning>
   </Step>
   <Step title="You hand the token to the page">
     In the response to your own login, in a cookie, wherever your session already lives.
@@ -34,6 +50,10 @@ A **tenant session** closes that. Your backend mints a short-lived token that *c
     Every Devic call carries the session token. The tenant comes from inside it, so no parameter can override it.
   </Step>
 </Steps>
+
+<Note>
+  `/api/v1/tenant-sessions` is the one public route where the `/api` prefix is **required** — the gateway serves this endpoint itself instead of proxying it. The SDK handles that for you.
+</Note>
 
 ---
 
@@ -108,6 +128,23 @@ See [Embedding in your product](/devic/embed/index).
 
 ---
 
+## Making it impossible to get wrong
+
+Everything above is a convention until the key cannot do anything else. An API key has an **identity mode**:
+
+| Mode | What the key can do |
+| --- | --- |
+| `open` *(default)* | Anything it is allowed, for whichever tenant it declares beside itself. |
+| `signed` | Mint tenant sessions, and nothing else. Every other `/api/v1` call with the key alone answers `401`. |
+
+Put the session-minting key on `signed` and the mistake stops being possible: nobody can paste that key into a page and reach a customer's data with it, because the only thing it can do is ask for a token that pins the customer. Anything else your server does needs a second key left on `open` — two keys, two jobs. See [API keys](/devic/administration/api-keys).
+
+---
+
 ## Reference
 
-[`POST /v1/tenant-sessions`](/api-reference/endpoint/post-api-v1-tenant-sessions) — issue a session.
+| | |
+| --- | --- |
+| [`POST /v1/tenant-sessions`](/api-reference/endpoint/post-api-v1-tenant-sessions) | Issue a session. |
+| [`@devicai/sdk`](/devic/cli/sdk) | `devic.auth(tenantId, subtenantId).session()` |
+| [`@devicai/ui`](/devic/embed/index) | `<DevicProvider getTenantSession={…}>` |

@@ -148,7 +148,9 @@
               "devic/knowledge/index",
               "devic/knowledge/documents",
               "devic/knowledge/organising",
-              "devic/knowledge/versions"
+              "devic/knowledge/versions",
+              "devic/knowledge/skills",
+              "devic/knowledge/skills-from-github"
             ]
           },
           {
@@ -212,7 +214,7 @@
             ]
           },
           {
-            "group": "Skills",
+            "group": "Skills for coding assistants",
             "icon": "clipboard-list-check",
             "pages": [
               "devic/skills/overview",
@@ -222,10 +224,11 @@
             ]
           },
           {
-            "group": "CLI",
+            "group": "CLI & SDK",
             "icon": "rectangle-terminal",
             "pages": [
-              "devic/cli/index"
+              "devic/cli/index",
+              "devic/cli/sdk"
             ]
           },
           {

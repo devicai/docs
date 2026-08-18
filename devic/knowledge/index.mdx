@@ -24,6 +24,10 @@ It is deliberately separate from the agents themselves. A document is written on
 
 Both end up in the same place and are attached the same way. The difference is who maintains them: a markdown document is a living page you edit in Devic, an uploaded file is a snapshot of something authored elsewhere.
 
+<Note>
+  A third thing lives here too. A document or a folder can be marked as a **skill** — packaged instructions an agent loads only when it needs them, rather than knowledge it searches. Same editor, same versions, different way of reaching the model. See [Skills](/devic/knowledge/skills).
+</Note>
+
 ---
 
 ## What happens when you add a document
@@ -81,6 +85,12 @@ Retrieval follows the hierarchy: attaching a document also gives the agent its s
   </Card>
   <Card title="Versions" icon="clock-rotate-left" href="/devic/knowledge/versions">
     Every change kept, compared and revertible.
+  </Card>
+  <Card title="Skills" icon="bolt" href="/devic/knowledge/skills">
+    Instructions an agent loads on demand — and what that costs in tokens.
+  </Card>
+  <Card title="Skills from GitHub" icon="github" href="/devic/knowledge/skills-from-github">
+    A skill that lives in a repository and is read live.
   </Card>
   <Card title="RAG in agents" icon="book-open" href="/devic/agents/rag">
     How an agent decides what to retrieve, and when.
