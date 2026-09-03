@@ -1277,6 +1277,10 @@
             "type": "string",
             "format": "date-time",
             "description": "Timestamp when the specialization was created"
+          },
+          "presets": {
+            "type": "string",
+            "description": "The assistant's system prompt. Only present when the request asked for it with `includePresets=true`, and only for custom assistants. Read it before a partial update if you intend to edit the prompt rather than replace it: PATCH overwrites `presets` wholesale."
           }
         }
       },
@@ -8513,6 +8517,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "includePresets",
+            "in": "query",
+            "required": false,
+            "description": "Return the assistant's system prompt in `presets`. Omitted by default because this endpoint is also what an embedded widget calls to render itself. Custom assistants only, and refused with 403 to a tenant session.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -8528,6 +8542,9 @@
           },
           "401": {
             "description": "Unauthorized - Invalid or missing token"
+          },
+          "403": {
+            "description": "Forbidden - `includePresets` was asked for by a tenant session, or on a built-in specialization"
           },
           "404": {
             "description": "Assistant specialization not found"
