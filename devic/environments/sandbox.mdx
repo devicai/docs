@@ -27,13 +27,37 @@ By default, a sandbox is thrown away when the session ends. Enable snapshots and
 The snapshot lives on the **environment**, not on any single agent. That is what makes a team of agents work on the same material: they share one machine state.
 
 <Columns cols={2}>
-  <Card title="Evolving snapshot (default)" icon="arrows-rotate">
-    The snapshot is replaced when a session closes, so the machine keeps everything each session did.
+  <Card title="Fixed snapshot (default)" icon="lock">
+    Sessions always start from the same saved state, and cannot write back to it. Anything a run does is discarded when it ends.
   </Card>
-  <Card title="Fixed snapshot" icon="lock">
-    Sessions always start from the same saved state. Anything a session does is discarded. Use it when runs must be reproducible.
+  <Card title="Evolving snapshot" icon="arrows-rotate">
+    Turned on explicitly. The snapshot is replaced when a session closes, so the machine keeps everything each session did.
   </Card>
 </Columns>
+
+Fixed is the default because it is the safe one: it is what stops a stray agent
+run from destroying a machine you spent time provisioning.
+
+### Provisioning a fixed machine
+
+Freezing the snapshot raises an obvious question — how does anything get into it
+in the first place? Two ways:
+
+- **Re-initialize the snapshot**, which runs the init script and the configured
+  CLIs on a fresh machine and saves the result. Use it once the provisioning is
+  written down.
+- **Open a terminal, work, and save on close.** A manual session may write to a
+  fixed snapshot; that is the exception the mode makes, and the reason the
+  terminal asks before closing. Use it while you are still working out what the
+  provisioning should be.
+
+The same from the CLI, where saving a fixed snapshot is something you type:
+
+```bash
+devic sandbox start "Build box" --timeout 20
+devic sandbox exec  "Build box" 'cd /workspace && npm install'
+devic sandbox stop  "Build box" --save
+```
 
 ### One snapshot per tenant
 

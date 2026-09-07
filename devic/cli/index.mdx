@@ -59,7 +59,48 @@ Errors always go to stderr as JSON — `{"error":"…","code":"…"}` — and th
   <Card title="Projects" icon="folder">
     `devic projects …` — and `--project` on most listings.
   </Card>
+  <Card title="Environments" icon="box">
+    `devic environments …` — the machine, its secrets, its snapshot and who is connected to it.
+  </Card>
+  <Card title="Sandboxes" icon="terminal">
+    `devic sandbox start | exec | stop`, plus `ls`, `cat` and `write` on a real Linux machine.
+  </Card>
 </Columns>
+
+---
+
+## Scheduling an agent
+
+An agent can run itself. There is no external cron to set up, and the three
+scheduling modes are mutually exclusive:
+
+```bash
+devic agents create --name "Daily report" --cron "0 7 * * 1-5" --timezone Europe/Madrid
+devic agents update <agentId> --schedule-at 09:00 --days monday,friday --timezone Europe/Madrid
+devic agents update <agentId> --every-days 14 --at 08:30 --start-date 2026-01-06
+devic agents update <agentId> --no-schedule
+```
+
+---
+
+## Provisioning a machine
+
+Environments and sandboxes take the environment by id **or by name**, and the
+sandbox commands find the live session on their own after `start`.
+
+```bash
+devic environments create --name "Reporting box" --runtime python3.13 \
+  --env "DATABASE_URL=postgres://..." --init-script-file ./provision.sh --snapshots
+devic environments snapshot init "Reporting box"
+
+devic sandbox start "Reporting box" --timeout 15
+devic sandbox exec "Reporting box" 'cd /workspace && ./report.sh | tail -20'
+devic sandbox stop "Reporting box"          # this is what saves the snapshot
+```
+
+Secrets belong in `--env`: they are encrypted at rest, injected into the machine
+as ordinary environment variables, and always read back masked. `--env` merges
+over what is stored, so adding one variable does not destroy the others.
 
 ---
 

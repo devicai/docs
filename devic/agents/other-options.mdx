@@ -18,6 +18,28 @@ This way, the agent can perform maintenance tasks, generate reports, or carry ou
 
 ![Periodic execution configuration](/preiodic-execution.png)
 
+**The agent wakes itself up. You do not need an external cron.** Three ways to
+say when, and a schedule takes exactly one of them:
+
+| Mode | Good for |
+| --- | --- |
+| **Cron expression** | Anything a 5-field cron expresses — `0 7 * * 1-5` is 07:00 on weekdays |
+| **Time of day** | A fixed hour, optionally narrowed to certain weekdays |
+| **Every N days** | A cadence cron genuinely cannot express: its day-of-month restarts every month, so "every 14 days" is not a cron expression |
+
+The timezone is an IANA name and defaults to UTC — worth setting, because a
+report due at 07:00 in Madrid is not due at 07:00 UTC.
+
+This is configurable from the API and the CLI too, so a whole scheduled agent
+can be created by script:
+
+```bash
+devic agents create --name "Daily report" --cron "0 7 * * 1-5" --timezone Europe/Madrid
+```
+
+See [`periodicExecution`](/api-reference/endpoint/post-api-v1-agents) in the API
+reference.
+
 ---
 
 ## Pause Agent
