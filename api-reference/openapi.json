@@ -15,6 +15,14 @@
     "x-summary": "Public API for interacting with Devic.ai platform"
   },
   "tags": [
+      {
+        "name": "Environments",
+        "description": "The machine an agent works on and everything it may reach: sandbox, snapshot, knowledge, tools and encrypted variables"
+      },
+      {
+        "name": "Sandboxes",
+        "description": "Start a real Linux machine on an environment, run commands and files on it, and save its snapshot"
+      },
     {
       "name": "Projects",
       "description": "Group agents, assistants, documents and costs into projects"
@@ -108,6 +116,601 @@
       }
     },
     "schemas": {
+      "ChatMessageDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "ConnectEnvironmentPublicDto": {
+        "type": "object",
+        "properties": {
+          "envVars": {
+            "type": "object",
+            "description": "Variables specific to this agent/assistant on this environment, layered over the environment ones. Encrypted at rest, returned masked.",
+            "example": {
+              "AGENT_ROLE": "reporter"
+            }
+          }
+        }
+      },
+      "ConnectTenantMcpDto": {
+        "type": "object",
+        "properties": {
+          "templateId": {
+            "type": "string",
+            "description": "Id of an MCP server the developer offers pre-filled. Its url is used; any url in this body is ignored."
+          },
+          "url": {
+            "type": "string",
+            "description": "https url of a server the end user brings. Only when the assistant allows custom servers, and only without templateId."
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name. Defaults to the template’s."
+          },
+          "auth": {
+            "$ref": "#/components/schemas/TenantMcpAuthDto"
+          },
+          "returnTo": {
+            "type": "string",
+            "description": "Absolute URL of the page starting the flow. Must match this request’s Origin or one of the assistant’s allowed widget sources. The popup is returned there once the authorization completes."
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "Tenant, when not using a signed session."
+          },
+          "subtenantId": {
+            "type": "string",
+            "description": "End user inside the tenant. Omit to connect a server the whole tenant shares."
+          }
+        }
+      },
+      "CreateEnvironmentPublicDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Environment name",
+            "example": "Reporting box"
+          },
+          "description": {
+            "type": "string",
+            "description": "What this environment is for"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project this environment belongs to"
+          },
+          "imgUrl": {
+            "type": "string",
+            "description": "Image URL for the environment"
+          },
+          "availableToolsGroupsUids": {
+            "description": "Tool groups (MCPs and built-in tools) available on this environment",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "knowledgeDocumentIds": {
+            "description": "Knowledge documents attached",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "knowledgeFolderIds": {
+            "description": "Knowledge folders attached",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "knowledgeSkills": {
+            "description": "Knowledge skills attached",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KnowledgeSkillRefDto"
+            }
+          },
+          "envVars": {
+            "type": "object",
+            "description": "Environment-level variables, encrypted at rest and returned masked. Available to every agent and assistant connected to this environment.",
+            "example": {
+              "REPORT_RECIPIENT": "ops@example.com"
+            }
+          },
+          "sandboxConfig": {
+            "description": "Sandbox configuration",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SandboxConfigDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ExecSandboxCommandDto": {
+        "type": "object",
+        "properties": {
+          "sandboxId": {
+            "type": "string",
+            "description": "Sandbox returned by POST /sandbox/start"
+          },
+          "command": {
+            "type": "string",
+            "description": "A line of shell, not an argv[0]. It runs through `bash -c`, so pipes, redirection, `&&` and `cd` all work and belong here: `cd /workspace && ./report.sh | tail -5`.",
+            "example": "cd /workspace && ./daily-report.sh"
+          },
+          "args": {
+            "description": "Appended to `command` space-separated, as text. This is NOT argv: nothing is quoted or escaped for you, so an argument containing spaces or shell metacharacters must arrive already quoted — or, more simply, be written into `command` instead.",
+            "example": [
+              "install",
+              "express"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cwd": {
+            "type": "string",
+            "description": "Working directory",
+            "example": "/workspace"
+          },
+          "sudo": {
+            "type": "boolean",
+            "description": "Run as root"
+          }
+        },
+        "required": [
+          "sandboxId",
+          "command"
+        ]
+      },
+      "KnowledgeSkillRefDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The skill document `_id` (document-skill) or folder `_id` (folder-skill), as returned by `GET /api/v1/documents/skills`."
+          },
+          "type": {
+            "type": "string",
+            "description": "Which of the two shapes `id` refers to. Load-bearing: it decides whether the skill is resolved as a document or as a folder at runtime, so a wrong value leaves the skill announced but unreadable.",
+            "enum": [
+              "document",
+              "folder"
+            ]
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Opt-out switch. Defaults to true when omitted."
+          },
+          "preloadContent": {
+            "type": "boolean",
+            "description": "Inlines the whole skill content into the system prompt instead of loading it on demand. Defaults to false. Forced in practice when the Advanced knowledge search tool group is not attached, since the model would have no way to load it."
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ]
+      },
+      "RealtimeChatHistoryDto": {
+        "type": "object",
+        "properties": {
+          "chatUID": {
+            "type": "string",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "clientUID": {
+            "type": "string",
+            "example": "client-123"
+          },
+          "chatHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatMessageDto"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "processing",
+              "completed",
+              "error",
+              "handed_off",
+              "buffering",
+              "waiting_for_tool_response",
+              "limit_exceeded"
+            ],
+            "example": "processing"
+          },
+          "lastUpdatedAt": {
+            "type": "number",
+            "example": 1706000000000
+          },
+          "queuedMessages": {
+            "type": "number",
+            "example": 0
+          },
+          "pendingUserMessages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatMessageDto"
+            }
+          },
+          "pendingToolCalls": {
+            "description": "Pending tool calls awaiting client-side execution",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolCallDto"
+            }
+          },
+          "handedOffSubThreadId": {
+            "type": "string",
+            "description": "Subagent thread ID (when status is handed_off)",
+            "example": "64f5a5b8c123456789abcdef"
+          },
+          "stopReason": {
+            "type": "string",
+            "description": "System stop reason (e.g. max_chat_messages_reached, error)",
+            "example": "max_chat_messages_reached"
+          },
+          "recalledMemories": {
+            "description": "Memory-recall events of the in-flight run (source, query, facts/entities surfaced)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "limitExceeded": {
+            "type": "object",
+            "description": "Usage-limit details (when status is limit_exceeded)"
+          }
+        },
+        "required": [
+          "chatUID",
+          "clientUID",
+          "chatHistory",
+          "status",
+          "lastUpdatedAt"
+        ]
+      },
+      "ReconnectTenantMcpDto": {
+        "type": "object",
+        "properties": {
+          "auth": {
+            "$ref": "#/components/schemas/TenantMcpAuthDto"
+          },
+          "returnTo": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "subtenantId": {
+            "type": "string"
+          }
+        }
+      },
+      "SandboxConfigDto": {
+        "type": "object",
+        "properties": {
+          "runtime": {
+            "type": "string",
+            "description": "Base image the sandbox boots from.",
+            "enum": [
+              "node24",
+              "node22",
+              "python3.13"
+            ],
+            "example": "node24"
+          },
+          "initScript": {
+            "type": "string",
+            "description": "Shell script run when a NEW sandbox is created. Skipped on a restore from snapshot, where the work it does is already baked in.",
+            "example": "apt-get install -y postgresql-client"
+          },
+          "envVars": {
+            "type": "object",
+            "description": "Environment variables injected into the machine, encrypted at rest and returned masked. Send the whole map: it replaces the stored one. A value read back masked and sent again unchanged keeps its stored secret.",
+            "example": {
+              "DATABASE_URL": "postgres://…",
+              "SSH_PRIVATE_KEY": "-----BEGIN…"
+            }
+          },
+          "snapshotEnabled": {
+            "type": "boolean",
+            "description": "Save the filesystem when a session ends, so the next one starts where the last left off."
+          },
+          "replaceSnapshotOnStop": {
+            "type": "boolean",
+            "description": "Replace the snapshot on every session close (an evolving snapshot). False pins sessions to a fixed state and discards what they do."
+          },
+          "perTenantSnapshots": {
+            "type": "boolean",
+            "description": "Give every tenant its own snapshot, derived from the base one. Opt-in."
+          },
+          "persistAfterSessionClose": {
+            "type": "boolean",
+            "description": "Keep the machine alive after the conversation ends."
+          },
+          "autoExtend": {
+            "type": "boolean",
+            "description": "Renew the timeout whenever an operation arrives, so a long task does not lose its machine halfway through. Idle sandboxes still expire."
+          },
+          "autoRestart": {
+            "type": "boolean",
+            "description": "Restore the sandbox when its public URL is visited and no session is running. Opt-out: absent means enabled."
+          },
+          "publicSlug": {
+            "type": "string",
+            "description": "Subdomain the snapshot is published under (…​.sandbox.devic.ai). Must be a valid DNS label; null releases it.",
+            "example": "my-app"
+          },
+          "startCommand": {
+            "type": "string",
+            "description": "Command run after each restore to bring the published service back up. Not the init script: this one runs on every restore.",
+            "example": "cd /workspace && npm start"
+          },
+          "memoryMib": {
+            "type": "number",
+            "description": "Memory for the sandbox, in MiB.",
+            "example": 2048
+          },
+          "provider": {
+            "type": "string",
+            "description": "Sandbox provider. Left unset, the platform default is used.",
+            "enum": [
+              "vercel",
+              "devic-sandbox"
+            ]
+          }
+        }
+      },
+      "SandboxFilePathDto": {
+        "type": "object",
+        "properties": {
+          "sandboxId": {
+            "type": "string",
+            "description": "Sandbox to act on"
+          },
+          "path": {
+            "type": "string",
+            "description": "Path inside the sandbox",
+            "example": "/workspace"
+          }
+        },
+        "required": [
+          "sandboxId"
+        ]
+      },
+      "StartSandboxSessionDto": {
+        "type": "object",
+        "properties": {
+          "timeoutMinutes": {
+            "type": "number",
+            "description": "Session length in minutes (1-30, default 10). `autoExtend` on the environment renews it while the session is in use.",
+            "example": 10
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "Start from THIS tenant's snapshot. Only meaningful when the environment has per-tenant snapshots enabled."
+          },
+          "force": {
+            "type": "boolean",
+            "description": "Take over an already-active session, discarding its unsaved state. Without it a second concurrent session returns 409 SESSION_ACTIVE."
+          },
+          "forceUnsavedSnapshot": {
+            "type": "boolean",
+            "description": "Start from the last saved version even though a snapshot save is still running. The session may be missing what that save commits."
+          }
+        }
+      },
+      "StopSandboxSessionDto": {
+        "type": "object",
+        "properties": {
+          "sandboxId": {
+            "type": "string",
+            "description": "Sandbox to stop"
+          },
+          "saveChanges": {
+            "type": "boolean",
+            "description": "Save the filesystem into the environment snapshot before stopping (default true, and a no-op when snapshots are disabled)."
+          },
+          "force": {
+            "type": "boolean",
+            "description": "Overwrite the snapshot even if another session replaced it while this one was open."
+          }
+        },
+        "required": [
+          "sandboxId"
+        ]
+      },
+      "TenantMcpAuthDto": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "oauth",
+              "header",
+              "none"
+            ]
+          },
+          "headerName": {
+            "type": "string",
+            "description": "Header the credential travels in. Defaults to the template’s, then Authorization."
+          },
+          "headerValue": {
+            "type": "string",
+            "description": "API key or token. Stored encrypted."
+          },
+          "upstreamOAuth": {
+            "$ref": "#/components/schemas/TenantMcpUpstreamOAuthDto"
+          }
+        }
+      },
+      "TenantMcpUpstreamOAuthDto": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "description": "client_id registered with the MCP server"
+          },
+          "clientSecret": {
+            "type": "string",
+            "description": "client_secret, stored encrypted"
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ToolCallDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "call_abc123",
+            "description": "Unique tool call ID"
+          },
+          "type": {
+            "type": "string",
+            "example": "function",
+            "description": "Tool call type"
+          },
+          "function": {
+            "type": "object",
+            "description": "Function call details",
+            "example": {
+              "name": "get_user_location",
+              "arguments": "{}"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "function"
+        ]
+      },
+      "UpdateEnvironmentPublicDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Environment name",
+            "example": "Reporting box"
+          },
+          "description": {
+            "type": "string",
+            "description": "What this environment is for"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project id, or null to unassign the environment from its project."
+          },
+          "imgUrl": {
+            "type": "string",
+            "description": "Image URL for the environment"
+          },
+          "availableToolsGroupsUids": {
+            "description": "Tool groups (MCPs and built-in tools) available on this environment",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "knowledgeDocumentIds": {
+            "description": "Knowledge documents attached",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "knowledgeFolderIds": {
+            "description": "Knowledge folders attached",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "knowledgeSkills": {
+            "description": "Knowledge skills attached",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KnowledgeSkillRefDto"
+            }
+          },
+          "envVars": {
+            "type": "object",
+            "description": "Environment-level variables, encrypted at rest and returned masked. Available to every agent and assistant connected to this environment.",
+            "example": {
+              "REPORT_RECIPIENT": "ops@example.com"
+            }
+          },
+          "sandboxConfig": {
+            "description": "Sandbox configuration",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SandboxConfigDto"
+              }
+            ]
+          }
+        }
+      },
+      "UpdateTenantMcpDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "New display name"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "subtenantId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "WriteSandboxFileDto": {
+        "type": "object",
+        "properties": {
+          "sandboxId": {
+            "type": "string",
+            "description": "Sandbox to write to"
+          },
+          "destinationPath": {
+            "type": "string",
+            "description": "Path to write",
+            "example": "/workspace/report.sql"
+          },
+          "content": {
+            "type": "string",
+            "description": "Inline UTF-8 text. Mutually exclusive with sourceUrl."
+          },
+          "sourceUrl": {
+            "type": "string",
+            "description": "URL to fetch the bytes from. Mutually exclusive with content."
+          }
+        },
+        "required": [
+          "sandboxId",
+          "destinationPath"
+        ]
+      },
       "Tenant": {
         "type": "object",
         "properties": {
@@ -4433,6 +5036,1860 @@
     }
   },
   "paths": {
+    "/v1/assistants/{identifier}/chats/{chatUid}/realtime": {
+      "get": {
+        "tags": [
+          "Assistants"
+        ],
+        "summary": "Get real-time chat history",
+        "operationId": "getRealtimeChatHistory",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Retrieves the real-time chat history from Redis cache. Use this endpoint to poll for results when using async mode. Returns status indicating if processing is still in progress.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "required": true,
+            "in": "path",
+            "description": "The unique identifier of the assistant specialization",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chatUid",
+            "required": true,
+            "in": "path",
+            "description": "The unique identifier of the chat conversation",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Real-time chat history retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RealtimeChatHistoryDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Chat history not found"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          }
+        }
+      }
+    },
+    "/v1/tenant-mcp": {
+      "get": {
+        "tags": [
+          "Tenant MCP servers"
+        ],
+        "summary": "The MCP servers this assistant offers me, and the ones I connected",
+        "operationId": "list",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "One list. Entries with `source: \"template\"` are servers the developer pre-filled — their `connection` is null until this tenant connects one. Entries with `source: \"custom\"` are servers this tenant added. `allowCustom` says whether adding one is permitted.",
+        "parameters": [
+          {
+            "name": "assistantId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "agentId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtenantId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Offered and connected MCP servers"
+          },
+          "403": {
+            "description": "This assistant does not offer MCP servers to its users"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tenant MCP servers"
+        ],
+        "summary": "Connect an MCP server",
+        "operationId": "connect",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Either `templateId` (the url comes from the developer’s configuration and any url in the body is ignored) or `url` for a server of your own. Returns `status: \"active\"` when the server needed no authorization, or `authorizationUrl` to open in a popup. If the server requires a pre-registered OAuth client, `requiresClientCredentials` comes back with the `callbackUrl` to authorize on it — send them in `auth.upstreamOAuth` and try again.",
+        "parameters": [
+          {
+            "name": "assistantId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "required": true,
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "agentId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConnectTenantMcpDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Registered"
+          },
+          "400": {
+            "description": "The url was rejected"
+          },
+          "409": {
+            "description": "The limit of servers was reached"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/tenant-mcp/{id}": {
+      "get": {
+        "tags": [
+          "Tenant MCP servers"
+        ],
+        "summary": "One of my MCP servers",
+        "operationId": "detail",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assistantId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "agentId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtenantId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Tenant MCP servers"
+        ],
+        "summary": "Rename one of my MCP servers",
+        "operationId": "update",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assistantId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "agentId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTenantMcpDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tenant MCP servers"
+        ],
+        "summary": "Disconnect an MCP server",
+        "operationId": "disconnect",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Deletes the connection and everything that could still authenticate as it. A server connected for the whole tenant can only be removed by a caller at that level.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assistantId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "agentId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtenantId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "The server belongs to the tenant"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/tenant-mcp/{id}/tools": {
+      "get": {
+        "tags": [
+          "Tenant MCP servers"
+        ],
+        "summary": "The tools this server exposes",
+        "operationId": "tools",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "What was discovered on the last successful connection. `truncatedAt` is the assistant’s per-server limit: anything beyond it is not loaded into a run.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assistantId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "agentId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtenantId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/tenant-mcp/{id}/reconnect": {
+      "post": {
+        "tags": [
+          "Tenant MCP servers"
+        ],
+        "summary": "Authorize again",
+        "operationId": "reconnect",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "For a server whose credentials expired or were revoked upstream. Same answers as connecting.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assistantId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "required": true,
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "agentId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReconnectTenantMcpDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "403": {
+            "description": "The server belongs to the tenant, not to this end user"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/documents/skills/{id}/tree": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Download a skill tree (files with relative paths + content)",
+        "operationId": "getSkillTree",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Skill document or folder ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "description": "document | folder (auto-detected when omitted)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/documents/skills/{id}/install": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Download a skill tree and record the install (CLI)",
+        "operationId": "installSkill",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Skill document or folder ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Record that a skill was uninstalled locally (CLI)",
+        "operationId": "uninstallSkill",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Skill document or folder ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "required": false,
+            "in": "query",
+            "description": "project | global (all scopes when omitted)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments": {
+      "get": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "List environments",
+        "operationId": "list",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Environment variables come back masked. A non-admin caller only sees the environments of the projects it can access.",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": false,
+            "in": "query",
+            "description": "Only environments of this project",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Max items to return (1-100)",
+            "example": 20,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "Items to skip",
+            "example": 0,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Environments retrieved successfully"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "Create an environment",
+        "operationId": "create",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "The sandbox is not provisioned here. It is created on the first session that needs one, running `sandboxConfig.initScript`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEnvironmentPublicDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Environment created successfully"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}": {
+      "get": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "Get an environment by id",
+        "operationId": "getById",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "Update an environment",
+        "operationId": "update",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "`envVars` replaces the whole map when present. Values read back masked and sent again unchanged keep their stored secret, so a read-modify-write of the map does not destroy the secrets it did not touch.",
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEnvironmentPublicDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "Delete an environment",
+        "operationId": "delete",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Drops the per-tenant snapshots it owns first, so none is left behind paying for storage.",
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/connections": {
+      "get": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "List the agents and assistants connected to an environment",
+        "operationId": "connections",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/connections/{entityType}/{entityId}": {
+      "put": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "Connect an agent or assistant to an environment",
+        "operationId": "connect",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "One environment serves many entities. `envVars` here are specific to this pair and layer over the environment ones.",
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "entityType",
+            "required": true,
+            "in": "path",
+            "description": "agent | assistant",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "entityId",
+            "required": true,
+            "in": "path",
+            "description": "Agent id or assistant identifier",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConnectEnvironmentPublicDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "Disconnect an agent or assistant from its environment",
+        "operationId": "disconnect",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "entityType",
+            "required": true,
+            "in": "path",
+            "description": "agent | assistant",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "entityId",
+            "required": true,
+            "in": "path",
+            "description": "Agent id or assistant identifier",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/snapshot/initialize": {
+      "post": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "Bake (or re-bake) the environment snapshot",
+        "operationId": "initializeSnapshot",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Creates a sandbox, runs the init script and the configured CLIs, and saves the result as the snapshot every session starts from. Re-baking discards the state the snapshot had accumulated, on purpose.",
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/tenant-snapshots": {
+      "get": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "List the per-tenant snapshots derived from this environment",
+        "operationId": "listTenantSnapshots",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "skip",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/tenant-snapshots/{tenantId}/initialize": {
+      "post": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "Derive (or re-derive) a tenant's snapshot from the base one",
+        "operationId": "initializeTenantSnapshot",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Re-deriving discards the tenant's accumulated state: it is how a tenant is brought back in line with a re-baked base.",
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "description": "Tenant id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/tenant-snapshots/{tenantId}": {
+      "delete": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "Drop a tenant's snapshot",
+        "operationId": "deleteTenantSnapshot",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Its next session starts from the base snapshot again.",
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "description": "Tenant id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/sessions": {
+      "get": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "List the sandbox sessions run on this environment",
+        "operationId": "listSessions",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Every session, whoever opened it: a conversation, an agent run, or a manual terminal.",
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/sessions/last": {
+      "get": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "Get the most recent session, reconciled against the engine",
+        "operationId": "lastSession",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "A session record can outlive its sandbox (host restart, admin kill). This reports `online` against what is really running.",
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/sessions/{sessionId}": {
+      "get": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "Get one session with its command log",
+        "operationId": "getSession",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sessionId",
+            "required": true,
+            "in": "path",
+            "description": "Session id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/clis": {
+      "get": {
+        "tags": [
+          "Environments"
+        ],
+        "summary": "List the CLIs installed on this environment",
+        "operationId": "listClis",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "The ShellPilot catalogue as it applies here: what is available, what is installed, and whether governance is on.",
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/sandbox/start": {
+      "post": {
+        "tags": [
+          "Sandboxes"
+        ],
+        "summary": "Start a sandbox session",
+        "operationId": "start",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Boots from the environment snapshot when it has one, otherwise creates a fresh machine and runs the init script — whose output comes back, which is the way to verify a script works. One session per environment (per tenant, where snapshots are per-tenant): a second concurrent start returns 409 SESSION_ACTIVE unless `force` is set.",
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartSandboxSessionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Session started. Returns sandboxId, runtime and expiresAt."
+          },
+          "409": {
+            "description": "SESSION_ACTIVE (another session is live) or SNAPSHOT_SAVE_IN_PROGRESS (the snapshot is still being written)."
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/sandbox/status": {
+      "get": {
+        "tags": [
+          "Sandboxes"
+        ],
+        "summary": "Whether a session is live on this environment",
+        "operationId": "status",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Reconciled against the engine, so a sandbox stopped out-of-band reports offline rather than staying live until its TTL.",
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/sandbox/exec": {
+      "post": {
+        "tags": [
+          "Sandboxes"
+        ],
+        "summary": "Run a command in the sandbox",
+        "operationId": "exec",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "The environment variables are injected, so a command can read them the way the init script does. Returns exit code, stdout, stderr and how long it took; a non-zero exit is a result, not an HTTP error.",
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExecSandboxCommandDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/sandbox/stop": {
+      "post": {
+        "tags": [
+          "Sandboxes"
+        ],
+        "summary": "Stop the session",
+        "operationId": "stop",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "With snapshots enabled this is what persists the work, and the save runs in the background — `saving: true` means the machine stops once it finishes. `saveChanges: false` throws the session away.",
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StopSandboxSessionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/sandbox/files/list": {
+      "post": {
+        "tags": [
+          "Sandboxes"
+        ],
+        "summary": "List a directory inside the sandbox",
+        "operationId": "listFiles",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SandboxFilePathDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/sandbox/files/read": {
+      "post": {
+        "tags": [
+          "Sandboxes"
+        ],
+        "summary": "Read a text file from the sandbox",
+        "operationId": "readFile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Text only, and capped at 1 MB: binary files and anything larger are rejected rather than truncated.",
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SandboxFilePathDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/environments/{environmentId}/sandbox/files/write": {
+      "post": {
+        "tags": [
+          "Sandboxes"
+        ],
+        "summary": "Write a file into the sandbox",
+        "operationId": "writeFile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Either inline `content` or a `sourceUrl` to fetch the bytes from.",
+        "parameters": [
+          {
+            "name": "environmentId",
+            "required": true,
+            "in": "path",
+            "description": "Environment id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WriteSandboxFileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
     "/v1/tenants": {
       "get": {
         "tags": [

@@ -309,7 +309,8 @@
               "api-reference/endpoint/post-api-v1-assistants-identifier-chats-chatuid-feedback",
               "api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid-search",
               "api-reference/endpoint/post-api-v1-assistants-identifier-chats-chatuid-stop",
-              "api-reference/endpoint/post-api-v1-assistants-identifier-chats-chatuid-tool-response"
+              "api-reference/endpoint/post-api-v1-assistants-identifier-chats-chatuid-tool-response",
+              "api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid-realtime"
             ]
           },
           {
@@ -474,7 +475,10 @@
             "pages": [
               "api-reference/endpoint/get-api-v1-documents-skills",
               "api-reference/endpoint/post-api-v1-documents-skills-scaffold",
-              "api-reference/endpoint/get-api-v1-documents-skills-tags"
+              "api-reference/endpoint/get-api-v1-documents-skills-tags",
+              "api-reference/endpoint/get-api-v1-documents-skills-id-tree",
+              "api-reference/endpoint/delete-api-v1-documents-skills-id-install",
+              "api-reference/endpoint/post-api-v1-documents-skills-id-install"
             ]
           },
           {
@@ -488,6 +492,51 @@
             "pages": [
               "api-reference/endpoint/post-api-v1-whisper",
               "api-reference/endpoint/get-api-v1-whisper-transcriptid"
+            ]
+          },
+          {
+            "group": "Environments",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-environments",
+              "api-reference/endpoint/post-api-v1-environments",
+              "api-reference/endpoint/delete-api-v1-environments-environmentid",
+              "api-reference/endpoint/get-api-v1-environments-environmentid",
+              "api-reference/endpoint/patch-api-v1-environments-environmentid",
+              "api-reference/endpoint/get-api-v1-environments-environmentid-connections",
+              "api-reference/endpoint/delete-api-v1-environments-environmentid-connections-entitytype-entityid",
+              "api-reference/endpoint/put-api-v1-environments-environmentid-connections-entitytype-entityid",
+              "api-reference/endpoint/post-api-v1-environments-environmentid-snapshot-initialize",
+              "api-reference/endpoint/get-api-v1-environments-environmentid-tenant-snapshots",
+              "api-reference/endpoint/post-api-v1-environments-environmentid-tenant-snapshots-tenantid-initialize",
+              "api-reference/endpoint/delete-api-v1-environments-environmentid-tenant-snapshots-tenantid",
+              "api-reference/endpoint/get-api-v1-environments-environmentid-sessions",
+              "api-reference/endpoint/get-api-v1-environments-environmentid-sessions-last",
+              "api-reference/endpoint/get-api-v1-environments-environmentid-sessions-sessionid",
+              "api-reference/endpoint/get-api-v1-environments-environmentid-clis"
+            ]
+          },
+          {
+            "group": "Sandboxes",
+            "pages": [
+              "api-reference/endpoint/post-api-v1-environments-environmentid-sandbox-start",
+              "api-reference/endpoint/get-api-v1-environments-environmentid-sandbox-status",
+              "api-reference/endpoint/post-api-v1-environments-environmentid-sandbox-exec",
+              "api-reference/endpoint/post-api-v1-environments-environmentid-sandbox-stop",
+              "api-reference/endpoint/post-api-v1-environments-environmentid-sandbox-files-list",
+              "api-reference/endpoint/post-api-v1-environments-environmentid-sandbox-files-read",
+              "api-reference/endpoint/post-api-v1-environments-environmentid-sandbox-files-write"
+            ]
+          },
+          {
+            "group": "Tenant MCP",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-tenant-mcp",
+              "api-reference/endpoint/post-api-v1-tenant-mcp",
+              "api-reference/endpoint/delete-api-v1-tenant-mcp-id",
+              "api-reference/endpoint/get-api-v1-tenant-mcp-id",
+              "api-reference/endpoint/patch-api-v1-tenant-mcp-id",
+              "api-reference/endpoint/get-api-v1-tenant-mcp-id-tools",
+              "api-reference/endpoint/post-api-v1-tenant-mcp-id-reconnect"
             ]
           },
           {
