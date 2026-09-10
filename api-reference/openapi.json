@@ -15,14 +15,14 @@
     "x-summary": "Public API for interacting with Devic.ai platform"
   },
   "tags": [
-      {
-        "name": "Environments",
-        "description": "The machine an agent works on and everything it may reach: sandbox, snapshot, knowledge, tools and encrypted variables"
-      },
-      {
-        "name": "Sandboxes",
-        "description": "Start a real Linux machine on an environment, run commands and files on it, and save its snapshot"
-      },
+    {
+      "name": "Environments",
+      "description": "The machine an agent works on and everything it may reach: sandbox, snapshot, knowledge, tools and encrypted variables"
+    },
+    {
+      "name": "Sandboxes",
+      "description": "Start a real Linux machine on an environment, run commands and files on it, and save its snapshot"
+    },
     {
       "name": "Projects",
       "description": "Group agents, assistants, documents and costs into projects"
@@ -94,6 +94,10 @@
     {
       "name": "Tenant Sessions",
       "description": "Tokens that prove which end user is calling"
+    },
+    {
+      "name": "Channels",
+      "description": "Attach the places your customers already write from — a WhatsApp number, a Slack workspace — to the tenants you already have. The tenant is frozen into the link when it is made and never read from a request."
     }
   ],
   "servers": [
@@ -5032,6 +5036,59 @@
             "description": "Epoch milliseconds"
           }
         }
+      },
+      "CreateChannelInviteDto": {
+        "type": "object",
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "description": "The customer this link belongs to. Frozen into the link when it is made: whoever opens it decides whether to connect, never to whom."
+          },
+          "subtenantId": {
+            "type": "string",
+            "description": "The person inside that customer, when you know which one. Without it the contact stands in for them — which is a WhatsApp id, and means nothing in your own product."
+          },
+          "platform": {
+            "type": "string",
+            "description": "Which channel. Defaults to slack, as it always did.",
+            "enum": [
+              "slack",
+              "whatsapp"
+            ]
+          },
+          "channelAppId": {
+            "type": "string",
+            "description": "The presence the link connects to — a Slack bot, a WhatsApp app."
+          },
+          "accountId": {
+            "type": "string",
+            "description": "WhatsApp only, and required there: the connected number the person is to write to. The code only works on that number."
+          },
+          "greeting": {
+            "type": "string",
+            "description": "WhatsApp only: what the pre-written message says in front of the code. The person can edit it before sending, so treat it as a suggestion."
+          },
+          "expiresInHours": {
+            "type": "number",
+            "description": "How long the link works for. A week by default, a month at most."
+          },
+          "maxBindings": {
+            "type": "number",
+            "description": "How many distinct identities may connect through it. One unless you say otherwise — more for a company whose staff each write in from their own phone."
+          },
+          "requireApproval": {
+            "type": "boolean",
+            "description": "Hold what connects as pending until somebody approves it in the console. On WhatsApp the person is told they are waiting rather than left without an answer."
+          },
+          "purpose": {
+            "type": "string",
+            "description": "Your own note. Nobody else sees it."
+          }
+        },
+        "required": [
+          "tenantId",
+          "channelAppId"
+        ]
       }
     }
   },
@@ -15852,6 +15909,165 @@
             "description": "Internal Server Error"
           }
         }
+      }
+    },
+    "/v1/channels/invites": {
+      "post": {
+        "operationId": "PublicChannelsV1Controller_createInvite",
+        "summary": "Issue a link that ties a channel to one of my tenants",
+        "description": "Slack comes back with a `url` to a page that installs the bot. WhatsApp comes back with a `waUrl` — a click-to-chat link that opens the number with a short `joinCode` already written in the box — and with that code on its own, for somebody who would rather type it. The person sends the message, and from that message on the conversation belongs to the tenant. All three are returned ONCE, here: only their hashes are stored, so a link that is lost is reissued, never recovered.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChannelInviteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The link, said once"
+          },
+          "404": {
+            "description": "No such app, or no such number"
+          }
+        },
+        "tags": [
+          "Channels"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "PublicChannelsV1Controller_listInvites",
+        "summary": "The links I have issued",
+        "description": "Without their tokens or codes, which are not stored. What a link has bound so far is in `bindings`, which is how you tell whether a customer ever used theirs.",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "appId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Channels"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/channels/invites/{id}/revoke": {
+      "post": {
+        "operationId": "PublicChannelsV1Controller_revokeInvite",
+        "summary": "Stop a link working",
+        "description": "What it has already bound stays bound: revoking withdraws the link, not the mapping it made. Unmapping is a separate, deliberate act.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Channels"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/channels/identities": {
+      "get": {
+        "operationId": "PublicChannelsV1Controller_listIdentities",
+        "summary": "Which channels my customers reach me through",
+        "description": "One row per identity that has been mapped or seen: a Slack workspace, a WhatsApp number, the person inside one. `tenantId` is who it belongs to; a row with none is somebody talking to you without an owner yet.",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "platform",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "slack",
+                "whatsapp",
+                "email"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Channels"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     }
   },

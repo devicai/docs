@@ -397,6 +397,15 @@
             ]
           },
           {
+            "group": "Channels",
+            "pages": [
+              "api-reference/endpoint/post-api-v1-channels-invites",
+              "api-reference/endpoint/get-api-v1-channels-invites",
+              "api-reference/endpoint/post-api-v1-channels-invites-id-revoke",
+              "api-reference/endpoint/get-api-v1-channels-identities"
+            ]
+          },
+          {
             "group": "Tenants",
             "pages": [
               "api-reference/endpoint/get-api-v1-tenants",
