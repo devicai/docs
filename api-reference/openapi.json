@@ -5126,6 +5126,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "partial",
+            "required": false,
+            "in": "query",
+            "description": "`1` or `true`: while only the reply being written changes, send `event: delta` frames with the appended text (`{\"append\":\"…\"}`) or `event: partial` frames with the whole `streamingMessage`, instead of a full snapshot. About half the bytes of polling, against 6-7 times without it. Older APIs ignore it.",
+            "schema": {
+              "type": "string",
+              "enum": ["1", "true"]
+            }
           }
         ],
         "responses": {

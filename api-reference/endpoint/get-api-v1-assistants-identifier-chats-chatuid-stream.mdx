@@ -5,13 +5,13 @@ openapi: 'GET /v1/assistants/{identifier}/chats/{chatUid}/stream'
 
 ## Reading the stream
 
-`EventSource` cannot send an `Authorization` header, so open the stream with `fetch` and split the body on blank lines. Reopen it while the last snapshot is not terminal: the server closes every connection after 60 seconds.
+`EventSource` cannot send an `Authorization` header, so open the stream with `fetch` and split the body on blank lines. Reopen it while the last snapshot is not terminal: the server closes every connection after 60 seconds. Ask for `?partial=1` so the reply being written arrives as `delta` frames (the appended text) instead of a whole snapshot per write.
 
 ```javascript
 async function followChat(identifier, chatUid, onSnapshot) {
   while (true) {
     const res = await fetch(
-      `https://api.devic.ai/api/v1/assistants/${identifier}/chats/${chatUid}/stream`,
+      `https://api.devic.ai/api/v1/assistants/${identifier}/chats/${chatUid}/stream?partial=1`,
       { headers: { Authorization: 'Bearer devic-xxx', Accept: 'text/event-stream' } },
     );
     if (!res.headers.get('content-type')?.includes('text/event-stream')) {
@@ -29,10 +29,13 @@ async function followChat(identifier, chatUid, onSnapshot) {
       while ((end = buffer.indexOf('\n\n')) !== -1) {
         const frame = buffer.slice(0, end);
         buffer = buffer.slice(end + 2);
-        if (!frame.includes('event: snapshot')) continue; // keep-alive, reconnect
-        last = JSON.parse(
-          frame.split('\n').filter((l) => l.startsWith('data:')).map((l) => l.slice(5).trim()).join(''),
-        );
+        const data = frame.split('\n').filter((l) => l.startsWith('data:')).map((l) => l.slice(5).trim()).join('');
+        if (frame.includes('event: snapshot')) last = JSON.parse(data);
+        else if (frame.includes('event: partial') && last) last = { ...last, ...JSON.parse(data) };
+        else if (frame.includes('event: delta') && last?.streamingMessage) {
+          const m = last.streamingMessage;
+          last = { ...last, streamingMessage: { ...m, content: { ...m.content, message: (m.content?.message ?? '') + JSON.parse(data).append } } };
+        } else continue; // keep-alive, reconnect
         onSnapshot(last);
       }
     }
