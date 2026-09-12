@@ -1,0 +1,48 @@
+---
+title: 'Follow real-time chat history (SSE)'
+openapi: 'GET /v1/assistants/{identifier}/chats/{chatUid}/stream'
+---
+
+## Reading the stream
+
+`EventSource` cannot send an `Authorization` header, so open the stream with `fetch` and split the body on blank lines. Reopen it while the last snapshot is not terminal: the server closes every connection after 60 seconds.
+
+```javascript
+async function followChat(identifier, chatUid, onSnapshot) {
+  while (true) {
+    const res = await fetch(
+      `https://api.devic.ai/api/v1/assistants/${identifier}/chats/${chatUid}/stream`,
+      { headers: { Authorization: 'Bearer devic-xxx', Accept: 'text/event-stream' } },
+    );
+    if (!res.headers.get('content-type')?.includes('text/event-stream')) {
+      throw new Error(`stream unavailable: ${res.status}`); // fall back to …/realtime
+    }
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let last;
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      let end;
+      while ((end = buffer.indexOf('\n\n')) !== -1) {
+        const frame = buffer.slice(0, end);
+        buffer = buffer.slice(end + 2);
+        if (!frame.includes('event: snapshot')) continue; // keep-alive, reconnect
+        last = JSON.parse(
+          frame.split('\n').filter((l) => l.startsWith('data:')).map((l) => l.slice(5).trim()).join(''),
+        );
+        onSnapshot(last);
+      }
+    }
+    if (last && ['completed', 'error', 'limit_exceeded'].includes(last.status)) return last;
+  }
+}
+```
+
+<Note>
+  While `status` is `processing`, `streamingMessage` holds the assistant's reply so far when the model streams (OpenAI, Anthropic, Gemini) and the assistant has no guardrails enabled. Other providers and guarded assistants deliver the text in one piece; status changes and tool calls still arrive as they happen.
+</Note>
+
+Poll [`GET …/realtime`](/api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid-realtime) instead only when you cannot hold a connection open, such as a serverless function with a short timeout.

@@ -92,15 +92,29 @@ See [Integrations for your end users](/devic/integrations/for-end-users).
 
 ---
 
-## Polling cadence
+## Following the answer: streaming or polling
 
-While an answer is being produced, the widget asks the API what has been produced so far — once a second by default.
+While an answer is being produced, the widget has two ways to follow it.
+
+**Streaming** (`@devicai/ui` 0.59.0 and later) keeps one connection open and receives every change as it happens, the reply included, word by word. No request is made while the connection is up. It is opt-in for now:
+
+```jsx
+<DevicProvider apiKey="devic-xxx" streaming>
+```
+
+Any component can refuse it with `streaming={false}`. Against an API that does not serve the stream, the widget notices and polls instead, so the flag is safe to turn on before every deployment has caught up.
+
+**Polling** is the default: the widget asks the API what has been produced so far, once a second.
 
 ```jsx
 <DevicProvider apiKey="devic-xxx" pollingInterval={3000}>
 ```
 
-The default answers as fast as the API produces tokens. Raise it when the cost of the requests matters more than the latency of the answer.
+With streaming on, `pollingInterval` is only the cadence used while the connection is down. Without it, the default answers as fast as the API produces tokens; raise it when the cost of the requests matters more than the latency of the answer.
+
+<Note>
+  The reply arrives word by word for OpenAI, Anthropic and Gemini models. Other providers, and assistants with guardrails enabled, deliver the text in one piece: the answer is checked whole before anyone sees it. Status changes and tool calls stream in either case.
+</Note>
 
 ---
 
