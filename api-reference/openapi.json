@@ -5095,6 +5095,63 @@
         }
       }
     },
+    "/v1/assistants/{identifier}/chats/{chatUid}/stream": {
+      "get": {
+        "tags": [
+          "Assistants"
+        ],
+        "summary": "Follow real-time chat history (server-sent events)",
+        "operationId": "streamRealtimeChat",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "The same real-time state as `GET …/realtime`, pushed over one server-sent events connection instead of polled: the current state is sent right away, then a new `snapshot` event each time it changes — the assistant's reply growing in `streamingMessage`, tool calls, status transitions. Send messages with `POST …/messages?async=true`; opening the stream never runs the model.\n\nEach frame is `event: snapshot` followed by `data: <the same JSON object the realtime endpoint returns>`. Comment frames (`: keep-alive`) arrive every 15 s of silence. The server closes the connection when the status is terminal (`completed`, `error`, `limit_exceeded`) with nothing queued, or after 60 s in any case: if the last snapshot is not terminal, open it again — every frame carries the full state, so nothing is lost. An `event: reconnect` frame precedes a close caused by a server error.\n\n`EventSource` cannot send an `Authorization` header; use `fetch` and read the body. This is what `@devicai/ui` does with `streaming` enabled.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "required": true,
+            "in": "path",
+            "description": "The unique identifier of the assistant specialization",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chatUid",
+            "required": true,
+            "in": "path",
+            "description": "The unique identifier of the chat conversation",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A `text/event-stream` body. `snapshot` events carry a `RealtimeChatHistoryDto` (plus `streamingMessage` while the status is `processing`).",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string",
+                  "example": "event: snapshot\ndata: {\"chatUID\":\"550e8400-e29b-41d4-a716-446655440000\",\"status\":\"processing\",\"chatHistory\":[{\"role\":\"user\",\"content\":{\"message\":\"Analyze this data\"}}],\"streamingMessage\":{\"role\":\"assistant\",\"content\":{\"message\":\"Based on the an\"}},\"lastUpdatedAt\":1705312200000}\n\n: keep-alive\n\nevent: snapshot\ndata: {\"chatUID\":\"550e8400-e29b-41d4-a716-446655440000\",\"status\":\"completed\",\"chatHistory\":[{\"role\":\"user\",\"content\":{\"message\":\"Analyze this data\"}},{\"role\":\"assistant\",\"content\":{\"message\":\"Based on the analysis...\"}}],\"lastUpdatedAt\":1705312214000}\n\n"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — not reachable with this credential"
+          },
+          "404": {
+            "description": "Chat not found for this assistant, or no real-time state yet"
+          }
+        }
+      }
+    },
     "/v1/tenant-mcp": {
       "get": {
         "tags": [

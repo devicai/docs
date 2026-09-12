@@ -310,7 +310,8 @@
               "api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid-search",
               "api-reference/endpoint/post-api-v1-assistants-identifier-chats-chatuid-stop",
               "api-reference/endpoint/post-api-v1-assistants-identifier-chats-chatuid-tool-response",
-              "api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid-realtime"
+              "api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid-realtime",
+              "api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid-stream"
             ]
           },
           {
