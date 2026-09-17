@@ -15,14 +15,14 @@
     "x-summary": "Public API for interacting with Devic.ai platform"
   },
   "tags": [
-      {
-        "name": "Environments",
-        "description": "The machine an agent works on and everything it may reach: sandbox, snapshot, knowledge, tools and encrypted variables"
-      },
-      {
-        "name": "Sandboxes",
-        "description": "Start a real Linux machine on an environment, run commands and files on it, and save its snapshot"
-      },
+    {
+      "name": "Environments",
+      "description": "The machine an agent works on and everything it may reach: sandbox, snapshot, knowledge, tools and encrypted variables"
+    },
+    {
+      "name": "Sandboxes",
+      "description": "Start a real Linux machine on an environment, run commands and files on it, and save its snapshot"
+    },
     {
       "name": "Projects",
       "description": "Group agents, assistants, documents and costs into projects"
@@ -111,14 +111,184 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "description": "Use JWT token for authentication"
+        "description": "An API key from your Devic console, sent as `Authorization: Bearer <key>`. An embedded front end sends a tenant-session token instead, so no API key reaches the browser, and an OAuth integration sends its access token. Missing, invalid or expired credentials get a `401`. See [Authentication](/api-reference/introduction#authentication)."
       }
     },
     "schemas": {
       "ChatMessageDto": {
         "type": "object",
-        "properties": {}
+        "description": "A single message of a conversation, as the platform stored it.",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "description": "Unique message id",
+            "example": "75ecbcfc-a3be-43ba-8da6-b3e16e8d7280"
+          },
+          "chatUid": {
+            "type": "string",
+            "description": "Conversation this message belongs to",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "user",
+              "assistant",
+              "developer",
+              "tool"
+            ],
+            "description": "Who the message is from. `developer` messages are the ones the platform injects (current date, injected context) and can be ignored by most clients."
+          },
+          "content": {
+            "type": "object",
+            "description": "Body of the message.",
+            "properties": {
+              "message": {
+                "type": "string",
+                "description": "The text. This is the field to render.",
+                "example": "I would recommend a 450 W monocrystalline panel."
+              },
+              "data": {
+                "type": "object",
+                "additionalProperties": true,
+                "description": "Structured payload, when the assistant is configured with a structured output."
+              },
+              "files": {
+                "type": "array",
+                "description": "Files carried by the message, echoed in the same shape they were sent in.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "invoice.pdf"
+                    },
+                    "donwloadUrl": {
+                      "type": "string",
+                      "example": "https://files.devic.ai/uploads/invoice.pdf"
+                    },
+                    "fileType": {
+                      "type": "string",
+                      "enum": [
+                        "IMAGE",
+                        "DOCUMENT",
+                        "VIDEO",
+                        "AUDIO",
+                        "ELECTRICITY_BILL",
+                        "OTHER"
+                      ],
+                      "example": "DOCUMENT"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "timestamp": {
+            "type": "number",
+            "description": "Unix timestamp in milliseconds",
+            "example": 1706000000000
+          },
+          "userUID": {
+            "type": "string",
+            "description": "Identity the message was written under",
+            "example": "api-key:42"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short AI-generated summary of the message, unless summarisation was skipped",
+            "example": "The user asks which panels to install on a 60 m2 roof."
+          },
+          "contentSource": {
+            "type": "string",
+            "description": "Where `content.message` came from when the model did not write it. `finish_tool` means the reply was taken from the finish tool's `message` argument, so it can be read without parsing tool calls. Absent on messages the model wrote itself.",
+            "example": "finish_tool"
+          },
+          "tool_calls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolCallDto"
+            },
+            "description": "Tool calls the assistant made on this message"
+          },
+          "tool_call_id": {
+            "type": "string",
+            "description": "On `tool` messages, the call this message answers",
+            "example": "call_abc123"
+          },
+          "latencyMs": {
+            "type": "number",
+            "description": "How long the model or the tool took, in milliseconds",
+            "example": 1045
+          },
+          "messageTokenUsage": {
+            "type": "object",
+            "description": "Tokens this message accounted for",
+            "properties": {
+              "inputTokens": {
+                "type": "number"
+              },
+              "outputTokens": {
+                "type": "number"
+              },
+              "inputCachedTokens": {
+                "type": "number"
+              },
+              "inputCacheWriteTokens": {
+                "type": "number"
+              },
+              "outputCachedTokens": {
+                "type": "number"
+              },
+              "reasoningOutputTokens": {
+                "type": "number"
+              },
+              "totalTokens": {
+                "type": "number"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "model": {
+                "type": "string"
+              }
+            }
+          },
+          "messageCost": {
+            "type": "object",
+            "description": "What this message cost, at the pricing in force when it ran",
+            "properties": {
+              "inputCost": {
+                "type": "number"
+              },
+              "outputCost": {
+                "type": "number"
+              },
+              "inputCachedCost": {
+                "type": "number"
+              },
+              "inputCacheWriteCost": {
+                "type": "number"
+              },
+              "outputCachedCost": {
+                "type": "number"
+              },
+              "reasoningOutputCost": {
+                "type": "number"
+              },
+              "totalCost": {
+                "type": "number"
+              },
+              "currency": {
+                "type": "string",
+                "example": "USD"
+              },
+              "calculatedAt": {
+                "type": "number"
+              }
+            }
+          }
+        }
       },
       "ConnectEnvironmentPublicDto": {
         "type": "object",
@@ -2323,122 +2493,523 @@
           }
         }
       },
-      "ChatMessage": {
-        "type": "object",
-        "required": [
-          "role",
-          "content"
-        ],
-        "properties": {
-          "role": {
-            "type": "string",
-            "enum": [
-              "user",
-              "assistant",
-              "system"
-            ],
-            "description": "Role of the message sender"
-          },
-          "content": {
-            "type": "string",
-            "description": "Content of the message"
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time",
-            "description": "When the message was sent"
-          }
-        }
-      },
       "ChatHistory": {
         "type": "object",
-        "required": [
-          "chatUid",
-          "assistantIdentifier",
-          "createdAt",
-          "messages"
-        ],
+        "description": "A conversation with an assistant: its messages and everything the platform recorded about the run — model, tokens, cost, tags and the memory or compaction events it went through.",
         "properties": {
-          "chatUid": {
+          "chatUID": {
             "type": "string",
-            "description": "Unique identifier for the chat session"
+            "description": "Unique identifier of the conversation. This is the `chatUid` you send to continue it.",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
           },
-          "assistantIdentifier": {
+          "clientUID": {
             "type": "string",
-            "description": "Identifier for the assistant specialization used"
+            "description": "Account the conversation belongs to",
+            "example": "f9a44905-3193-4bd2-a81a-71156aa7eb66"
           },
-          "createdAt": {
+          "userUID": {
             "type": "string",
-            "format": "date-time",
-            "description": "Timestamp when the chat was created"
+            "description": "Identity that opened the conversation",
+            "example": "7a735eda-69e7-420b-9507-6abf80ad2e34"
           },
-          "messages": {
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "description": "Title of the conversation, when one was given or generated",
+            "example": "Solar panel recommendations"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Archived conversations stay readable but are kept out of the default listings"
+          },
+          "assistantSpecializationIdentifier": {
+            "type": "string",
+            "description": "Assistant that holds the conversation",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "chatContent": {
             "type": "array",
+            "description": "The messages, oldest first. Omitted when the request asked for `omitContent=true`.",
             "items": {
-              "$ref": "#/components/schemas/ChatMessage"
-            },
-            "description": "Messages exchanged in the chat"
+              "$ref": "#/components/schemas/ChatMessageDto"
+            }
+          },
+          "creationTimestampMs": {
+            "type": "number",
+            "description": "When the conversation was created, Unix milliseconds",
+            "example": 1789630543006
+          },
+          "lastEditTimestampMs": {
+            "type": "number",
+            "description": "When it last changed, Unix milliseconds",
+            "example": 1789630572077
+          },
+          "llm": {
+            "type": "string",
+            "description": "Model that answered",
+            "example": "gpt-4.1"
+          },
+          "provider": {
+            "type": "string",
+            "description": "Provider of that model",
+            "example": "open-ai"
+          },
+          "contextWindow": {
+            "type": "number",
+            "description": "Context capacity of the model in tokens. Absent for models the platform does not know the capacity of.",
+            "example": 1050000
+          },
+          "inputTokens": {
+            "type": "number",
+            "description": "Input tokens of the whole conversation",
+            "example": 6380
+          },
+          "outputTokens": {
+            "type": "number",
+            "description": "Output tokens of the whole conversation",
+            "example": 372
+          },
+          "tokenUsage": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Full accounting of the conversation: the model's own tokens and cost, plus what the secondary calls (summarisation, compaction, evaluations) added, broken down by operation.",
+            "properties": {
+              "model": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "inputTokens": {
+                "type": "number"
+              },
+              "outputTokens": {
+                "type": "number"
+              },
+              "inputCachedTokens": {
+                "type": "number"
+              },
+              "inputCacheWriteTokens": {
+                "type": "number"
+              },
+              "outputCachedTokens": {
+                "type": "number"
+              },
+              "reasoningOutputTokens": {
+                "type": "number"
+              },
+              "totalCachedTokens": {
+                "type": "number"
+              },
+              "cost": {
+                "type": "object",
+                "properties": {
+                  "inputCost": {
+                    "type": "number"
+                  },
+                  "outputCost": {
+                    "type": "number"
+                  },
+                  "inputCachedCost": {
+                    "type": "number"
+                  },
+                  "inputCacheWriteCost": {
+                    "type": "number"
+                  },
+                  "outputCachedCost": {
+                    "type": "number"
+                  },
+                  "reasoningOutputCost": {
+                    "type": "number"
+                  },
+                  "totalCost": {
+                    "type": "number"
+                  }
+                }
+              },
+              "secondaryCost": {
+                "type": "number",
+                "description": "What the secondary calls cost in total"
+              },
+              "secondaryInputTokens": {
+                "type": "number"
+              },
+              "secondaryOutputTokens": {
+                "type": "number"
+              },
+              "secondaryByOperation": {
+                "type": "object",
+                "additionalProperties": true,
+                "description": "The same figures per operation, keyed by operation name (`summarization`, `compaction`, ...)"
+              },
+              "pricingTimestamp": {
+                "type": "number"
+              }
+            }
           },
           "metadata": {
             "type": "object",
             "additionalProperties": true,
-            "description": "Custom metadata associated with the chat"
+            "nullable": true,
+            "description": "The metadata the conversation was opened with, including the canonical `subtenantId`"
+          },
+          "tenantId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Tenant the conversation is attributed to, in multi-tenant setups",
+            "example": "tenant_12345"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            },
+            "description": "Tags stored on the conversation",
+            "example": [
+              "support",
+              "onboarding"
+            ]
+          },
+          "stopReason": {
+            "type": "string",
+            "description": "Why the platform stopped the conversation, when it did (`max_chat_messages_reached`, `error`, ...)",
+            "example": "max_chat_messages_reached"
+          },
+          "triggerSource": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Set when an app-integration trigger opened the conversation instead of a person"
+          },
+          "guardrailResults": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "What the guardrails decided on this conversation"
+          },
+          "handedOff": {
+            "type": "boolean",
+            "description": "The conversation is paused waiting for a subagent to finish"
+          },
+          "handedOffSubThreadId": {
+            "type": "string",
+            "description": "Thread of the subagent it is waiting on",
+            "example": "64f5a5b8c123456789abcdef"
+          },
+          "pausedUntil": {
+            "type": "number",
+            "description": "When a self-paused assistant resumes, Unix milliseconds"
+          },
+          "pausedReason": {
+            "type": "string",
+            "description": "Reason the assistant gave for pausing"
+          },
+          "recalledMemories": {
+            "type": "array",
+            "description": "Long-term-memory recalls of this conversation, each with the facts or entities it surfaced and the `messageUid` of the message that brought it in, so a client can interleave them with the messages. Only for assistants with memory enabled.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "coreMemories": {
+            "type": "array",
+            "description": "Snapshots of the core-memory block the conversation was given, recorded whenever its revision changed. The block itself is re-rendered into the prompt on every call and never persisted with it. Only for assistants with core memory enabled.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "compactions": {
+            "type": "array",
+            "description": "Compaction checkpoints. Each folds the messages before its boundary into a summary plus the identifiers, paths and urls kept verbatim; from then on the model receives the checkpoint instead of those messages, which stay in `chatContent`. Only the newest one is in force.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
           }
         }
       },
       "ProcessMessageRequest": {
         "type": "object",
         "required": [
-          "messages"
+          "message"
         ],
+        "description": "One user message and the context it is sent with. The assistant answers that single message; the rest of the conversation is recovered from `chatUid`.",
         "properties": {
-          "messages": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ChatMessage"
-            },
-            "description": "Messages to process, usually including the latest user message"
+          "message": {
+            "type": "string",
+            "description": "The user message the assistant has to answer. Required, except in payload-template mode (`messageTemplate` query parameter), where the body is an opaque third-party payload and the text is rendered from the template instead.",
+            "example": "What solar panels do you recommend?"
           },
           "chatUid": {
             "type": "string",
-            "description": "Optional chat UID to continue an existing conversation"
+            "description": "Conversation to continue. Omit it to start a new one: the generated id comes back on the messages of the response (and, in async mode, in the acknowledgement), and is what you send on the next call.",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "userName": {
+            "type": "string",
+            "description": "Name of the end user writing, used for personalisation and shown in the conversation logs.",
+            "example": "John Doe"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tags stored on the conversation, to filter it later from the chat listing endpoints.",
+            "example": [
+              "support",
+              "onboarding"
+            ]
+          },
+          "files": {
+            "type": "array",
+            "description": "Files attached to the message. Upload them first with the file upload endpoint, then pass the returned download URL here.",
+            "items": {
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "File name shown in the conversation",
+                  "example": "invoice.pdf"
+                },
+                "donwloadUrl": {
+                  "type": "string",
+                  "description": "URL the platform downloads the file from. Note the historical spelling of this field, kept for backwards compatibility.",
+                  "example": "https://files.devic.ai/uploads/invoice.pdf"
+                },
+                "fileType": {
+                  "type": "string",
+                  "enum": [
+                    "IMAGE",
+                    "DOCUMENT",
+                    "VIDEO",
+                    "AUDIO",
+                    "ELECTRICITY_BILL",
+                    "OTHER"
+                  ],
+                  "description": "Kind of file, used to decide how it is processed",
+                  "example": "DOCUMENT"
+                }
+              }
+            }
+          },
+          "images": {
+            "type": "array",
+            "description": "Images attached to the message, always as URLs (never base64). Requires a vision-capable model.",
+            "items": {
+              "type": "object",
+              "required": [
+                "imageUrl"
+              ],
+              "properties": {
+                "imageUrl": {
+                  "type": "string",
+                  "example": "https://files.devic.ai/uploads/roof.jpg"
+                }
+              }
+            }
           },
           "metadata": {
             "type": "object",
             "additionalProperties": true,
-            "description": "Custom metadata for this interaction"
+            "description": "Free-form context stored on the conversation. Two keys are read by the platform; anything else is kept as-is and can be read back from the chat history.",
+            "properties": {
+              "promptTemplateParams": {
+                "type": "object",
+                "additionalProperties": true,
+                "description": "Values for the `{{variable}}` placeholders of the assistant prompt. Also accepted under the legacy misspelling `propmptTemplateParams`.",
+                "example": {
+                  "userName": "John",
+                  "companyName": "Acme Corp"
+                }
+              },
+              "tenantToken": {
+                "type": "string",
+                "description": "Token forwarded to the tool servers that are configured to authenticate the end user.",
+                "example": "tenant_abc123"
+              }
+            },
+            "example": {
+              "promptTemplateParams": {
+                "companyName": "Acme Corp"
+              },
+              "source": "web-widget"
+            }
           },
           "tenantId": {
             "type": "string",
-            "description": "Tenant (customer/organization) this conversation belongs to in multi-tenant setups. Auto-registers the tenant on first use and attributes its cost/usage. See the Tenants endpoints."
+            "description": "Tenant (customer/organization) this conversation belongs to in multi-tenant setups. Auto-registers the tenant on first use and attributes its cost/usage. See the Tenants endpoints.",
+            "example": "tenant_12345"
           },
           "subtenantId": {
             "type": "string",
-            "description": "End user/entity inside the tenant. When omitted it is derived from metadata.subtenantMetadata.id or the legacy metadata.userId. Used for per-subtenant cost attribution and usage limits."
+            "description": "End user/entity inside the tenant. When omitted it is derived from `metadata.subtenantMetadata.id` or the legacy `metadata.userId`. Used for per-subtenant cost attribution and usage limits.",
+            "example": "user_67890"
+          },
+          "previousConversation": {
+            "type": "array",
+            "description": "Earlier exchanges to seed the conversation with, for example when migrating a chat from another system. Only accepted when starting a new conversation, that is, without `chatUid`.",
+            "items": {
+              "type": "object",
+              "required": [
+                "message",
+                "role"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "user",
+                    "assistant"
+                  ]
+                }
+              }
+            },
+            "example": [
+              {
+                "message": "Hello",
+                "role": "user"
+              },
+              {
+                "message": "Hi there!",
+                "role": "assistant"
+              }
+            ]
+          },
+          "enabledTools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Restricts this message to these tools, by name, out of the ones the assistant's tool servers offer. Omit the field to leave the assistant's own configuration alone; send an empty array to run the message with no tools at all.",
+            "example": [
+              "get_weather",
+              "calculator"
+            ]
+          },
+          "disabledIntegrations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Apps the end user connected that should sit out this message, by slug. A deny list over the tenant's own connected apps only — the assistant's tool servers are governed by `enabledTools`. The account stays connected and the next message has it back unless it is named again.",
+            "example": [
+              "gmail"
+            ]
+          },
+          "provider": {
+            "type": "string",
+            "description": "Overrides the assistant's LLM provider for this message. The account must have that provider configured.",
+            "enum": [
+              "open-ai",
+              "anthropic",
+              "google-gemini",
+              "deepseek",
+              "kimi",
+              "xai"
+            ],
+            "example": "open-ai"
+          },
+          "model": {
+            "type": "string",
+            "description": "Overrides the assistant's model for this message. Must be a supported model and, when `provider` is also sent, must belong to it.",
+            "example": "gpt-4.1"
+          },
+          "tools": {
+            "type": "array",
+            "description": "Model Interface Protocol: tools that run on your side. When the assistant calls one, the turn stops with the call pending and you answer it with the tool-response endpoint.",
+            "items": {
+              "$ref": "#/components/schemas/ModelInterfaceToolSchemaDto"
+            }
+          },
+          "transcriptId": {
+            "type": "string",
+            "description": "Id of a speech-to-text transcript (from the transcription endpoint) that seeded this message, so the conversation keeps a link to the original audio.",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
           }
         }
       },
       "FilterChatHistoriesRequest": {
         "type": "object",
+        "description": "Filters to narrow the conversations. Every field is optional and they combine with AND; send `{}` for no filter at all.",
         "properties": {
-          "assistantIdentifier": {
+          "assistantSpecializationIdentifier": {
             "type": "string",
-            "description": "Filter by assistant specialization identifier"
+            "description": "Only conversations of this assistant",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
           },
-          "fromDate": {
+          "name": {
             "type": "string",
-            "format": "date",
-            "description": "Start date for filtering chat histories"
+            "description": "Only conversations with this title",
+            "example": "Solar Analysis Discussion"
           },
-          "toDate": {
+          "archived": {
+            "type": "boolean",
+            "description": "Archived conversations instead of the live ones",
+            "example": false
+          },
+          "llm": {
             "type": "string",
-            "format": "date",
-            "description": "End date for filtering chat histories"
+            "description": "Only conversations answered by this model",
+            "example": "gpt-4.1"
+          },
+          "createdAfter": {
+            "type": "number",
+            "description": "Created at or after this Unix timestamp in milliseconds",
+            "example": 1609459200000
+          },
+          "createdBefore": {
+            "type": "number",
+            "description": "Created at or before this Unix timestamp in milliseconds",
+            "example": 1640995200000
+          },
+          "minInputTokens": {
+            "type": "number",
+            "description": "At least this many input tokens",
+            "example": 100
+          },
+          "minOutputTokens": {
+            "type": "number",
+            "description": "At least this many output tokens",
+            "example": 50
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "Only conversations of this tenant",
+            "example": "tenant_12345"
+          },
+          "subtenantId": {
+            "type": "string",
+            "description": "Only conversations of this end user inside the tenant. Matches the canonical `metadata.subtenantId`, so it works however the subtenant was originally supplied.",
+            "example": "user_67890"
           },
           "metadata": {
             "type": "object",
             "additionalProperties": true,
-            "description": "Filter by metadata fields"
+            "description": "Only conversations whose metadata matches these fields. Nested matching is supported.",
+            "example": {
+              "promptTemplateParams": {
+                "userId": "123"
+              }
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only conversations carrying ANY of these tags",
+            "example": [
+              "project-alpha",
+              "high-priority"
+            ]
           }
         }
       },
@@ -5032,6 +5603,129 @@
             "description": "Epoch milliseconds"
           }
         }
+      },
+      "ModelInterfaceToolSchemaDto": {
+        "type": "object",
+        "required": [
+          "type",
+          "function"
+        ],
+        "description": "Client-side tool definition, in the OpenAI function-calling format.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "function"
+            ],
+            "example": "function"
+          },
+          "function": {
+            "type": "object",
+            "required": [
+              "name",
+              "description",
+              "parameters"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "get_user_location"
+              },
+              "description": {
+                "type": "string",
+                "example": "Get the current user location"
+              },
+              "parameters": {
+                "type": "object",
+                "description": "JSON Schema of the arguments",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "object"
+                  },
+                  "properties": {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  "required": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ProcessMessageAsyncResponse": {
+        "type": "object",
+        "description": "Acknowledgement returned by `?async=true`: the conversation id to poll, and — when the message was parked instead of started — where it sits in the queue.",
+        "required": [
+          "chatUid"
+        ],
+        "properties": {
+          "chatUid": {
+            "type": "string",
+            "description": "Conversation the message went into. Poll the realtime endpoint with it, or open the stream.",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "queued": {
+            "type": "boolean",
+            "description": "The message was queued rather than started right away",
+            "example": true
+          },
+          "queuePosition": {
+            "type": "number",
+            "description": "How many messages are waiting on this conversation, this one included",
+            "example": 1
+          },
+          "willProcess": {
+            "type": "string",
+            "enum": [
+              "after_delay",
+              "next_turn",
+              "on_resume"
+            ],
+            "description": "When the queued message reaches the model. `after_delay`: it joined the assistant's input-delay window. `next_turn`: a run is in flight and it joins that run. `on_resume`: the conversation is waiting on a subagent, a timed pause or a tool response.",
+            "example": "next_turn"
+          }
+        }
+      },
+      "PaginatedChatHistory": {
+        "type": "object",
+        "description": "A page of conversations.",
+        "required": [
+          "histories",
+          "total",
+          "offset",
+          "limit"
+        ],
+        "properties": {
+          "histories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatHistory"
+            },
+            "description": "The conversations of this page, newest first"
+          },
+          "total": {
+            "type": "number",
+            "description": "How many conversations match, ignoring pagination",
+            "example": 42
+          },
+          "offset": {
+            "type": "number",
+            "description": "Offset this page was taken at",
+            "example": 0
+          },
+          "limit": {
+            "type": "number",
+            "description": "Page size that was applied",
+            "example": 10
+          }
+        }
       }
     }
   },
@@ -5134,7 +5828,10 @@
             "description": "`1` or `true`: while only the reply being written changes, send `event: delta` frames with the appended text (`{\"append\":\"…\"}`) or `event: partial` frames with the whole `streamingMessage`, instead of a full snapshot. About half the bytes of polling, against 6-7 times without it. Older APIs ignore it.",
             "schema": {
               "type": "string",
-              "enum": ["1", "true"]
+              "enum": [
+                "1",
+                "true"
+              ]
             }
           }
         ],
@@ -11190,8 +11887,8 @@
         "tags": [
           "Assistants"
         ],
-        "summary": "Process a message with an assistant specialization",
-        "description": "Sends messages to the specified assistant specialization and returns its response. You can provide a chatUid to continue an existing conversation.",
+        "summary": "Process a message with an assistant",
+        "description": "Sends one user message to an assistant and returns the turn it produced. Pass `chatUid` to continue a conversation; leave it out to start one and keep the id that comes back.\n\n**Synchronous (default).** The request is held until the assistant finishes and the response is the array of messages the turn produced — the user message, any tool messages, and the assistant reply — in chronological order. The reply is the last element, and its text is in `content.message`.\n\n**Asynchronous (`?async=true`).** The response is an acknowledgement with the `chatUid` and nothing else. Follow the run with the realtime endpoint (polling) or the stream endpoint (server-sent events).\n\n**Queueing.** An async send that cannot start a run right away is queued on the conversation instead: the acknowledgement carries `queued: true` and `willProcess`. Reading `queuedMessages` from the realtime endpoint tells you whether anything is still waiting. Sending while the conversation is busy requires `messageQueueEnabled` on the assistant; without it the send is rejected with `409 CHAT_BUSY`, and past `maxQueuedMessages` (50 by default) further sends are rejected with 409 too.\n\n**Payload-template mode (`messageTemplate`).** Lets a third-party webhook, whose body shape you do not control, point straight at this endpoint: the body is then treated as an opaque payload and the message text is rendered from the template.",
         "operationId": "processAssistantMessage",
         "security": [
           {
@@ -11203,15 +11900,87 @@
             "name": "identifier",
             "in": "path",
             "required": true,
-            "description": "Identifier of the assistant specialization to use",
+            "description": "Identifier of the assistant, as returned by the assistants endpoints.",
             "schema": {
               "type": "string"
+            },
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "async",
+            "in": "query",
+            "required": false,
+            "description": "Send `true` to return as soon as the message is accepted, with the `chatUid` to poll, instead of waiting for the assistant to finish.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "example": true
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "description": "Language the assistant has to answer in, as a language code (`en`, `es`, `fr`, ...). Overrides whatever the prompt says for this message only.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "es"
+          },
+          {
+            "name": "skipSummarization",
+            "in": "query",
+            "required": false,
+            "description": "Send `true` to skip the per-message summaries. Saves a secondary model call, so it cuts latency and cost when nothing reads `summary`.",
+            "schema": {
+              "type": "boolean",
+              "default": false
             }
+          },
+          {
+            "name": "messageTemplate",
+            "in": "query",
+            "required": false,
+            "description": "Turns on payload-template mode. The request body stops being a `ProcessMessageRequest` and is taken as an opaque payload, and the message text is rendered from this template: `{{path.to.field}}` resolves a dot-path into the body, `{{$date}}` resolves to the current server date (`YYYY-MM-DD`, see `tz`).\n\nIn this mode every other body field — `metadata`, `tenantId`, `provider`, `model`, ... — is ignored, so an external payload cannot set them. A template that renders an empty string (a sticker, a reaction, an unrelated event) is acknowledged with 200 and no run, so the sender does not retry.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{message.sender.name}}: {{message.text}}"
+          },
+          {
+            "name": "chatUidTemplate",
+            "in": "query",
+            "required": false,
+            "description": "Template for the `chatUid` in payload-template mode, same syntax as `messageTemplate` and only valid together with it. Use it to derive the conversation grouping from the payload, for example one conversation per source chat per day. When omitted, or when it renders empty, a new `chatUid` is generated.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "wa-{{message.conversationId}}-{{$date}}"
+          },
+          {
+            "name": "userNameTemplate",
+            "in": "query",
+            "required": false,
+            "description": "Template for the `userName` in payload-template mode, same syntax as `messageTemplate` and only valid together with it.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{message.sender.name}}"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "description": "IANA timezone used to resolve `{{$date}}` in the templates. Defaults to UTC; an invalid value falls back to UTC.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Europe/Madrid"
           }
         ],
         "requestBody": {
           "required": true,
-          "description": "Messages and optional chat context for the assistant",
+          "description": "The message to send and the context it is sent with. In payload-template mode the body is instead the third-party payload the templates read from.",
           "content": {
             "application/json": {
               "schema": {
@@ -11222,17 +11991,28 @@
         },
         "responses": {
           "200": {
-            "description": "Assistant response and updated chat context",
+            "description": "Synchronously, the messages the turn produced, oldest first, with the assistant reply last. In async mode, the acknowledgement with the `chatUid` to poll.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChatHistory"
+                  "oneOf": [
+                    {
+                      "type": "array",
+                      "description": "Synchronous mode: the messages of the finished turn",
+                      "items": {
+                        "$ref": "#/components/schemas/ChatMessageDto"
+                      }
+                    },
+                    {
+                      "$ref": "#/components/schemas/ProcessMessageAsyncResponse"
+                    }
+                  ]
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid message payload",
+            "description": "Invalid payload, provider not configured for the account, model unknown or not the provider's, or a template that could not be rendered.",
             "content": {
               "application/json": {
                 "schema": {
@@ -11245,7 +12025,17 @@
             "description": "Unauthorized - Invalid or missing token"
           },
           "404": {
-            "description": "Assistant specialization not found"
+            "description": "Assistant not found"
+          },
+          "409": {
+            "description": "The conversation is busy and cannot take the message: either the assistant does not have `messageQueueEnabled` (error `CHAT_BUSY`), or its queue is already full (`maxQueuedMessages`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "429": {
             "description": "Too Many Requests - Rate limit exceeded"
@@ -11261,8 +12051,8 @@
         "tags": [
           "Assistants"
         ],
-        "summary": "Get chat history by chat UID",
-        "description": "Retrieves the full message history for a specific chat with an assistant specialization.",
+        "summary": "Get chat history for a conversation",
+        "description": "One conversation with all its messages, plus the model, tokens, cost and the memory or compaction events it went through. 404 when the conversation does not exist or belongs to another assistant.",
         "operationId": "getChatHistoryByUid",
         "security": [
           {
@@ -11274,24 +12064,26 @@
             "name": "identifier",
             "in": "path",
             "required": true,
-            "description": "Identifier of the assistant specialization",
+            "description": "Identifier of the assistant that holds the conversation",
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "550e8400-e29b-41d4-a716-446655440000"
           },
           {
             "name": "chatUid",
             "in": "path",
             "required": true,
-            "description": "Unique identifier of the chat session",
+            "description": "Identifier of the conversation",
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "550e8400-e29b-41d4-a716-446655440000"
           }
         ],
         "responses": {
           "200": {
-            "description": "Chat history retrieved successfully",
+            "description": "The conversation",
             "content": {
               "application/json": {
                 "schema": {
@@ -11320,8 +12112,8 @@
         "tags": [
           "Assistants"
         ],
-        "summary": "List chat histories for a specific assistant specialization",
-        "description": "Retrieves chat histories associated with a particular assistant specialization.",
+        "summary": "Get chat histories for an assistant",
+        "description": "A page of the conversations held with one assistant, newest first. Ask for `omitContent=true` when you only need to list them: it leaves `chatContent` out, which is most of the payload.",
         "operationId": "listChatHistoriesForAssistant",
         "security": [
           {
@@ -11333,20 +12125,21 @@
             "name": "identifier",
             "in": "path",
             "required": true,
-            "description": "Identifier of the assistant specialization",
+            "description": "Identifier of the assistant",
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "550e8400-e29b-41d4-a716-446655440000"
           },
           {
             "name": "limit",
             "in": "query",
             "required": false,
-            "description": "Maximum number of chat histories to return",
+            "description": "Conversations per page. Values above 100 are capped.",
             "schema": {
               "type": "integer",
               "format": "int32",
-              "default": 20,
+              "default": 10,
               "minimum": 1,
               "maximum": 100
             }
@@ -11355,7 +12148,7 @@
             "name": "offset",
             "in": "query",
             "required": false,
-            "description": "Number of chat histories to skip (pagination offset)",
+            "description": "Conversations to skip",
             "schema": {
               "type": "integer",
               "format": "int32",
@@ -11364,10 +12157,20 @@
             }
           },
           {
+            "name": "omitContent",
+            "in": "query",
+            "required": false,
+            "description": "Send `true` to leave `chatContent` out and get only what describes each conversation.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
             "name": "tenantId",
             "in": "query",
             "required": false,
-            "description": "Filter chat histories by tenant ID",
+            "description": "Only conversations of this tenant",
             "schema": {
               "type": "string"
             }
@@ -11376,7 +12179,7 @@
             "name": "subtenantId",
             "in": "query",
             "required": false,
-            "description": "Filter chat histories by subtenant ID (end user/entity inside a tenant)",
+            "description": "Only conversations of this end user inside the tenant",
             "schema": {
               "type": "string"
             }
@@ -11384,14 +12187,11 @@
         ],
         "responses": {
           "200": {
-            "description": "List of chat histories for the assistant specialization",
+            "description": "A page of conversations",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChatHistory"
-                  }
+                  "$ref": "#/components/schemas/PaginatedChatHistory"
                 }
               }
             }
@@ -11416,8 +12216,8 @@
         "tags": [
           "Assistants"
         ],
-        "summary": "List chat histories with filters",
-        "description": "Retrieves chat histories across all assistant specializations, with support for filtering by date range, metadata, and assistant identifier.",
+        "summary": "Get all chat histories with filters",
+        "description": "A page of conversations across every assistant of the account, narrowed by the filters in the body. Send `{}` when you want no filter. Ask for `omitContent=true` when you only need to list them: it leaves `chatContent` out, which is most of the payload.",
         "operationId": "listChatHistoriesWithFilters",
         "security": [
           {
@@ -11425,8 +12225,8 @@
           }
         ],
         "requestBody": {
-          "required": false,
-          "description": "Filter parameters for chat histories",
+          "required": true,
+          "description": "The filters to apply. `{}` for none.",
           "content": {
             "application/json": {
               "schema": {
@@ -11436,15 +12236,12 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "List of chat histories matching the filter",
+          "201": {
+            "description": "A page of conversations. The status is 201 rather than 200 because the filters travel in the body of a POST; nothing is created.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChatHistory"
-                  }
+                  "$ref": "#/components/schemas/PaginatedChatHistory"
                 }
               }
             }
@@ -11468,7 +12265,44 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Conversations per page. Values above 100 are capped.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Conversations to skip",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "omitContent",
+            "in": "query",
+            "required": false,
+            "description": "Send `true` to leave `chatContent` out and get only what describes each conversation.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ]
       }
     },
     "/v1/health": {
