@@ -2494,66 +2494,239 @@
           }
         }
       },
-      "ChatMessage": {
-        "type": "object",
-        "required": [
-          "role",
-          "content"
-        ],
-        "properties": {
-          "role": {
-            "type": "string",
-            "enum": [
-              "user",
-              "assistant",
-              "system"
-            ],
-            "description": "Role of the message sender"
-          },
-          "content": {
-            "type": "string",
-            "description": "Content of the message"
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time",
-            "description": "When the message was sent"
-          }
-        }
-      },
       "ChatHistory": {
         "type": "object",
-        "required": [
-          "chatUid",
-          "assistantIdentifier",
-          "createdAt",
-          "messages"
-        ],
+        "description": "A conversation with an assistant: its messages and everything the platform recorded about the run — model, tokens, cost, tags and the memory or compaction events it went through.",
         "properties": {
-          "chatUid": {
+          "chatUID": {
             "type": "string",
-            "description": "Unique identifier for the chat session"
+            "description": "Unique identifier of the conversation. This is the `chatUid` you send to continue it.",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
           },
-          "assistantIdentifier": {
+          "clientUID": {
             "type": "string",
-            "description": "Identifier for the assistant specialization used"
+            "description": "Account the conversation belongs to",
+            "example": "f9a44905-3193-4bd2-a81a-71156aa7eb66"
           },
-          "createdAt": {
+          "userUID": {
             "type": "string",
-            "format": "date-time",
-            "description": "Timestamp when the chat was created"
+            "description": "Identity that opened the conversation",
+            "example": "7a735eda-69e7-420b-9507-6abf80ad2e34"
           },
-          "messages": {
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "description": "Title of the conversation, when one was given or generated",
+            "example": "Solar panel recommendations"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Archived conversations stay readable but are kept out of the default listings"
+          },
+          "assistantSpecializationIdentifier": {
+            "type": "string",
+            "description": "Assistant that holds the conversation",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "chatContent": {
             "type": "array",
+            "description": "The messages, oldest first. Omitted when the request asked for `omitContent=true`.",
             "items": {
-              "$ref": "#/components/schemas/ChatMessage"
-            },
-            "description": "Messages exchanged in the chat"
+              "$ref": "#/components/schemas/ChatMessageDto"
+            }
+          },
+          "creationTimestampMs": {
+            "type": "number",
+            "description": "When the conversation was created, Unix milliseconds",
+            "example": 1789630543006
+          },
+          "lastEditTimestampMs": {
+            "type": "number",
+            "description": "When it last changed, Unix milliseconds",
+            "example": 1789630572077
+          },
+          "llm": {
+            "type": "string",
+            "description": "Model that answered",
+            "example": "gpt-4.1"
+          },
+          "provider": {
+            "type": "string",
+            "description": "Provider of that model",
+            "example": "open-ai"
+          },
+          "contextWindow": {
+            "type": "number",
+            "description": "Context capacity of the model in tokens. Absent for models the platform does not know the capacity of.",
+            "example": 1050000
+          },
+          "inputTokens": {
+            "type": "number",
+            "description": "Input tokens of the whole conversation",
+            "example": 6380
+          },
+          "outputTokens": {
+            "type": "number",
+            "description": "Output tokens of the whole conversation",
+            "example": 372
+          },
+          "tokenUsage": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Full accounting of the conversation: the model's own tokens and cost, plus what the secondary calls (summarisation, compaction, evaluations) added, broken down by operation.",
+            "properties": {
+              "model": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "inputTokens": {
+                "type": "number"
+              },
+              "outputTokens": {
+                "type": "number"
+              },
+              "inputCachedTokens": {
+                "type": "number"
+              },
+              "inputCacheWriteTokens": {
+                "type": "number"
+              },
+              "outputCachedTokens": {
+                "type": "number"
+              },
+              "reasoningOutputTokens": {
+                "type": "number"
+              },
+              "totalCachedTokens": {
+                "type": "number"
+              },
+              "cost": {
+                "type": "object",
+                "properties": {
+                  "inputCost": {
+                    "type": "number"
+                  },
+                  "outputCost": {
+                    "type": "number"
+                  },
+                  "inputCachedCost": {
+                    "type": "number"
+                  },
+                  "inputCacheWriteCost": {
+                    "type": "number"
+                  },
+                  "outputCachedCost": {
+                    "type": "number"
+                  },
+                  "reasoningOutputCost": {
+                    "type": "number"
+                  },
+                  "totalCost": {
+                    "type": "number"
+                  }
+                }
+              },
+              "secondaryCost": {
+                "type": "number",
+                "description": "What the secondary calls cost in total"
+              },
+              "secondaryInputTokens": {
+                "type": "number"
+              },
+              "secondaryOutputTokens": {
+                "type": "number"
+              },
+              "secondaryByOperation": {
+                "type": "object",
+                "additionalProperties": true,
+                "description": "The same figures per operation, keyed by operation name (`summarization`, `compaction`, ...)"
+              },
+              "pricingTimestamp": {
+                "type": "number"
+              }
+            }
           },
           "metadata": {
             "type": "object",
             "additionalProperties": true,
-            "description": "Custom metadata associated with the chat"
+            "nullable": true,
+            "description": "The metadata the conversation was opened with, including the canonical `subtenantId`"
+          },
+          "tenantId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Tenant the conversation is attributed to, in multi-tenant setups",
+            "example": "tenant_12345"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            },
+            "description": "Tags stored on the conversation",
+            "example": [
+              "support",
+              "onboarding"
+            ]
+          },
+          "stopReason": {
+            "type": "string",
+            "description": "Why the platform stopped the conversation, when it did (`max_chat_messages_reached`, `error`, ...)",
+            "example": "max_chat_messages_reached"
+          },
+          "triggerSource": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Set when an app-integration trigger opened the conversation instead of a person"
+          },
+          "guardrailResults": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "What the guardrails decided on this conversation"
+          },
+          "handedOff": {
+            "type": "boolean",
+            "description": "The conversation is paused waiting for a subagent to finish"
+          },
+          "handedOffSubThreadId": {
+            "type": "string",
+            "description": "Thread of the subagent it is waiting on",
+            "example": "64f5a5b8c123456789abcdef"
+          },
+          "pausedUntil": {
+            "type": "number",
+            "description": "When a self-paused assistant resumes, Unix milliseconds"
+          },
+          "pausedReason": {
+            "type": "string",
+            "description": "Reason the assistant gave for pausing"
+          },
+          "recalledMemories": {
+            "type": "array",
+            "description": "Long-term-memory recalls of this conversation, each with the facts or entities it surfaced and the `messageUid` of the message that brought it in, so a client can interleave them with the messages. Only for assistants with memory enabled.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "coreMemories": {
+            "type": "array",
+            "description": "Snapshots of the core-memory block the conversation was given, recorded whenever its revision changed. The block itself is re-rendered into the prompt on every call and never persisted with it. Only for assistants with core memory enabled.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "compactions": {
+            "type": "array",
+            "description": "Compaction checkpoints. Each folds the messages before its boundary into a summary plus the identifiers, paths and urls kept verbatim; from then on the model receives the checkpoint instead of those messages, which stay in `chatContent`. Only the newest one is in force.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
           }
         }
       },
@@ -2766,25 +2939,78 @@
       },
       "FilterChatHistoriesRequest": {
         "type": "object",
+        "description": "Filters to narrow the conversations. Every field is optional and they combine with AND; send `{}` for no filter at all.",
         "properties": {
-          "assistantIdentifier": {
+          "assistantSpecializationIdentifier": {
             "type": "string",
-            "description": "Filter by assistant specialization identifier"
+            "description": "Only conversations of this assistant",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
           },
-          "fromDate": {
+          "name": {
             "type": "string",
-            "format": "date",
-            "description": "Start date for filtering chat histories"
+            "description": "Only conversations with this title",
+            "example": "Solar Analysis Discussion"
           },
-          "toDate": {
+          "archived": {
+            "type": "boolean",
+            "description": "Archived conversations instead of the live ones",
+            "example": false
+          },
+          "llm": {
             "type": "string",
-            "format": "date",
-            "description": "End date for filtering chat histories"
+            "description": "Only conversations answered by this model",
+            "example": "gpt-4.1"
+          },
+          "createdAfter": {
+            "type": "number",
+            "description": "Created at or after this Unix timestamp in milliseconds",
+            "example": 1609459200000
+          },
+          "createdBefore": {
+            "type": "number",
+            "description": "Created at or before this Unix timestamp in milliseconds",
+            "example": 1640995200000
+          },
+          "minInputTokens": {
+            "type": "number",
+            "description": "At least this many input tokens",
+            "example": 100
+          },
+          "minOutputTokens": {
+            "type": "number",
+            "description": "At least this many output tokens",
+            "example": 50
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "Only conversations of this tenant",
+            "example": "tenant_12345"
+          },
+          "subtenantId": {
+            "type": "string",
+            "description": "Only conversations of this end user inside the tenant. Matches the canonical `metadata.subtenantId`, so it works however the subtenant was originally supplied.",
+            "example": "user_67890"
           },
           "metadata": {
             "type": "object",
             "additionalProperties": true,
-            "description": "Filter by metadata fields"
+            "description": "Only conversations whose metadata matches these fields. Nested matching is supported.",
+            "example": {
+              "promptTemplateParams": {
+                "userId": "123"
+              }
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only conversations carrying ANY of these tags",
+            "example": [
+              "project-alpha",
+              "high-priority"
+            ]
           }
         }
       },
@@ -5465,6 +5691,40 @@
             ],
             "description": "When the queued message reaches the model. `after_delay`: it joined the assistant's input-delay window. `next_turn`: a run is in flight and it joins that run. `on_resume`: the conversation is waiting on a subagent, a timed pause or a tool response.",
             "example": "next_turn"
+          }
+        }
+      },
+      "PaginatedChatHistory": {
+        "type": "object",
+        "description": "A page of conversations.",
+        "required": [
+          "histories",
+          "total",
+          "offset",
+          "limit"
+        ],
+        "properties": {
+          "histories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatHistory"
+            },
+            "description": "The conversations of this page, newest first"
+          },
+          "total": {
+            "type": "number",
+            "description": "How many conversations match, ignoring pagination",
+            "example": 42
+          },
+          "offset": {
+            "type": "number",
+            "description": "Offset this page was taken at",
+            "example": 0
+          },
+          "limit": {
+            "type": "number",
+            "description": "Page size that was applied",
+            "example": 10
           }
         }
       }
@@ -11792,8 +12052,8 @@
         "tags": [
           "Assistants"
         ],
-        "summary": "Get chat history by chat UID",
-        "description": "Retrieves the full message history for a specific chat with an assistant specialization.",
+        "summary": "Get chat history for a conversation",
+        "description": "One conversation with all its messages, plus the model, tokens, cost and the memory or compaction events it went through. 404 when the conversation does not exist or belongs to another assistant.",
         "operationId": "getChatHistoryByUid",
         "security": [
           {
@@ -11805,24 +12065,26 @@
             "name": "identifier",
             "in": "path",
             "required": true,
-            "description": "Identifier of the assistant specialization",
+            "description": "Identifier of the assistant that holds the conversation",
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "550e8400-e29b-41d4-a716-446655440000"
           },
           {
             "name": "chatUid",
             "in": "path",
             "required": true,
-            "description": "Unique identifier of the chat session",
+            "description": "Identifier of the conversation",
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "550e8400-e29b-41d4-a716-446655440000"
           }
         ],
         "responses": {
           "200": {
-            "description": "Chat history retrieved successfully",
+            "description": "The conversation",
             "content": {
               "application/json": {
                 "schema": {
@@ -11851,8 +12113,8 @@
         "tags": [
           "Assistants"
         ],
-        "summary": "List chat histories for a specific assistant specialization",
-        "description": "Retrieves chat histories associated with a particular assistant specialization.",
+        "summary": "Get chat histories for an assistant",
+        "description": "A page of the conversations held with one assistant, newest first. Ask for `omitContent=true` when you only need to list them: it leaves `chatContent` out, which is most of the payload.",
         "operationId": "listChatHistoriesForAssistant",
         "security": [
           {
@@ -11864,20 +12126,21 @@
             "name": "identifier",
             "in": "path",
             "required": true,
-            "description": "Identifier of the assistant specialization",
+            "description": "Identifier of the assistant",
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "550e8400-e29b-41d4-a716-446655440000"
           },
           {
             "name": "limit",
             "in": "query",
             "required": false,
-            "description": "Maximum number of chat histories to return",
+            "description": "Conversations per page. Values above 100 are capped.",
             "schema": {
               "type": "integer",
               "format": "int32",
-              "default": 20,
+              "default": 10,
               "minimum": 1,
               "maximum": 100
             }
@@ -11886,7 +12149,7 @@
             "name": "offset",
             "in": "query",
             "required": false,
-            "description": "Number of chat histories to skip (pagination offset)",
+            "description": "Conversations to skip",
             "schema": {
               "type": "integer",
               "format": "int32",
@@ -11895,10 +12158,20 @@
             }
           },
           {
+            "name": "omitContent",
+            "in": "query",
+            "required": false,
+            "description": "Send `true` to leave `chatContent` out and get only what describes each conversation.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
             "name": "tenantId",
             "in": "query",
             "required": false,
-            "description": "Filter chat histories by tenant ID",
+            "description": "Only conversations of this tenant",
             "schema": {
               "type": "string"
             }
@@ -11907,7 +12180,7 @@
             "name": "subtenantId",
             "in": "query",
             "required": false,
-            "description": "Filter chat histories by subtenant ID (end user/entity inside a tenant)",
+            "description": "Only conversations of this end user inside the tenant",
             "schema": {
               "type": "string"
             }
@@ -11915,14 +12188,11 @@
         ],
         "responses": {
           "200": {
-            "description": "List of chat histories for the assistant specialization",
+            "description": "A page of conversations",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChatHistory"
-                  }
+                  "$ref": "#/components/schemas/PaginatedChatHistory"
                 }
               }
             }
@@ -11947,8 +12217,8 @@
         "tags": [
           "Assistants"
         ],
-        "summary": "List chat histories with filters",
-        "description": "Retrieves chat histories across all assistant specializations, with support for filtering by date range, metadata, and assistant identifier.",
+        "summary": "Get all chat histories with filters",
+        "description": "A page of conversations across every assistant of the account, narrowed by the filters in the body. Send `{}` when you want no filter. Ask for `omitContent=true` when you only need to list them: it leaves `chatContent` out, which is most of the payload.",
         "operationId": "listChatHistoriesWithFilters",
         "security": [
           {
@@ -11956,8 +12226,8 @@
           }
         ],
         "requestBody": {
-          "required": false,
-          "description": "Filter parameters for chat histories",
+          "required": true,
+          "description": "The filters to apply. `{}` for none.",
           "content": {
             "application/json": {
               "schema": {
@@ -11967,15 +12237,12 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "List of chat histories matching the filter",
+          "201": {
+            "description": "A page of conversations. The status is 201 rather than 200 because the filters travel in the body of a POST; nothing is created.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChatHistory"
-                  }
+                  "$ref": "#/components/schemas/PaginatedChatHistory"
                 }
               }
             }
@@ -11999,7 +12266,44 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Conversations per page. Values above 100 are capped.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Conversations to skip",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "omitContent",
+            "in": "query",
+            "required": false,
+            "description": "Send `true` to leave `chatContent` out and get only what describes each conversation.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ]
       }
     },
     "/v1/health": {
