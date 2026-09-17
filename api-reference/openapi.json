@@ -111,8 +111,7 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "description": "Use JWT token for authentication"
+        "description": "An API key from your Devic console, sent as `Authorization: Bearer <key>`. An embedded front end sends a tenant-session token instead, so no API key reaches the browser, and an OAuth integration sends its access token. Missing, invalid or expired credentials get a `401`. See [Authentication](/api-reference/introduction#authentication)."
       }
     },
     "schemas": {

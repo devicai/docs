@@ -185,21 +185,30 @@ Example full endpoint:
 
 ## Authentication
 
-All Devic API requests require a **Bearer token**.
+Every request carries its credential in the `Authorization` header, as a Bearer token:
 
-Include your token in every request using the `Authorization` header:
+```http
+GET https://api.devic.ai/v1/agents/{agentId}/threads
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+```
 
-Header format:
+Missing, invalid or expired credentials return `401 Unauthorized`.
 
-    Authorization: Bearer YOUR_API_TOKEN
+Three kinds of credential go in that header.
 
-Example request:
+**Your API key**, created in the Devic console. This is what a backend uses. Short keys — the ones
+that start with `devic-` — are sent the same way, and can be restricted to a list of domains or
+endpoints, which is what makes them usable from a page.
 
-    GET https://api.devic.ai/v1/agents/{agentId}/threads
-    Authorization: Bearer YOUR_API_TOKEN
-    Content-Type: application/json
+**A tenant-session token**, for an embedded front end, so no API key reaches the browser. Your
+backend mints one with `POST /api/v1/tenant-sessions` and hands it to the widget; it proves which
+tenant is calling and only reaches the endpoints a session is allowed to. An API key configured as
+`signed` can do nothing but mint sessions — every other call has to arrive as one, which is what
+lets the key sit in a page without a visitor being able to claim a tenant that is not theirs.
 
-Invalid or missing tokens return `401 Unauthorized`.
+**An OAuth access token**, for an integration acting on a customer's behalf. What it may reach is
+decided by the scopes it was granted.
 
 ---
 
