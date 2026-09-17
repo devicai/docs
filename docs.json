@@ -441,6 +441,8 @@
           {
             "group": "Tenant Admin",
             "pages": [
+              "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-add-usage",
+              "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-subtenants-subtenantid-add-usage",
               "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-tier",
               "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-usage-limits-reset",
               "api-reference/endpoint/post-api-v1-tenant-admin-tenantid-subtenants-subtenantid-tier",

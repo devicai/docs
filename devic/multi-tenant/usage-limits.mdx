@@ -88,6 +88,44 @@ The change is recorded with its source, so the history of who moved between plan
 
 ---
 
+## Charging usage Devic didn't measure
+
+Not everything a tenant consumes goes through Devic. A batch job in your own product, a third-party
+transcription, credits you meter yourself — if they should count against the same allowance, push them in:
+
+```bash
+curl -X POST https://api.devic.ai/v1/tenant-admin/acme-corp/add-usage \
+  -H "Authorization: Bearer $DEVIC_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{ "tokens": 1500, "cost": 0.42, "source": "crm-sync" }'
+```
+
+The amounts consume the tenant's quota exactly like a call Devic measured: cross a window's ceiling this way
+and the next real request is refused with the same `429`. The response comes back with every rule's usage
+after the injection, so the remaining allowance is visible without a second call.
+
+`source` is a free tag (`[a-z0-9_-]`, defaults to `external`) that keeps the origin of injected usage
+separate. It is what lets the usage panel split a tenant's consumption into what Devic measured and what was
+pushed in, per source — a bar sitting at 90% means something different depending on which half it came from.
+Each rule also reports `externalConsumption`, the injected slice of its `current`.
+
+Use the subtenant variant, `/v1/tenant-admin/{tenantId}/subtenants/{subtenantId}/add-usage`, to attribute the
+usage to one end user within the tenant.
+
+<Warning>
+  `add-usage` only adds. Negative amounts are refused: clearing counters is what
+  [`/usage-limits/reset`](/api-reference/endpoint/post-api-v1-tenant-admin-tenantid-usage-limits-reset) is for.
+  Like the rest of `tenant-admin`, it is a server-side call — a browser key cannot inject usage, and neither
+  can a tenant session token acting on its own tenant.
+</Warning>
+
+<Note>
+  A tenant with no plan and no ad-hoc rules has no quota to consume. The injection is still recorded for cost
+  reporting, and the response says so with `applied.countedTowardLimits: false`.
+</Note>
+
+---
+
 ## Reading consumption
 
 The read-only side lives in its own subtree, `/v1/tenant-usage/*`, safe to grant to a browser key — which is what lets a widget show a user how much of their allowance is left:
