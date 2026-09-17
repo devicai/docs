@@ -8581,6 +8581,250 @@
         }
       }
     },
+    "/v1/tenant-admin/{tenantId}/add-usage": {
+      "post": {
+        "tags": [
+          "Tenant Admin"
+        ],
+        "summary": "Add usage to a tenant",
+        "description": "Admin action (full API keys only — devic-ui restricted keys are blocked at the gateway). Adds usage your own product measured outside Devic. It consumes the tenant's quota exactly like a call Devic measured, including blocking the tenant with 429 TENANT_LIMIT_EXCEEDED once a window is spent, and is tagged as injected so it can be told apart from measured usage. It only adds: negative amounts are rejected — use the reset endpoint to clear counters.",
+        "operationId": "addTenantUsage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "At least one of `tokens` or `cost` must be greater than 0.",
+                "properties": {
+                  "tokens": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Tokens to add. Rounded to an integer.",
+                    "example": 1500
+                  },
+                  "cost": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "Cost to add, in the same unit as the tenant's cost limits.",
+                    "example": 0.42
+                  },
+                  "source": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9_-]{1,40}$",
+                    "default": "external",
+                    "description": "Tag this injection is filed under, so usage can be broken down by origin.",
+                    "example": "crm-sync"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "description": "Free-text note for your own auditing. Not stored on the counters."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usage added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tenantId": {
+                      "type": "string"
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "applied": {
+                      "type": "object",
+                      "properties": {
+                        "tokens": {
+                          "type": "integer"
+                        },
+                        "cost": {
+                          "type": "number"
+                        },
+                        "countedTowardLimits": {
+                          "type": "boolean",
+                          "description": "False when the tenant has no tier and no ad-hoc rules: the usage is recorded in the cost aggregates, but there is no quota for it to consume."
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "array",
+                      "description": "Usage of every effective rule after the injection, so the remaining quota is visible in the same call. Each rule carries `externalConsumption`: the part of `current` that was injected rather than measured.",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - no amount given, a negative amount, or an invalid source tag"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "403": {
+            "description": "Forbidden - key not allowed on /tenant-admin, or a tenant session token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/tenant-admin/{tenantId}/subtenants/{subtenantId}/add-usage": {
+      "post": {
+        "tags": [
+          "Tenant Admin"
+        ],
+        "summary": "Add usage to a subtenant",
+        "description": "Admin action (full API keys only — devic-ui restricted keys are blocked at the gateway). Adds usage your own product measured outside Devic. It consumes the tenant's quota exactly like a call Devic measured, including blocking the tenant with 429 TENANT_LIMIT_EXCEEDED once a window is spent, and is tagged as injected so it can be told apart from measured usage. It only adds: negative amounts are rejected — use the reset endpoint to clear counters. Subtenant rules are consumed on top of the tenant's own.",
+        "operationId": "addSubtenantUsage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "tenantId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtenantId",
+            "in": "path",
+            "required": true,
+            "description": "subtenantId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "At least one of `tokens` or `cost` must be greater than 0.",
+                "properties": {
+                  "tokens": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Tokens to add. Rounded to an integer.",
+                    "example": 1500
+                  },
+                  "cost": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "Cost to add, in the same unit as the tenant's cost limits.",
+                    "example": 0.42
+                  },
+                  "source": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9_-]{1,40}$",
+                    "default": "external",
+                    "description": "Tag this injection is filed under, so usage can be broken down by origin.",
+                    "example": "crm-sync"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "description": "Free-text note for your own auditing. Not stored on the counters."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usage added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tenantId": {
+                      "type": "string"
+                    },
+                    "subtenantId": {
+                      "type": "string"
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "applied": {
+                      "type": "object",
+                      "properties": {
+                        "tokens": {
+                          "type": "integer"
+                        },
+                        "cost": {
+                          "type": "number"
+                        },
+                        "countedTowardLimits": {
+                          "type": "boolean",
+                          "description": "False when the tenant has no tier and no ad-hoc rules: the usage is recorded in the cost aggregates, but there is no quota for it to consume."
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "array",
+                      "description": "Usage of every effective rule after the injection, so the remaining quota is visible in the same call. Each rule carries `externalConsumption`: the part of `current` that was injected rather than measured.",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - no amount given, a negative amount, or an invalid source tag"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "403": {
+            "description": "Forbidden - key not allowed on /tenant-admin, or a tenant session token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/v1/tenant-admin/{tenantId}/usage-limits/reset": {
       "post": {
         "tags": [
