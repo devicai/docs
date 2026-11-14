@@ -251,6 +251,19 @@
               },
               "model": {
                 "type": "string"
+              },
+              "reasoningEffort": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "minimal",
+                  "low",
+                  "medium",
+                  "high",
+                  "xhigh",
+                  "max"
+                ],
+                "description": "Reasoning effort recorded for this model response."
               }
             }
           },
@@ -2054,6 +2067,20 @@
           "presets": {
             "type": "string",
             "description": "The assistant's system prompt. Only present when the request asked for it with `includePresets=true`, and only for custom assistants. Read it before a partial update if you intend to edit the prompt rather than replace it: PATCH overwrites `presets` wholesale."
+          },
+          "reasoningEffort": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "none",
+              "minimal",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "description": "Configured reasoning level. Null restores inheritance; none is an explicit level. Supported values depend on the model: GET /api/v1/models."
           }
         }
       },
@@ -2212,6 +2239,20 @@
               }
             },
             "description": "Context depth control: summarize older turns to reduce the token footprint sent to the model."
+          },
+          "reasoningEffort": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "none",
+              "minimal",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "description": "Configured reasoning level. Null restores inheritance; none is an explicit level. Supported values depend on the model: GET /api/v1/models."
           }
         }
       },
@@ -2356,6 +2397,20 @@
               }
             },
             "description": "Context depth control: summarize older turns to reduce the token footprint sent to the model."
+          },
+          "reasoningEffort": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "none",
+              "minimal",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "description": "Configured reasoning level. Null restores inheritance; none is an explicit level. Supported values depend on the model: GET /api/v1/models."
           }
         }
       },
@@ -2473,6 +2528,20 @@
           "lastEditTimestampMs": {
             "type": "integer",
             "description": "Last edit timestamp in milliseconds"
+          },
+          "reasoningEffort": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "none",
+              "minimal",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "description": "Configured reasoning level. Null restores inheritance; none is an explicit level. Supported values depend on the model: GET /api/v1/models."
           }
         }
       },
@@ -2726,6 +2795,33 @@
               "type": "object",
               "additionalProperties": true
             }
+          },
+          "reasoningEffort": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "none",
+              "minimal",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "description": "Saved conversation effort; null/omission inherits the assistant."
+          },
+          "effectiveReasoningEffort": {
+            "type": "string",
+            "enum": [
+              "none",
+              "minimal",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "description": "Resolved effort for the last recorded model call; absent when using the adapter default."
           }
         }
       },
@@ -2933,6 +3029,34 @@
             "type": "string",
             "description": "Id of a speech-to-text transcript (from the transcription endpoint) that seeded this message, so the conversation keeps a link to the original audio.",
             "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "reasoningEffort": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "none",
+              "minimal",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "description": "Override for this user turn, including tool iterations. Null/omission inherits: message → conversation → assistant → adapter default. Must be supported by the effective model."
+          },
+          "conversationReasoningEffort": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "none",
+              "minimal",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "description": "Persist the conversation default for this and following turns. Omission preserves it; null restores assistant inheritance."
           }
         }
       },
@@ -3181,6 +3305,20 @@
               }
             },
             "description": "Context depth control: summarize older turns to reduce the token footprint sent to the model."
+          },
+          "reasoningEffort": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "none",
+              "minimal",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "description": "Configured reasoning level. Null restores inheritance; none is an explicit level. Supported values depend on the model: GET /api/v1/models."
           }
         }
       },
@@ -5724,6 +5862,81 @@
             "type": "number",
             "description": "Page size that was applied",
             "example": 10
+          }
+        }
+      },
+      "PublicModelDto": {
+        "type": "object",
+        "required": [
+          "model",
+          "provider",
+          "reasoningEfforts",
+          "reasoning",
+          "vision"
+        ],
+        "properties": {
+          "model": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "reasoningEfforts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minimal",
+                "low",
+                "medium",
+                "high",
+                "xhigh",
+                "max"
+              ]
+            },
+            "description": "Supported named effort levels. Empty means no named effort selection."
+          },
+          "reasoning": {
+            "type": "boolean"
+          },
+          "vision": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PublicProviderModelsDto": {
+        "type": "object",
+        "required": [
+          "provider",
+          "reasoningEfforts",
+          "models"
+        ],
+        "properties": {
+          "provider": {
+            "type": "string"
+          },
+          "reasoningEfforts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minimal",
+                "low",
+                "medium",
+                "high",
+                "xhigh",
+                "max"
+              ]
+            },
+            "description": "Union across selectable models. Use the per-model list for selection."
+          },
+          "models": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicModelDto"
+            }
           }
         }
       }
@@ -12256,7 +12469,7 @@
             }
           },
           "400": {
-            "description": "Invalid payload, provider not configured for the account, model unknown or not the provider's, or a template that could not be rendered.",
+            "description": "Invalid payload, provider not configured for the account, model unknown or not the provider's, or a template that could not be rendered. Unsupported reasoning effort for the effective model also returns 400.",
             "content": {
               "application/json": {
                 "schema": {
@@ -16995,6 +17208,54 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/models": {
+      "get": {
+        "operationId": "PublicModelsV1Controller_list",
+        "summary": "List selectable models and supported reasoning efforts",
+        "description": "Current cached model catalog grouped by provider. Retired and non-selectable models are excluded. No account credentials or provider availability are returned.",
+        "tags": [
+          "Models"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Model capabilities grouped by provider.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PublicProviderModelsDto"
+                      }
+                    },
+                    "meta": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
           }
         }
       }

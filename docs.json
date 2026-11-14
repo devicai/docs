@@ -120,6 +120,7 @@
               "devic/assistants/rag",
               "devic/assistants/conversation-console",
               "devic/assistants/other-options",
+              "devic/assistants/reasoning-effort",
               {
                 "group": "Guardrails",
                 "expanded": false,
@@ -257,6 +258,12 @@
             "group": "Introduction",
             "pages": [
               "api-reference/introduction"
+            ]
+          },
+          {
+            "group": "Models",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-models"
             ]
           },
           {

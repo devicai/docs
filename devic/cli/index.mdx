@@ -69,6 +69,22 @@ Errors always go to stderr as JSON — `{"error":"…","code":"…"}` — and th
 
 ---
 
+## Reasoning effort
+
+```bash
+devic models list --provider open-ai
+devic assistants update "$ASSISTANT_ID" --reasoning-effort high
+devic assistants chat "$ASSISTANT_ID" -m "Review" --conversation-reasoning-effort low --reasoning-effort high
+devic assistants chat "$ASSISTANT_ID" --chat-uid "$CHAT_UID" -m "Continue" --conversation-reasoning-effort default
+```
+
+Effort flags support assistant defaults, conversation defaults and individual
+turns. `default` restores inheritance; `none` is an explicit model level.
+See [reasoning effort](/devic/assistants/reasoning-effort) for supported-level
+discovery, JSON fields, precedence and reset behavior.
+
+---
+
 ## Scheduling an agent
 
 An agent can run itself. There is no external cron to set up, and the three
