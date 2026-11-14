@@ -1,0 +1,111 @@
+---
+title: "Reasoning effort"
+description: "Choose a model-compatible reasoning level for an assistant, conversation or individual message."
+---
+
+Reasoning effort controls how much reasoning a supported model uses. Set a saved
+default on an assistant, override it for a conversation, or choose a different
+level for one message. The selected model determines which levels are available.
+
+## Find compatible levels
+
+Request the current catalog with your API key:
+
+```bash
+curl https://api.devic.ai/api/v1/models \
+  -H "Authorization: Bearer $DEVIC_API_KEY"
+
+devic models list
+devic models list --provider open-ai --model gpt-6-luna
+```
+
+The response's `data` array groups models by provider. Each model includes its
+identifier, `reasoningEfforts`, and reasoning/vision capabilities. A provider's
+`reasoningEfforts` is the union of its selectable models' levels. **Use the model's
+list to choose a value.** An empty list means no named effort can be selected;
+omit the field or use `null` to keep the model's default behavior.
+
+The API recognizes `none`, `minimal`, `low`, `medium`, `high`, `xhigh` and `max`.
+Each model supports only a subset. Unsupported combinations return HTTP 400,
+including when changing the model while retaining an incompatible effort.
+
+## Assistant default
+
+Include `reasoningEffort` when [creating an assistant](/api-reference/endpoint/post-api-v1-assistants)
+or [updating it](/api-reference/endpoint/patch-api-v1-assistants-identifier):
+
+```bash
+curl -X PATCH "https://api.devic.ai/api/v1/assistants/$ASSISTANT_ID" \
+  -H "Authorization: Bearer $DEVIC_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"reasoningEffort":"high"}'
+
+devic assistants update "$ASSISTANT_ID" --reasoning-effort high
+```
+
+The CLI's `assistants create` command accepts the same flag, including alongside
+`--from-json`. Set `null` in API JSON, or `--reasoning-effort default` in the CLI,
+to remove the assistant's explicit effort and use the adapter default.
+
+## Conversation and message overrides
+
+Send these fields to the [message endpoint](/api-reference/endpoint/post-api-v1-assistants-identifier-messages):
+
+```json
+{
+  "message": "Review this proposal carefully",
+  "chatUid": "existing-chat-id",
+  "conversationReasoningEffort": "low",
+  "reasoningEffort": "high"
+}
+```
+
+This turn uses `high`; following turns use the saved conversation value `low`
+unless they include another message override. The message-level setting also
+applies to tool iterations and resumptions within that turn. Both synchronous
+and asynchronous requests accept these fields. Omit `chatUid` to start a new
+conversation with the same settings.
+
+```bash
+devic assistants chat "$ASSISTANT_ID" --chat-uid "$CHAT_UID" \
+  -m "Review this proposal carefully" \
+  --conversation-reasoning-effort low --reasoning-effort high
+```
+
+| Field | Scope | If omitted | If `null` |
+| --- | --- | --- | --- |
+| Assistant `reasoningEffort` | Saved assistant default | Preserve it on PATCH | Use the adapter default |
+| Message `conversationReasoningEffort` | Saved conversation default | Preserve the current conversation setting | Inherit the assistant setting |
+| Message `reasoningEffort` | Current user turn | Inherit the conversation, then assistant | Inherit the conversation, then assistant |
+
+Resolution is **message → conversation → assistant → adapter default**.
+`none` is an explicit model level, distinct from inheritance. The CLI translates
+`default` (also accepted as `null`) into JSON `null`. API JSON must use `null`,
+not the string `"default"`. Explicit CLI flags override JSON input, including
+when clearing a setting.
+
+To restore assistant inheritance for an existing conversation:
+
+```bash
+devic assistants chat "$ASSISTANT_ID" --chat-uid "$CHAT_UID" \
+  -m "Continue" --conversation-reasoning-effort default
+```
+
+## Read the configured and effective values
+
+Assistant reads include `reasoningEffort`. Conversation history includes
+`reasoningEffort` (the saved conversation setting) and `effectiveReasoningEffort`
+(the last recorded model call). Individual model response messages expose
+`messageTokenUsage.reasoningEffort`. An absent effective value indicates that
+the adapter's existing default behavior was used.
+
+```bash
+devic assistants get "$ASSISTANT_ID"
+devic assistants chats get "$ASSISTANT_ID" "$CHAT_UID"
+```
+
+In the console, the effort selector appears next to the model selector. Workspace
+assistant settings also provide it. Linked workspace assistants inherit the
+source setting unless a local override is saved; clearing that override restores
+inheritance. Workspace configuration uses its existing session-authenticated API
+and workspace permissions.

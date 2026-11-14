@@ -1,138 +1,96 @@
 ---
 title: "Execution via API"
-description: "Learn how to invoke Devic assistants through the API to integrate them with your applications or custom workflows."
+description: "Invoke an assistant, continue conversations and select reasoning effort through the public API."
 ---
 
-Devic **assistants** can be executed not only from the visual interface or widget, but also **programmatically** through the public API.  
-This allows you to integrate them into external systems, automate processes, or connect them with other corporate platforms.
-
-Each assistant has a dedicated **endpoint** that allows you to send messages, start new conversations, or continue existing ones, all via standard HTTP requests.
-
----
-
-## Base Endpoint
-
-Each assistant has a unique URL for sending messages:
-
-`POST https://api.devic.ai/v1/assistants/{assistant_id}/messages`
-
-The `{assistant_id}` parameter can be obtained from the assistant view, in the **“Get Code”** dialog.
+Send messages to `POST /api/v1/assistants/{identifier}/messages` with a valid
+API key. Get the assistant identifier from the console's **Get Code** dialog
+or the [assistant listing endpoint](/api-reference/endpoint/get-api-v1-assistants).
 
 ![Assistant API panel view](/get-code-assistant.png)
 
-## 
+## Start a conversation
 
-![Assistant API documentation detail](/get-code-documentation-detail.png)
-
----
-
-## Usage Example
-
-You can invoke an assistant using any language that supports HTTP requests (JavaScript, Python, cURL, etc.).  
-Below is an example in **JavaScript** using `fetch`:
+This JavaScript example uses asynchronous mode. The response includes the
+`chatUid` that identifies the new conversation:
 
 ```js
-    const response = await fetch('https://api.devic.ai/v1/assistants/{assistant_id}/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer YOUR_API_TOKEN'
-      },
-      body: JSON.stringify({
-        message: 'Hola, ¿puedes ayudarme con el reporte técnico?',
-        chatUuid: null
-      })
-    })
+const baseUrl = 'https://api.devic.ai';
+const assistantId = process.env.DEVIC_ASSISTANT_ID;
+const headers = {
+  Authorization: `Bearer ${process.env.DEVIC_API_KEY}`,
+  'Content-Type': 'application/json',
+};
 
-    const data = await response.json()
-    console.log(data)
+const response = await fetch(
+  `${baseUrl}/api/v1/assistants/${assistantId}/messages?async=true`,
+  {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      message: 'Review this proposal',
+      conversationReasoningEffort: 'low',
+      reasoningEffort: 'high',
+    }),
+  },
+);
+if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+const result = await response.json();
+const { chatUid } = result.data ?? result;
 ```
 
-This example creates a **new conversation** with the assistant by sending an initial message.\
-The `chatUuid` field identifies the active session or conversation; if it is sent as `null`, a new one will be created.
+Choose effort levels supported by the assistant's model, or omit them to inherit
+its defaults. See [reasoning effort](/devic/assistants/reasoning-effort) for model
+discovery, inheritance and resets.
 
----
+## Continue a conversation
 
-## Continue an Existing Conversation
-
-To continue a conversation that has already started, simply include the chat identifier (`chatUuid`) obtained in the first response:
+Include the same **`chatUid`** on subsequent messages:
 
 ```js
-    const response = await fetch('https://api.devic.ai/v1/assistants/{assistant_id}/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer YOUR_API_TOKEN'
-      },
-      body: JSON.stringify({
-        message: 'Gracias, continúa con el siguiente paso del informe.',
-        chatUuid: 'existing-chat-id'
-      })
-    })
-
-    const data = await response.json()
-    console.log(data)
+await fetch(`${baseUrl}/api/v1/assistants/${assistantId}/messages?async=true`, {
+  method: 'POST',
+  headers,
+  body: JSON.stringify({
+    chatUid,
+    message: 'Explain the main risks',
+  }),
+});
 ```
 
----
+The saved conversation effort remains `low`; the earlier message's `high`
+override applied only to that turn. To restore the assistant default, include
+`conversationReasoningEffort: null` in a subsequent request.
 
-## Authentication
+## Read the result
 
-All requests must include an authorization header with a **valid token**:
+Use the [realtime endpoint](/api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid-realtime)
+to follow asynchronous progress, then read the saved
+[conversation history](/api-reference/endpoint/get-api-v1-assistants-identifier-chats-chatuid).
+Without `async=true`, the message endpoint waits for completion and returns the
+messages produced by the turn. API responses use the standard `data` envelope.
 
-Authorization: Bearer YOUR_API_TOKEN
+The CLI handles asynchronous polling by default:
 
-The token is obtained from your **Devic** account and must be protected carefully, as it grants access to the assistant's execution.
-
----
-
-## API Response
-
-The API returns a JSON object containing information about the conversation and the response generated by the assistant.\
-A simplified example of a response would be:
-
-```js
-    {
-      "chatUuid": "e1f9d83b-7c9f-4d6b-8c1b-43b214f093e2",
-      "message": "Claro, puedo ayudarte con el reporte técnico. ¿Qué parte deseas revisar?",
-      "tokens_used": 845,
-      "timestamp": "2025-10-29T14:58:25Z"
-    }
+```bash
+devic assistants chat "$DEVIC_ASSISTANT_ID" -m "Review this proposal" \
+  --conversation-reasoning-effort low --reasoning-effort high
+devic assistants chats get "$DEVIC_ASSISTANT_ID" "$CHAT_UID"
 ```
 
----
+## Parameters
 
-## Supported Parameters
+| Field | Description |
+| --- | --- |
+| `message` | Text to send. |
+| `chatUid` | Existing conversation identifier; omit to start a new one. |
+| `reasoningEffort` | Effort for this user turn. Null or omission inherits defaults. |
+| `conversationReasoningEffort` | Saved conversation effort. Null restores assistant inheritance. |
+| `model`, `provider` | Optional model/provider overrides; the effort must be compatible. |
+| `metadata` | Custom metadata for your integration. |
+| `tenantId`, `subtenantId` | Tenant scope, when using multi-tenancy. |
 
-| Field         | Type                | Description                                                               |
-| ------------- | ------------------- | ------------------------------------------------------------------------- |
-| **message**   | string              | Text of the message sent to the assistant.                                |
-| **chatUuid**  | string or null      | Chat identifier. If left empty, a new conversation is created.            |
-| **context**   | object _(optional)_ | Additional information used to customize the interaction.                 |
-| **metadata**  | object _(optional)_ | Custom data (for example, user ID or language).                           |
-
----
-
-## Best Practices
-
-- **Reuse `chatUuid`** to maintain conversational context.  
-- **Monitor the number of requests** to avoid overloads or unnecessary costs.  
-- **Store responses** if you need traceability or conversation logs.  
-- **Always use HTTPS**, since the API does not accept insecure connections
-
----
-
-## Summary
-
-| Element                        | Purpose                                                     |
-| ------------------------------ | ----------------------------------------------------------- |
-| **POST /assistants//messages** | Send messages or create conversations with the assistant.   |
-| **chatUuid**                   | Maintains the continuity of the conversation.               |
-| **Authorization header**       | Controls access using a token.                              |
-| **Response JSON**              | Contains the assistant’s reply and associated metadata.     |
-
----
-
-<Card title="Next Step" icon="database" href="/devic/databases">
-  Learn how to create, query, and manage databases within Devic to enhance the capabilities of your agents and assistants.
-</Card>
+See the [message API reference](/api-reference/endpoint/post-api-v1-assistants-identifier-messages)
+for the full schema, file attachments, response types and errors. Keep API keys
+on your server; use [tenant sessions](/devic/multi-tenant/tenant-sessions) for
+browser integrations.
