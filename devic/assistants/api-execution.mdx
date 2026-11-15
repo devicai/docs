@@ -29,6 +29,7 @@ const response = await fetch(
     headers,
     body: JSON.stringify({
       message: 'Review this proposal',
+      chatName: 'Proposal review',
       conversationReasoningEffort: 'low',
       reasoningEffort: 'high',
     }),
@@ -42,6 +43,23 @@ const { chatUid } = result.data ?? result;
 Choose effort levels supported by the assistant's model, or omit them to inherit
 its defaults. See [reasoning effort](/devic/assistants/reasoning-effort) for model
 discovery, inheritance and resets.
+
+## Name a new conversation
+
+Pass `chatName` in the message JSON to choose the conversation's initial name.
+The field works in synchronous and asynchronous mode. Leading and trailing
+whitespace is trimmed; omit the name or send a blank string to keep automatic
+naming. When `chatUid` identifies an existing conversation, `chatName` is ignored
+and its current name is preserved. Read the saved name as `name` in conversation
+history.
+
+```bash
+devic assistants chat "$DEVIC_ASSISTANT_ID" -m "Hello" --chat-name "Customer onboarding"
+```
+
+The CLI also accepts `chatName` through `--from-json`. An explicit `--chat-name`
+flag overrides the JSON value. The flag is included in CLI 0.26.0 and later;
+check the installed version with `devic --version`.
 
 ## Continue a conversation
 
@@ -84,6 +102,7 @@ devic assistants chats get "$DEVIC_ASSISTANT_ID" "$CHAT_UID"
 | --- | --- |
 | `message` | Text to send. |
 | `chatUid` | Existing conversation identifier; omit to start a new one. |
+| `chatName` | Initial name for a new conversation. Blank or omitted uses automatic naming; existing chats keep their name. |
 | `reasoningEffort` | Effort for this user turn. Null or omission inherits defaults. |
 | `conversationReasoningEffort` | Saved conversation effort. Null restores assistant inheritance. |
 | `model`, `provider` | Optional model/provider overrides; the effort must be compatible. |

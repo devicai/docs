@@ -3057,6 +3057,11 @@
               "max"
             ],
             "description": "Persist the conversation default for this and following turns. Omission preserves it; null restores assistant inheritance."
+          },
+          "chatName": {
+            "type": "string",
+            "description": "Name assigned only when creating a new conversation. Leading/trailing whitespace is trimmed. Omitted or blank names keep automatic naming. Existing conversations are never renamed, even when chatName is supplied with chatUid. Supported in synchronous and asynchronous modes.",
+            "example": "Customer onboarding"
           }
         }
       },
