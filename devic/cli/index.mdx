@@ -69,6 +69,18 @@ Errors always go to stderr as JSON — `{"error":"…","code":"…"}` — and th
 
 ---
 
+## Name a conversation
+
+```bash
+devic assistants chat "$ASSISTANT_ID" -m "Hello" --chat-name "Customer onboarding"
+```
+
+Available in CLI 0.26.0 and later. The name applies only when a conversation is
+created, in both synchronous and asynchronous mode. Existing conversations keep
+their name. Omit it or pass a blank string to keep automatic naming. JSON input
+uses `chatName`; the explicit flag takes precedence over `--from-json`.
+See [execution via API](/devic/assistants/api-execution#name-a-new-conversation).
+
 ## Reasoning effort
 
 ```bash
