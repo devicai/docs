@@ -62,6 +62,10 @@ The Devic API is ideal for backend automation, SaaS integrations and systems tha
     Mint short-lived tenant sessions from your backend, so an embedded widget carries no API key.
   </Card>
 
+  <Card title="Work in Workspaces" icon="people-group">
+    Read and search a person's threads, write as them or as an integration, answer assistants, download files and configure workspaces.
+  </Card>
+
   <Card title="Read and edit memory" icon="brain">
     The standing core-memory block an assistant is given for a tenant, readable and editable.
   </Card>
@@ -209,6 +213,11 @@ lets the key sit in a page without a visitor being able to claim a tenant that i
 
 **An OAuth access token**, for an integration acting on a customer's behalf. What it may reach is
 decided by the scopes it was granted.
+
+**Acting for a person in Workspaces.** An API key has no person behind it. In the
+[Workspaces](/devic/workspaces/api-and-cli) endpoints, add `X-Devic-User: <userUID or email>`
+to act for a person of the key's account, with that person's own permissions. Without the
+header, the key acts as the account integration.
 
 ---
 

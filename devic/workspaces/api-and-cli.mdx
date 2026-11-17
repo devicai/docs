@@ -1,0 +1,173 @@
+---
+title: "Workspaces from the API and the CLI"
+description: "Read and search threads, find what is unread, write as a person or as an integration, answer assistants, download files and configure workspaces — with the same permissions as the app."
+---
+
+Everything a person does in a [workspace](/devic/workspaces/index) can also be
+done from code, under `/v1/workspaces` of the public API or with
+`devic workspaces` (alias `devic ws`) in the [CLI](/devic/cli/index). The same
+permissions apply. Membership and roles are checked exactly as in the app.
+
+---
+
+## Who a request acts as
+
+Workspaces belong to people, so the first thing each request settles is who it
+acts as.
+
+| Credential | `X-Devic-User` header | Acts as |
+|---|---|---|
+| A person's token (CLI login, OAuth app) | — | That person |
+| API key | userUID or email of a person of the key's account | That person, with **their own** permissions |
+| API key | not sent | The **account integration**, shown as "API" |
+
+- **Acting for a person never adds permissions.** An admin key acting for a
+  consumer user can only do what that consumer can do in the app.
+- **The account integration has no person behind it.**
+  - It sees the account's **shared** workspaces only, never personal workspaces
+    or private conversations.
+  - It acts as a workspace manager, never as an owner.
+  - Its messages are signed **API**.
+- **Tenant-session tokens are rejected.** They identify your customers, not
+  members of your account.
+
+```bash
+devic ws me                                   # person or integration, and the origin its messages carry
+devic ws --as ana@acme.com me                 # act for a person (or: export DEVIC_USER=ana@acme.com)
+```
+
+```http
+GET https://api.devic.ai/v1/workspaces/me
+Authorization: Bearer YOUR_API_KEY
+X-Devic-User: ana@acme.com
+```
+
+Every message written this way records where it came from in `origin`:
+`channel` (`api`, `cli` or `sdk`) and the credential. The apps show it as a
+"via API / CLI / SDK" tag. The server sets it; a request body cannot.
+
+---
+
+## Find the work
+
+```bash
+devic ws list --search ventas --summary          # with thread, unread and document counts
+devic ws threads list --unread                   # unread threads across every workspace
+devic ws threads list --search renovaciones      # matches the thread title or the workspace name
+```
+
+[`GET /v1/workspaces/threads`](/api-reference/endpoint/get-api-v1-workspaces-threads)
+covers every workspace you can see, or one with `workspaceId`:
+
+- `search` ignores case and accents, and every word must appear.
+- `unread=true` keeps threads with messages from others since your last read,
+  or that were marked unread.
+- Results come newest activity first, paginated with `offset` and `limit`.
+- Each row carries `unreadCount`, `unreadMentionCount`, `waitingForMe` (a
+  question or an approval waiting for you) and `activeRunCount`.
+
+---
+
+## Read a thread
+
+```bash
+devic ws threads get <wid> <tid>                    # latest messages and pending questions
+devic ws threads messages <wid> <tid> --before 120  # an older page
+devic ws threads messages <wid> <tid> --after 164   # only what is new
+devic ws threads read <wid> <tid>                   # mark it read
+```
+
+- Messages are paged by `seq`, at most 200 per page.
+- Each page also returns the runs answering its messages, plus every run still
+  in progress.
+- Reading never marks a thread read. Use
+  [`POST …/read`](/api-reference/endpoint/post-api-v1-workspaces-wid-threads-tid-read)
+  for that.
+
+---
+
+## Write, and wait for the assistant
+
+```bash
+devic ws send <wid> <tid> "Resume la semana" --assistant <aid> --wait
+```
+
+```http
+POST /v1/workspaces/{wid}/threads/{tid}/messages
+{ "text": "Resume la semana", "directedAssistantId": "<aid>", "clientMessageId": "weekly-2026-47" }
+```
+
+- **Asking an assistant:** set `directedAssistantId`, mention it, or reply to one
+  of its messages. The response lists the runs the message started.
+- **Retries:** `clientMessageId` makes them safe. The same id and body return the
+  same message.
+- **`--wait`:** the CLI follows the runs until they finish or wait for you.
+
+---
+
+## When the assistant waits for you
+
+A run in `waiting_input` asked a question. A run in `waiting_approval` wants to
+use a tool that needs approval.
+
+```bash
+devic ws answer <wid> <tid> <runId> --answers '[{"id":"periodicidad","selected":["anual"]}]'
+devic ws approve <wid> <tid> <runId>
+```
+
+Through the API, use
+[`POST …/invocations/{runId}/{action}`](/api-reference/endpoint/post-api-v1-workspaces-wid-threads-tid-invocations-runid-action):
+
+- **`answer`:** `{ revision, inputId, response: { answers } }`, or `skipped: true`
+  to skip the questions.
+- **`approve`:** `{ revision, actionId }`, where `actionId` is the run's
+  `requestedAction.id`.
+- **`cancel` and `retry`** take the same route.
+
+A stale `revision` returns `409`: read the thread again and retry. The CLI fills
+in `revision`, `inputId` and `actionId` for you.
+
+---
+
+## Files and documents
+
+```bash
+devic ws files list <wid> <tid>
+devic ws files download <wid> <tid> <fileId> --out ./out/   # never overwrites without --force
+devic ws documents <wid> --search contrato
+```
+
+The download is the original file, with its name in `Content-Disposition`.
+
+---
+
+## Configure a workspace
+
+Settings, members, assistants, knowledge and skills, rules, core memory and
+automations are all available:
+
+```bash
+devic ws members set <wid> <userUID> --role member
+devic ws skills attach <wid> <skillId>
+devic ws rules set <wid> --file rules.md
+devic ws memory add <wid> <aid> --section decisions --content "Prices are quoted in EUR" --pinned
+devic ws automations list <wid>
+```
+
+Each needs the same [role](/devic/workspaces/index#roles) as in the app. Changes
+that carry a revision (rules, resources, members, assistants) refuse a stale
+one with `409`.
+
+---
+
+## Access
+
+<Note>
+  An API key restricted to some endpoints needs the **Workspaces** group
+  (`/v1/workspaces/*`) in its [allowed endpoints](/devic/administration/api-keys).
+  An OAuth app needs the `workspaces:read` or `workspaces:write` scopes, or a
+  `platform:*` scope.
+</Note>
+
+The complete list of operations is in the API reference, under
+[Workspaces](/api-reference/endpoint/get-api-v1-workspaces).

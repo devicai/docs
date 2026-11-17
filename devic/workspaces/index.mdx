@@ -1,0 +1,80 @@
+---
+title: "Workspaces"
+description: "Shared spaces where the people of your account and AI assistants work together in threads."
+---
+
+A **workspace** is where a team and its assistants work together. People write in
+**threads**, mention an assistant or address one directly, and the assistant
+answers in the same thread, with the tools, knowledge and rules the workspace
+gives it.
+
+Workspaces live in the web app and the mobile app. Everything they do is also
+available [from the API and the CLI](/devic/workspaces/api-and-cli), with the
+same permissions.
+
+---
+
+## What a workspace holds
+
+<Columns cols={2}>
+  <Card title="Threads" icon="comments">
+    Conversations between people and assistants, with read state per person, mentions, replies, and private conversations between two members.
+  </Card>
+  <Card title="Assistants" icon="robot">
+    Assistants of the account linked to the workspace, or created for it, each with its model, tools and instructions.
+  </Card>
+  <Card title="Knowledge and skills" icon="book">
+    Documents and skills the assistants of the workspace can read, plus every file its threads produce.
+  </Card>
+  <Card title="Rules and memory" icon="brain">
+    Standing instructions for the whole workspace or a single thread, and the core memory each assistant always reads.
+  </Card>
+  <Card title="Automations" icon="clock">
+    Work an assistant does on a schedule or when an event arrives from a connected app, posted to a thread.
+  </Card>
+  <Card title="Members and roles" icon="users">
+    Owner, manager, member and viewer. External members from other accounts can be invited to a single workspace.
+  </Card>
+</Columns>
+
+---
+
+## How an assistant takes part
+
+An assistant answers when someone addresses it, either by mentioning it or by
+replying to one of its messages. The workspace can also be set to suggest an
+assistant, or to bring one in automatically.
+
+While it works, the run is visible in the thread: thinking, writing, the tools
+it calls. Sometimes it waits for a person:
+
+- **A question.** The assistant asks with options or free text, and the run
+  continues with the answer.
+- **An approval.** Some tools, such as the terminal, need someone to approve
+  them before they run.
+
+Through the API these are runs in `waiting_input` and `waiting_approval`, and
+you can answer or approve them from there too.
+
+---
+
+## Roles
+
+| Role | Can |
+|---|---|
+| Viewer | Read threads, files, rules and memory |
+| Member | All of the above, plus write, answer and approve runs, edit memory and thread rules |
+| Manager | All of the above, plus manage automations and skills. An account admin who is a manager also edits settings, members, assistants, knowledge and workspace rules |
+| Owner | Everything, including ownership |
+
+A personal workspace belongs to one person and nobody else can see it.
+
+---
+
+## Messages written outside the apps
+
+Messages written through the [public API, the CLI or the SDK](/devic/workspaces/api-and-cli)
+carry a small **via API**, **via CLI** or **via SDK** tag next to the author. The
+tag's tooltip says how the message was sent: by the person through an
+authorized app, with an API key on the person's behalf, or by an API key with
+no person behind it, shown as **API**.
