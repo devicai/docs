@@ -352,6 +352,8 @@
             "group": "Workspace Threads",
             "pages": [
               "api-reference/endpoint/get-api-v1-workspaces-threads",
+              "api-reference/endpoint/get-api-v1-workspaces-direct-messages",
+              "api-reference/endpoint/post-api-v1-workspaces-direct-messages",
               "api-reference/endpoint/get-api-v1-workspaces-wid-threads",
               "api-reference/endpoint/post-api-v1-workspaces-wid-threads",
               "api-reference/endpoint/get-api-v1-workspaces-wid-threads-tid",

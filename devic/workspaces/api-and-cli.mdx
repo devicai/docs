@@ -101,7 +101,34 @@ POST /v1/workspaces/{wid}/threads/{tid}/messages
   of its messages. The response lists the runs the message started.
 - **Retries:** `clientMessageId` makes them safe. The same id and body return the
   same message.
+- **`@everybody`:** add `{ "kind": "everyone", "id": "everyone", "label": "everybody" }`
+  to `mentions` and `@everybody` to the text (`devic ws send … --everybody`). It
+  notifies everyone who can read the thread and never asks an assistant. Not for
+  guests from another account; once every 10 minutes per author and thread (`429
+  EVERYONE_MENTION_COOLDOWN`, the message is not posted).
 - **`--wait`:** the CLI follows the runs until they finish or wait for you.
+
+---
+
+## Direct messages
+
+```bash
+devic ws dm list
+devic ws dm send ana@acme.com "¿Revisas la factura?"
+```
+
+```http
+GET  /v1/workspaces/direct-messages            → { "workspaceId": "<space>", "items": [ … ] }
+POST /v1/workspaces/direct-messages  { "email": "ana@acme.com" }   // or "userUID"
+```
+
+- Private conversations are account-wide and live in one hidden space of the
+  account. Use its `workspaceId` with the usual thread endpoints to read, write,
+  mark read or download files. It is `null` until the first conversation.
+- Opening a conversation with someone you already talk to returns the same one.
+- They need a person: the account integration (an API key without
+  `X-Devic-User`) gets `403 DIRECT_MESSAGES_REQUIRE_USER`.
+- `GET /v1/workspaces/threads?kind=direct` lists them among the rest.
 
 ---
 

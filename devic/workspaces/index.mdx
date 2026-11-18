@@ -18,7 +18,7 @@ same permissions.
 
 <Columns cols={2}>
   <Card title="Threads" icon="comments">
-    Conversations between people and assistants, with read state per person, mentions, replies, and private conversations between two members.
+    Conversations between people and assistants, with read state per person, mentions (`@everybody` notifies everyone in the thread) and replies.
   </Card>
   <Card title="Assistants" icon="robot">
     Assistants of the account linked to the workspace, or created for it, each with its model, tools and instructions.
@@ -36,6 +36,16 @@ same permissions.
     Owner, manager, member and viewer. External members from other accounts can be invited to a single workspace.
   </Card>
 </Columns>
+
+---
+
+## Direct messages
+
+Private conversations are account-wide: any two people of the account can write
+to each other, whatever workspaces they share. They have their own **Direct
+messages** section, next to the workspaces, and only the two participants can
+open them and their documents. A document from a private conversation can be
+published as a copy in a shared thread.
 
 ---
 

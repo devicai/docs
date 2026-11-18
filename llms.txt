@@ -985,7 +985,9 @@
     "¿Cómo leo los threads no leídos de una persona en todos sus workspaces?",
     "¿Cómo escribe una API key en nombre de un usuario (X-Devic-User) y qué pasa si no indica ninguno?",
     "¿Cómo respondo a las preguntas de un asistente o apruebo una herramienta por API?",
-    "¿Cómo descargo los ficheros de un thread?"
+    "¿Cómo descargo los ficheros de un thread?",
+    "¿Cómo envío un mensaje privado a otra persona de la cuenta por API o CLI?",
+    "¿Cómo aviso a todo el thread con @everybody?"
   ]
   key_terms: ["API Workspaces", "X-Devic-User", "devic ws", "threads no leídos", "integración API", "origin via CLI", "waiting_input", "waiting_approval", "clientMessageId"]
   prerequisites: ["API key (o token personal / OAuth con workspaces:read/write)", "CLI @devicai/cli para los ejemplos de terminal"]
@@ -995,8 +997,10 @@
     3) Leer: GET …/threads/{tid} y …/messages?before|after (paginado por seq).
     4) Escribir: POST …/messages con directedAssistantId y clientMessageId; `devic ws send … --wait`.
     5) Si el run espera: POST …/invocations/{runId}/answer o /approve con revision + inputId/actionId; `devic ws answer|approve`.
+    6) Mensajes directos (a nivel de cuenta): GET/POST /v1/workspaces/direct-messages (userUID o email) y los endpoints de thread con su workspaceId; `devic ws dm list|open|send`. Requieren una persona (no la integración).
+    7) @everybody: mención {kind:"everyone"} + «@everybody» en el texto; `devic ws send … --everybody`. Cooldown de 10 min por autor y thread.
   api_surface: |
-    GET /v1/workspaces, GET /v1/workspaces/threads, GET/POST /v1/workspaces/{wid}/threads/{tid}/messages, POST …/read|unread, POST …/invocations/{runId}/{action}, GET …/files/{fileId}/download, members, assistants, resources, rules, memory/core, automations.
+    GET /v1/workspaces, GET /v1/workspaces/threads (?kind=direct|shared), GET/POST /v1/workspaces/direct-messages, GET/POST /v1/workspaces/{wid}/threads/{tid}/messages, POST …/read|unread, POST …/invocations/{runId}/{action}, GET …/files/{fileId}/download, members, assistants, resources, rules, memory/core, automations.
   constraints: |
     Mismos permisos que en la app. Actuar por una persona nunca da más permisos que los suyos. Las tenant sessions no sirven. Una API key con endpoints restringidos necesita el grupo Workspaces.
   examples: |

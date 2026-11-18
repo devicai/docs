@@ -6147,6 +6147,13 @@
           },
           "activeRunCount": {
             "type": "integer"
+          },
+          "directUserUIDs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Private conversations (`kind: \"direct\"`): the two participants."
           }
         }
       },
@@ -6338,7 +6345,8 @@
                   "type": "string",
                   "enum": [
                     "user",
-                    "assistant"
+                    "assistant",
+                    "everyone"
                   ]
                 },
                 "id": {
@@ -6348,7 +6356,8 @@
                   "type": "string"
                 }
               }
-            }
+            },
+            "description": "Typed mentions; each `@label` must appear in `text`. `{ kind: \"everyone\", id: \"everyone\", label: \"everybody\" }` is `@everybody`: it notifies everyone who can read the thread and never asks an assistant. Not for guests from another account (`403 EVERYONE_MENTION_NOT_ALLOWED`); once every 10 minutes per author and thread (`429 EVERYONE_MENTION_COOLDOWN`, the message is not posted)."
           },
           "replyToMessageId": {
             "type": "string"
@@ -6535,6 +6544,35 @@
           },
           "pinned": {
             "type": "boolean"
+          }
+        }
+      },
+      "WorkspaceDirectMessages": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "type": "string",
+            "nullable": true,
+            "description": "The account's private-conversation space: use it as `{wid}` in the thread endpoints. `null` until the account's first conversation."
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkspaceThreadRow"
+            }
+          }
+        }
+      },
+      "OpenWorkspaceDirectMessage": {
+        "type": "object",
+        "description": "The other person: `userUID` or `email` (one of them).",
+        "properties": {
+          "userUID": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
           }
         }
       }
@@ -18265,6 +18303,19 @@
             }
           },
           {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "description": "`direct`: only private conversations; `shared`: only workspace threads. Default: both.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "direct",
+                "shared"
+              ]
+            }
+          },
+          {
             "name": "search",
             "in": "query",
             "required": false,
@@ -18841,6 +18892,12 @@
           },
           "409": {
             "description": "Conflict — `clientMessageId` reused with a different body"
+          },
+          "429": {
+            "description": "Too many requests — `EVERYONE_MENTION_COOLDOWN`: `@everybody` was used in this thread by this author less than 10 minutes ago"
+          },
+          "503": {
+            "description": "`DIRECT_MESSAGE_MIGRATING` — this private conversation is being moved; retry in a few seconds"
           }
         },
         "requestBody": {
@@ -21148,6 +21205,120 @@
         "responses": {
           "201": {
             "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/workspaces/direct-messages": {
+      "get": {
+        "tags": [
+          "Workspace Threads"
+        ],
+        "summary": "List direct messages",
+        "operationId": "listWorkspaceDirectMessages",
+        "description": "Your private conversations, newest activity first. They are account-wide (any two people of the account, whatever workspaces they share) and live in one hidden space of the account, never listed as a workspace. Read and write them with the thread endpoints using the returned `workspaceId`. The account integration (an API key without `X-Devic-User`) has none: `403 DIRECT_MESSAGES_REQUIRE_USER`.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success — wrapped as `{ success: true, data }`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/WorkspaceDirectMessages"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Workspace Threads"
+        ],
+        "summary": "Open a direct message",
+        "operationId": "openWorkspaceDirectMessage",
+        "description": "The private conversation with a person of the same account (by `userUID` or `email`); the same one if it already exists. Errors: `RECIPIENT_NOT_IN_ACCOUNT`, `INVALID_RECIPIENT` (yourself), `DIRECT_MESSAGES_REQUIRE_USER` (the account integration).",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpenWorkspaceDirectMessage"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success — wrapped as `{ success: true, data }`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/WorkspaceThreadRow"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad request — invalid or inconsistent payload"
