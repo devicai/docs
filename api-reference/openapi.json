@@ -118,6 +118,10 @@
     {
       "name": "Workspace Automations",
       "description": "Scheduled and triggered work of a workspace"
+    },
+    {
+      "name": "Workspace Integrations",
+      "description": "App accounts a workspace can use, and connecting a new one through an authorization link."
     }
   ],
   "servers": [
@@ -20715,6 +20719,1135 @@
                 "additionalProperties": true
               }
             }
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{wid}/automations/capabilities": {
+      "get": {
+        "tags": [
+          "Workspace Automations"
+        ],
+        "summary": "Automation capabilities",
+        "operationId": "getWorkspaceAutomationCapabilities",
+        "description": "Sources this account can use (`composio` app events, `cron`, `manual`) and the included model to activate with.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{wid}/automations/destinations": {
+      "get": {
+        "tags": [
+          "Workspace Automations"
+        ],
+        "summary": "List automation destinations",
+        "operationId": "listWorkspaceAutomationDestinations",
+        "description": "Workspaces an automation of this workspace may post to (`targetWorkspaceId`). A shared workspace can only target workspaces whose members include all of its own.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{wid}/automations/destinations/{target}/assistants": {
+      "get": {
+        "tags": [
+          "Workspace Automations"
+        ],
+        "summary": "List destination assistants",
+        "operationId": "listWorkspaceAutomationDestinationAssistants",
+        "description": "Assistants of a destination, for `targetAssistantId`.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "description": "Destination workspace id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{wid}/automations/destinations/{target}/threads": {
+      "get": {
+        "tags": [
+          "Workspace Automations"
+        ],
+        "summary": "Find destination threads",
+        "operationId": "findWorkspaceAutomationThreads",
+        "description": "Search non-archived threads of one destination. `searchIn=messages` with `mode=literal` finds stable source ids in message text.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "description": "Destination workspace id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "description": "Keywords, source id, literal text or regex",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "required": false,
+            "description": "Search mode",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "keywords",
+                "literal",
+                "regex",
+                "list"
+              ]
+            }
+          },
+          {
+            "name": "searchIn",
+            "in": "query",
+            "required": false,
+            "description": "Where to search (default titles)",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "titles",
+                "messages",
+                "all"
+              ]
+            }
+          },
+          {
+            "name": "match",
+            "in": "query",
+            "required": false,
+            "description": "Keyword matching (default all)",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "any"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "1–50",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "before",
+            "in": "query",
+            "required": false,
+            "description": "nextCursor of the previous page",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{wid}/automations/destinations/{target}/threads/{tid}": {
+      "get": {
+        "tags": [
+          "Workspace Automations"
+        ],
+        "summary": "Read a destination thread",
+        "operationId": "readWorkspaceAutomationThread",
+        "description": "Latest public messages of a destination thread, with reactions.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "description": "Destination workspace id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tid",
+            "in": "path",
+            "required": true,
+            "description": "Thread id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "description": "Literal filter applied before paging",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "1–50",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "beforeSeq",
+            "in": "query",
+            "required": false,
+            "description": "Older page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "afterSeq",
+            "in": "query",
+            "required": false,
+            "description": "Forward scan from this seq",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{wid}/automations/connections": {
+      "get": {
+        "tags": [
+          "Workspace Automations"
+        ],
+        "summary": "List automation connections",
+        "operationId": "listWorkspaceAutomationConnections",
+        "description": "Connected accounts an automation of this workspace may use: shared accounts in a shared workspace, the owner's own in a personal one.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{wid}/automations/connections/{cid}/tools": {
+      "get": {
+        "tags": [
+          "Workspace Automations"
+        ],
+        "summary": "List a connection's tools",
+        "operationId": "listWorkspaceAutomationConnectionTools",
+        "description": "Exact tool names and schemas of one account, for `connections[].externalTools`.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "description": "Connection id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{wid}/automations/triggers": {
+      "get": {
+        "tags": [
+          "Workspace Automations"
+        ],
+        "summary": "Search app event triggers",
+        "operationId": "searchWorkspaceAutomationTriggers",
+        "description": "App events (trigger types) of one integration.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "integration",
+            "in": "query",
+            "required": true,
+            "description": "App slug, e.g. gmail",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "description": "What the event is about",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Next page",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{wid}/automations/triggers/{slug}": {
+      "get": {
+        "tags": [
+          "Workspace Automations"
+        ],
+        "summary": "Get an event trigger",
+        "operationId": "getWorkspaceAutomationTrigger",
+        "description": "Configuration schema (`triggerConfig`), payload schema and provider setup instructions of an app event.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "description": "Trigger slug",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{wid}/automations/{automationId}/draft": {
+      "put": {
+        "tags": [
+          "Workspace Automations"
+        ],
+        "summary": "Save an automation draft",
+        "operationId": "saveWorkspaceAutomationDraft",
+        "description": "Validate a plan and save it as the next draft version. Never activates: a person approves a version with `POST .../activate`. A plan that fails validation writes nothing.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "automationId",
+            "in": "path",
+            "required": true,
+            "description": "Automation id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "instructions",
+                  "targetWorkspaceId"
+                ],
+                "properties": {
+                  "version": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Current draftVersion. A concurrent save returns 409 AUTOMATION_DRAFT_CHANGED"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Name, at most 200 characters"
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "description": "What each run does, at most 16000 characters: how to resolve the record, find or create the thread, what to post and what to do when the match is ambiguous"
+                  },
+                  "targetWorkspaceId": {
+                    "type": "string",
+                    "description": "Destination workspace, from GET .../automations/destinations"
+                  },
+                  "targetAssistantId": {
+                    "type": "string",
+                    "description": "Optional assistant of the destination each run asks to answer"
+                  },
+                  "source": {
+                    "type": "object",
+                    "description": "Omit for an app event. cron needs expression and timezone",
+                    "required": [
+                      "type"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "cron",
+                          "manual"
+                        ]
+                      },
+                      "expression": {
+                        "type": "string",
+                        "description": "Five-field cron expression"
+                      },
+                      "timezone": {
+                        "type": "string",
+                        "description": "IANA time zone, e.g. Europe/Madrid"
+                      }
+                    }
+                  },
+                  "connectionId": {
+                    "type": "string",
+                    "description": "App events: the account the trigger listens on"
+                  },
+                  "triggerSlug": {
+                    "type": "string",
+                    "description": "App events: slug from GET .../automations/triggers"
+                  },
+                  "triggerConfig": {
+                    "type": "object",
+                    "description": "App events: values for the trigger's configuration schema"
+                  },
+                  "connections": {
+                    "type": "array",
+                    "maxItems": 20,
+                    "description": "Tools granted to the runs, per account. May be empty",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "connectionId",
+                        "externalTools"
+                      ],
+                      "properties": {
+                        "connectionId": {
+                          "type": "string",
+                          "description": "Connection id"
+                        },
+                        "externalTools": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "Exact tool names from GET .../automations/connections/{cid}/tools"
+                        },
+                        "alwaysLoadedTools": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "Subset of externalTools loaded from the first call"
+                        }
+                      }
+                    }
+                  },
+                  "nativeTools": {
+                    "type": "object",
+                    "properties": {
+                      "alwaysLoadedTools": {
+                        "type": "array",
+                        "maxItems": 2,
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "search_web",
+                            "web_extract"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{wid}/integrations/catalog": {
+      "get": {
+        "tags": [
+          "Workspace Integrations"
+        ],
+        "summary": "Search connectable apps",
+        "operationId": "searchWorkspaceIntegrations",
+        "description": "Apps this workspace can connect, by name or by task (`semantic=true`), with whether each is connected.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "App name, or a task with semantic=true",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "semantic",
+            "in": "query",
+            "required": false,
+            "description": "Search by what the app does",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{wid}/connections": {
+      "get": {
+        "tags": [
+          "Workspace Integrations"
+        ],
+        "summary": "List connections",
+        "operationId": "listWorkspaceConnections",
+        "description": "Accounts shared in this workspace, and the caller's own accounts with `granted` (enabled here). No credentials.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Workspace Integrations"
+        ],
+        "summary": "Connect an app",
+        "operationId": "connectWorkspaceIntegration",
+        "description": "Start connecting an app. Returns the pending connection with `redirectUrl`, the provider's authorization link: a person opens it and accepts the consent screen. `scope: workspace` = for everyone in the workspace (owner or manager); `scope: user` = the caller's own account, enabled here (a person, not the account integration).",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "integration",
+                  "scope"
+                ],
+                "properties": {
+                  "integration": {
+                    "type": "string",
+                    "description": "App slug"
+                  },
+                  "scope": {
+                    "type": "string",
+                    "enum": [
+                      "workspace",
+                      "user"
+                    ]
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Label for this account"
+                  },
+                  "authScheme": {
+                    "type": "string",
+                    "description": "Authentication method when the app offers several"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{wid}/connections/{cid}/reconnect": {
+      "post": {
+        "tags": [
+          "Workspace Integrations"
+        ],
+        "summary": "Reconnect an app",
+        "operationId": "reconnectWorkspaceConnection",
+        "description": "A new authorization link (`redirectUrl`) for a pending or expired connection.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "description": "Connection id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{wid}/connections/{cid}/grant": {
+      "post": {
+        "tags": [
+          "Workspace Integrations"
+        ],
+        "summary": "Enable my account here",
+        "operationId": "grantWorkspaceConnection",
+        "description": "Enable one of the caller's own active accounts in this workspace. Not shared with other members.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "description": "Connection id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Workspace Integrations"
+        ],
+        "summary": "Disable my account here",
+        "operationId": "revokeWorkspaceConnectionGrant",
+        "description": "Stop using one of the caller's own accounts in this workspace.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id (home workspace of the automation)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "description": "Connection id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success — wrapped as `{ success: true, data }`"
+          },
+          "400": {
+            "description": "Bad request — invalid or inconsistent payload"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "Forbidden — not a member, not enough workspace permission, or acting for someone the credential cannot act for"
+          },
+          "404": {
+            "description": "Not found"
           }
         }
       }
