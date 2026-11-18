@@ -65,6 +65,9 @@ Errors always go to stderr as JSON — `{"error":"…","code":"…"}` — and th
   <Card title="Sandboxes" icon="terminal">
     `devic sandbox start | exec | stop`, plus `ls`, `cat` and `write` on a real Linux machine.
   </Card>
+  <Card title="Workspaces" icon="people-group">
+    `devic ws …` — threads across workspaces, unread, messages, answers and approvals, files, rules, memory, automations.
+  </Card>
 </Columns>
 
 ---
@@ -129,6 +132,26 @@ devic sandbox stop "Reporting box"          # this is what saves the snapshot
 Secrets belong in `--env`: they are encrypted at rest, injected into the machine
 as ordinary environment variables, and always read back masked. `--env` merges
 over what is stored, so adding one variable does not destroy the others.
+
+---
+
+## Working in Workspaces
+
+`devic workspaces` (alias `ws`) reads and writes [workspaces](/devic/workspaces/index)
+with the permissions of the person it acts as. With an API key, name that person
+with `--as` or `DEVIC_USER`; without one, the key acts as the account
+integration and signs its messages "API".
+
+```bash
+export DEVIC_USER=ana@acme.com
+devic ws threads list --unread                                   # what needs her, across every workspace
+devic ws send <wid> <tid> "Resume la semana" --assistant <aid> --wait
+devic ws answer <wid> <tid> <runId> --answers '[{"id":"q1","selected":["anual"]}]'
+devic ws files download <wid> <tid> <fileId> --out ./out/
+```
+
+Messages sent this way show "via CLI" in the apps. See
+[Workspaces from the API and the CLI](/devic/workspaces/api-and-cli).
 
 ---
 

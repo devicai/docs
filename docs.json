@@ -137,6 +137,13 @@
             ]
           },
           {
+            "group": "Workspaces",
+            "pages": [
+              "devic/workspaces/index",
+              "devic/workspaces/api-and-cli"
+            ]
+          },
+          {
             "group": "Knowledge",
             "icon": "book",
             "expanded": false,
@@ -328,6 +335,88 @@
               "api-reference/endpoint/post-api-v1-memory-assistants-identifier-core",
               "api-reference/endpoint/patch-api-v1-memory-assistants-identifier-core-entryid",
               "api-reference/endpoint/delete-api-v1-memory-assistants-identifier-core-entryid"
+            ]
+          },
+          {
+            "group": "Workspaces",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-workspaces-me",
+              "api-reference/endpoint/get-api-v1-workspaces",
+              "api-reference/endpoint/post-api-v1-workspaces",
+              "api-reference/endpoint/get-api-v1-workspaces-catalog",
+              "api-reference/endpoint/get-api-v1-workspaces-wid",
+              "api-reference/endpoint/patch-api-v1-workspaces-wid"
+            ]
+          },
+          {
+            "group": "Workspace Threads",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-workspaces-threads",
+              "api-reference/endpoint/get-api-v1-workspaces-direct-messages",
+              "api-reference/endpoint/post-api-v1-workspaces-direct-messages",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-threads",
+              "api-reference/endpoint/post-api-v1-workspaces-wid-threads",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-threads-tid",
+              "api-reference/endpoint/patch-api-v1-workspaces-wid-threads-tid",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-threads-tid-messages",
+              "api-reference/endpoint/post-api-v1-workspaces-wid-threads-tid-messages",
+              "api-reference/endpoint/post-api-v1-workspaces-wid-threads-tid-read",
+              "api-reference/endpoint/post-api-v1-workspaces-wid-threads-tid-unread",
+              "api-reference/endpoint/post-api-v1-workspaces-wid-threads-tid-invocations-runid-action"
+            ]
+          },
+          {
+            "group": "Workspace Files",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-workspaces-wid-documents",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-threads-tid-files",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-threads-tid-files-fileid-download"
+            ]
+          },
+          {
+            "group": "Workspace Configuration",
+            "pages": [
+              "api-reference/endpoint/put-api-v1-workspaces-wid-members-useruid",
+              "api-reference/endpoint/delete-api-v1-workspaces-wid-members-useruid",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-assistants",
+              "api-reference/endpoint/post-api-v1-workspaces-wid-assistants",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-assistants-aid",
+              "api-reference/endpoint/patch-api-v1-workspaces-wid-assistants-aid",
+              "api-reference/endpoint/delete-api-v1-workspaces-wid-assistants-aid",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-resources",
+              "api-reference/endpoint/put-api-v1-workspaces-wid-resources",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-knowledge-catalog",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-skills-catalog",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-rules",
+              "api-reference/endpoint/put-api-v1-workspaces-wid-rules",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-rules-history",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-threads-tid-rules",
+              "api-reference/endpoint/put-api-v1-workspaces-wid-threads-tid-rules"
+            ]
+          },
+          {
+            "group": "Workspace Memory",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-workspaces-wid-assistants-aid-memory-core",
+              "api-reference/endpoint/post-api-v1-workspaces-wid-assistants-aid-memory-core",
+              "api-reference/endpoint/patch-api-v1-workspaces-wid-assistants-aid-memory-core-entryid",
+              "api-reference/endpoint/delete-api-v1-workspaces-wid-assistants-aid-memory-core-entryid"
+            ]
+          },
+          {
+            "group": "Workspace Automations",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-workspaces-wid-automations",
+              "api-reference/endpoint/post-api-v1-workspaces-wid-automations",
+              "api-reference/endpoint/post-api-v1-workspaces-wid-automations-schedule-preview",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-automations-automationid",
+              "api-reference/endpoint/delete-api-v1-workspaces-wid-automations-automationid",
+              "api-reference/endpoint/patch-api-v1-workspaces-wid-automations-automationid-settings",
+              "api-reference/endpoint/post-api-v1-workspaces-wid-automations-automationid-action",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-automation-runs",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-automation-runs-runid",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-automation-runs-runid-summary",
+              "api-reference/endpoint/post-api-v1-workspaces-wid-automation-runs-runid-rerun"
             ]
           },
           {

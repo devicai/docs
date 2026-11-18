@@ -957,3 +957,52 @@
     Ejemplo: “Tengo la base ‘FAQ_Clientes’ asociada al asistente ‘ChatSoporte’. En el panel de ver/editar base edito varios registros de preguntas frecuentes, cambio la categoría de 100 preguntas y actualizo el índice de búsqueda semántica. Luego pruebo el asistente: la búsqueda responde mejor y la latencia baja un 15 %.”  
   related: ["Bases de datos Qué es", "Bases de datos Crear nueva base de datos", "Agentes RAG", "Asistentes RAG"]
 
+- title: Workspaces
+  url: https://docs.devic.ai/devic/workspaces/index
+  one_liner: Espacios compartidos donde las personas de una cuenta y los asistentes de IA trabajan juntos en threads.
+  answers: [
+    "¿Qué es un workspace de Devic y qué contiene?",
+    "¿Cómo participa un asistente en un thread y cuándo espera a una persona?",
+    "¿Qué permite cada rol (viewer, member, manager, owner)?"
+  ]
+  key_terms: ["Devic Workspaces", "threads", "asistentes en workspace", "reglas", "memoria core", "automatizaciones", "roles workspace", "via API"]
+  prerequisites: ["Cuenta de Devic"]
+  steps: |
+    1) Crear un workspace compartido (requiere admin de cuenta) o usar el personal.
+    2) Añadir miembros con su rol y vincular asistentes.
+    3) Escribir en threads mencionando o dirigiéndose a un asistente; responder sus preguntas o aprobar sus herramientas cuando las pida.
+  api_surface: |
+    Toda la funcionalidad está en /v1/workspaces de la API pública y en `devic workspaces` (ver «Workspaces desde la API y la CLI»).
+  constraints: |
+    Los workspaces personales solo los ve su dueño. Los mensajes escritos por API/CLI/SDK llevan la etiqueta «via API/CLI/SDK».
+  examples: |
+    Un equipo de ventas con un asistente de CRM en el workspace «Ventas»: el asistente pregunta qué campo define la renovación anual, alguien contesta, y el asistente continúa.
+  related: ["Workspaces desde la API y la CLI", "Asistentes index", "Memoria core", "Skills"]
+- title: Workspaces desde la API y la CLI
+  url: https://docs.devic.ai/devic/workspaces/api-and-cli
+  one_liner: Leer y buscar threads (también solo los no leídos), escribir como una persona o como integración, responder y aprobar a los asistentes, descargar ficheros y configurar workspaces con los mismos permisos que la app.
+  answers: [
+    "¿Cómo leo los threads no leídos de una persona en todos sus workspaces?",
+    "¿Cómo escribe una API key en nombre de un usuario (X-Devic-User) y qué pasa si no indica ninguno?",
+    "¿Cómo respondo a las preguntas de un asistente o apruebo una herramienta por API?",
+    "¿Cómo descargo los ficheros de un thread?",
+    "¿Cómo envío un mensaje privado a otra persona de la cuenta por API o CLI?",
+    "¿Cómo aviso a todo el thread con @everybody?"
+  ]
+  key_terms: ["API Workspaces", "X-Devic-User", "devic ws", "threads no leídos", "integración API", "origin via CLI", "waiting_input", "waiting_approval", "clientMessageId"]
+  prerequisites: ["API key (o token personal / OAuth con workspaces:read/write)", "CLI @devicai/cli para los ejemplos de terminal"]
+  steps: |
+    1) Decidir quién actúa: token personal, API key con X-Devic-User (persona de la cuenta) o API key sin cabecera (integración «API», solo workspaces compartidos).
+    2) Buscar trabajo: GET /v1/workspaces/threads?unread=true&search=… o `devic ws threads list --unread`.
+    3) Leer: GET …/threads/{tid} y …/messages?before|after (paginado por seq).
+    4) Escribir: POST …/messages con directedAssistantId y clientMessageId; `devic ws send … --wait`.
+    5) Si el run espera: POST …/invocations/{runId}/answer o /approve con revision + inputId/actionId; `devic ws answer|approve`.
+    6) Mensajes directos (a nivel de cuenta): GET/POST /v1/workspaces/direct-messages (userUID o email) y los endpoints de thread con su workspaceId; `devic ws dm list|open|send`. Requieren una persona (no la integración).
+    7) @everybody: mención {kind:"everyone"} + «@everybody» en el texto; `devic ws send … --everybody`. Cooldown de 10 min por autor y thread.
+  api_surface: |
+    GET /v1/workspaces, GET /v1/workspaces/threads (?kind=direct|shared), GET/POST /v1/workspaces/direct-messages, GET/POST /v1/workspaces/{wid}/threads/{tid}/messages, POST …/read|unread, POST …/invocations/{runId}/{action}, GET …/files/{fileId}/download, members, assistants, resources, rules, memory/core, automations.
+  constraints: |
+    Mismos permisos que en la app. Actuar por una persona nunca da más permisos que los suyos. Las tenant sessions no sirven. Una API key con endpoints restringidos necesita el grupo Workspaces.
+  examples: |
+    `DEVIC_USER=ana@acme.com devic ws threads list --unread` y después `devic ws answer <wid> <tid> <runId> --answers '[{"id":"q1","selected":["anual"]}]'`.
+  related: ["Workspaces", "CLI", "API keys", "API reference Workspaces"]
