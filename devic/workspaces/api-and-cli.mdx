@@ -187,6 +187,68 @@ one with `409`.
 
 ---
 
+## Build an automation
+
+An automation reacts to an app event, runs on a schedule or runs on demand, and
+posts its results in a workspace. In the app, the Automations assistant designs
+it with you. Through the API and the CLI you compose it yourself, with the same
+information and the same validation:
+
+<Steps>
+  <Step title="See what it can use">
+    ```bash
+    devic ws automations capabilities <wid>    # app events, schedules, included model
+    devic ws automations destinations <wid>    # workspaces it may post to
+    devic ws automations connections <wid>     # connected accounts it may use
+    ```
+  </Step>
+  <Step title="Connect a missing app">
+    ```bash
+    devic ws integrations search <wid> "meeting recordings" --semantic
+    devic ws connections connect <wid> <app> --scope workspace
+    ```
+    The response carries the provider's authorization link. The person opens it
+    and accepts the consent screen; the account is connected only then. A shared
+    workspace needs an account connected for everyone (`--scope workspace`).
+  </Step>
+  <Step title="Choose the event or the schedule">
+    ```bash
+    devic ws automations triggers <wid> --integration <app> --query "new recording"
+    devic ws automations trigger <wid> <slug>              # configuration and setup instructions
+    devic ws automations schedule-preview <wid> --data '{"expression":"0 9 * * 1-5","timezone":"Europe/Madrid"}'
+    ```
+  </Step>
+  <Step title="Grant tools and find the destination threads">
+    ```bash
+    devic ws automations connection-tools <wid> <connectionId>
+    devic ws automations find-threads <wid> <target> --query acme --search-in all
+    ```
+  </Step>
+  <Step title="Save the draft">
+    ```bash
+    devic ws automations create <wid> --name "Meeting summaries"
+    devic ws automations draft <wid> <id> --data plan.json
+    ```
+    The plan is validated before it is saved: accounts, tools, trigger
+    configuration and destination. Saving never activates it.
+  </Step>
+  <Step title="Activate">
+    ```bash
+    devic ws automations activate <wid> <id> --included
+    ```
+    Activation is the approval of that draft version, with the model that runs
+    it: the included one, or a provider and model with your own key.
+  </Step>
+</Steps>
+
+The plan's fields are described in
+[Save an automation draft](/api-reference/endpoint/put-api-v1-workspaces-wid-automations-automationid-draft).
+These operations need the owner or a manager of the workspace. The same tools
+are in the Devic MCP (`https://devic.mcp.devic.ai/mcp`), so an assistant like
+Claude can build an automation in a conversation.
+
+---
+
 ## Access
 
 <Note>

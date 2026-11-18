@@ -409,6 +409,16 @@
               "api-reference/endpoint/get-api-v1-workspaces-wid-automations",
               "api-reference/endpoint/post-api-v1-workspaces-wid-automations",
               "api-reference/endpoint/post-api-v1-workspaces-wid-automations-schedule-preview",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-automations-capabilities",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-automations-destinations",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-automations-destinations-target-assistants",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-automations-destinations-target-threads",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-automations-destinations-target-threads-tid",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-automations-connections",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-automations-connections-cid-tools",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-automations-triggers",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-automations-triggers-slug",
+              "api-reference/endpoint/put-api-v1-workspaces-wid-automations-automationid-draft",
               "api-reference/endpoint/get-api-v1-workspaces-wid-automations-automationid",
               "api-reference/endpoint/delete-api-v1-workspaces-wid-automations-automationid",
               "api-reference/endpoint/patch-api-v1-workspaces-wid-automations-automationid-settings",
@@ -417,6 +427,17 @@
               "api-reference/endpoint/get-api-v1-workspaces-wid-automation-runs-runid",
               "api-reference/endpoint/get-api-v1-workspaces-wid-automation-runs-runid-summary",
               "api-reference/endpoint/post-api-v1-workspaces-wid-automation-runs-runid-rerun"
+            ]
+          },
+          {
+            "group": "Workspace Integrations",
+            "pages": [
+              "api-reference/endpoint/get-api-v1-workspaces-wid-integrations-catalog",
+              "api-reference/endpoint/get-api-v1-workspaces-wid-connections",
+              "api-reference/endpoint/post-api-v1-workspaces-wid-connections",
+              "api-reference/endpoint/post-api-v1-workspaces-wid-connections-cid-reconnect",
+              "api-reference/endpoint/post-api-v1-workspaces-wid-connections-cid-grant",
+              "api-reference/endpoint/delete-api-v1-workspaces-wid-connections-cid-grant"
             ]
           },
           {
