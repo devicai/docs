@@ -244,8 +244,37 @@ information and the same validation:
 The plan's fields are described in
 [Save an automation draft](/api-reference/endpoint/put-api-v1-workspaces-wid-automations-automationid-draft).
 These operations need the owner or a manager of the workspace. The same tools
-are in the Devic MCP (`https://devic.mcp.devic.ai/mcp`), so an assistant like
-Claude can build an automation in a conversation.
+are in the Workspaces MCP server (see below), so an assistant like Claude can
+build an automation in a conversation.
+
+---
+
+## Connect an MCP client
+
+Claude, Codex, Cursor or any other MCP client can work in your workspaces with
+the **Devic Workspaces** MCP server:
+
+```
+https://workspaces.mcp.devic.ai/mcp
+```
+
+- It serves only the Workspaces operations: threads and messages, files, rules,
+  assistant memory, automations and the integrations they use. An agent
+  connected to it is never offered the rest of the platform.
+- No API key: the first time the client connects, it opens
+  **workspaces.devic.ai** to sign in and asks you to allow `workspaces:read`
+  and `workspaces:write`. It then acts as you, with your roles.
+- In Workspaces, **MCP** in the sidebar shows the steps for each client.
+
+For example, in Claude Code:
+
+```bash
+claude mcp add --transport http devic-workspaces https://workspaces.mcp.devic.ai/mcp
+```
+
+The **Devic API** server (`https://devic.mcp.devic.ai/mcp`, sign-in on
+app.devic.ai) has these same tools plus assistants, agents, knowledge, tool
+servers and projects. Use it to manage the whole platform.
 
 ---
 
