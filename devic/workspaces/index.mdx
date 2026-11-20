@@ -77,6 +77,37 @@ you can answer or approve them from there too.
 | Manager | All of the above, plus manage automations and skills. An account admin who is a manager also edits settings, members, assistants, knowledge and workspace rules |
 | Owner | Everything, including ownership |
 
+### Consumer permissions
+
+In a shared workspace, the owner decides what **members whose account role is
+Consumer** can do, and the same policy applies to guests from other Devic
+accounts. Open **Participants** and find **Role permissions** below the
+assistants: a table with what Owner and Manager can do (for reference) and a
+switch for each Member permission.
+
+| Permission | Owner | Manager | Member (Consumer) default |
+|---|---|---|---|
+| Participate in threads and run assistants | ✓ | ✓ | On |
+| Create threads | ✓ | ✓ | On |
+| Upload, publish and remove thread files | ✓ | ✓ | On |
+| Edit the thread canvas | ✓ | ✓ | On |
+| Edit thread rules | ✓ | ✓ | Off |
+| Edit assistants' shared core memory | ✓ | ✓ | Off |
+| Use shared integrations | ✓ | ✓ | On |
+| Connect and use personal integrations | ✓ | ✓ | On |
+| Edit workspace rules | Account admins | Account admins | Off |
+| Create and configure workspace assistants | Account admins | Account admins | Off |
+| Manage workspace skills | ✓ | ✓ | Off |
+| Manage workspace automations | ✓ | ✓ | Off |
+| Manage shared integrations and MCP servers | ✓ | ✓ | Off |
+| Invite members and viewers | ✓ | ✓ | Off |
+| Change these permissions | ✓ | — | — |
+
+- Every Member permission needs **Participate**: turning it off leaves consumers read-only.
+- Workspace management permissions are never given to guests from another account.
+- Viewers are always read-only. Members with a User or Admin account role are not limited by this policy, but cannot manage the workspace.
+- The policy applies through the API too. To change it there, see [Set consumer permissions](/api-reference/endpoint/patch-api-v1-workspaces-wid-consumer-permissions).
+
 A personal workspace belongs to one person and nobody else can see it.
 
 ---
