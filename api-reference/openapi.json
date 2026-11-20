@@ -6076,6 +6076,26 @@
             "type": "object",
             "description": "With `withSummary=true`: threadCount, unreadCount, documentCount, lastActivityAt…",
             "additionalProperties": true
+          },
+          "policyRevision": {
+            "type": "integer",
+            "description": "Revision of the workspace's policies; send it to `PATCH /v1/workspaces/{wid}/consumer-permissions`."
+          },
+          "consumerPermissions": {
+            "$ref": "#/components/schemas/WorkspaceConsumerPermissions"
+          },
+          "capabilities": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "What the caller may do here. `manageConsumerPermissions` is true only for the workspace owner; `permissions` is the consumer policy that applies to the caller, when one does.",
+            "properties": {
+              "manageConsumerPermissions": {
+                "type": "boolean"
+              },
+              "permissions": {
+                "$ref": "#/components/schemas/WorkspaceConsumerPermissions"
+              }
+            }
           }
         }
       },
@@ -6577,6 +6597,115 @@
           "email": {
             "type": "string",
             "format": "email"
+          }
+        }
+      },
+      "WorkspaceConsumerPermissions": {
+        "type": "object",
+        "description": "What members and viewers whose account role is `consumer`, and guests from other accounts, may do in a shared workspace. Owners and managers keep their role's permissions; viewers stay read-only.",
+        "required": [
+          "write",
+          "createThreads",
+          "uploadFiles",
+          "editCanvas",
+          "editThreadRules",
+          "editCoreMemory",
+          "useSharedConnections",
+          "usePersonalConnections",
+          "editWorkspaceRules",
+          "manageAssistants",
+          "manageSkills",
+          "manageAutomations",
+          "manageSharedConnections",
+          "inviteMembers"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "write": {
+            "type": "boolean",
+            "default": true,
+            "description": "Participate in threads and run assistants. Every other key needs it"
+          },
+          "createThreads": {
+            "type": "boolean",
+            "default": true,
+            "description": "Create threads"
+          },
+          "uploadFiles": {
+            "type": "boolean",
+            "default": true,
+            "description": "Upload, publish and remove thread files"
+          },
+          "editCanvas": {
+            "type": "boolean",
+            "default": true,
+            "description": "Edit the thread canvas"
+          },
+          "editThreadRules": {
+            "type": "boolean",
+            "default": false,
+            "description": "Edit thread rules"
+          },
+          "editCoreMemory": {
+            "type": "boolean",
+            "default": false,
+            "description": "Edit assistants' shared core memory"
+          },
+          "useSharedConnections": {
+            "type": "boolean",
+            "default": true,
+            "description": "Use the workspace's shared integrations"
+          },
+          "usePersonalConnections": {
+            "type": "boolean",
+            "default": true,
+            "description": "Connect and use their own integrations"
+          },
+          "editWorkspaceRules": {
+            "type": "boolean",
+            "default": false,
+            "description": "Edit workspace rules (internal members only)"
+          },
+          "manageAssistants": {
+            "type": "boolean",
+            "default": false,
+            "description": "Create and configure workspace assistants (internal members only)"
+          },
+          "manageSkills": {
+            "type": "boolean",
+            "default": false,
+            "description": "Manage workspace skills (internal members only)"
+          },
+          "manageAutomations": {
+            "type": "boolean",
+            "default": false,
+            "description": "Manage workspace automations (internal members only)"
+          },
+          "manageSharedConnections": {
+            "type": "boolean",
+            "default": false,
+            "description": "Manage shared integrations and MCP servers (internal members only)"
+          },
+          "inviteMembers": {
+            "type": "boolean",
+            "default": false,
+            "description": "Invite members and viewers (internal members only)"
+          }
+        }
+      },
+      "WorkspaceConsumerPermissionsInput": {
+        "type": "object",
+        "required": [
+          "revision",
+          "consumerPermissions"
+        ],
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "description": "The workspace's current `policyRevision` (not `revision`)."
+          },
+          "consumerPermissions": {
+            "$ref": "#/components/schemas/WorkspaceConsumerPermissions"
           }
         }
       }
@@ -18276,6 +18405,100 @@
                 "additionalProperties": true
               }
             }
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{wid}/consumer-permissions": {
+      "patch": {
+        "tags": [
+          "Workspaces"
+        ],
+        "summary": "Set consumer permissions",
+        "operationId": "setWorkspaceConsumerPermissions",
+        "description": "Sets what members with the Consumer account role (and guests from other Devic accounts) can do in a shared workspace. **Workspace owner only**, acting as a person: an API key without `X-Devic-User` acts as a manager and is refused with `WORKSPACE_OWNER_REQUIRED`.\n\nThe body is a complete replacement: send all 14 keys. `revision` is the workspace's `policyRevision`; a stale one returns `409 WORKSPACE_REVISION_CONFLICT`. Missing or unknown keys return `400 INVALID_CONSUMER_PERMISSIONS`. Personal workspaces have no policy.\n\nAn action the policy turns off is refused with `403` and `{ error: \"WORKSPACE_CONSUMER_PERMISSION_DENIED\", permission: \"<key>\" }`.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XDevicUser"
+          },
+          {
+            "name": "wid",
+            "in": "path",
+            "required": true,
+            "description": "Workspace id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkspaceConsumerPermissionsInput"
+              },
+              "example": {
+                "revision": 7,
+                "consumerPermissions": {
+                  "write": true,
+                  "createThreads": false,
+                  "uploadFiles": true,
+                  "editCanvas": true,
+                  "editThreadRules": false,
+                  "editCoreMemory": false,
+                  "useSharedConnections": true,
+                  "usePersonalConnections": true,
+                  "editWorkspaceRules": false,
+                  "manageAssistants": false,
+                  "manageSkills": false,
+                  "manageAutomations": false,
+                  "manageSharedConnections": false,
+                  "inviteMembers": false
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success — wrapped as `{ success: true, data }`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/WorkspaceSummary"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "`INVALID_CONSUMER_PERMISSIONS` — a key is missing, unknown or not a boolean; or a personal workspace"
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid credential"
+          },
+          "403": {
+            "description": "`WORKSPACE_OWNER_REQUIRED` — only the workspace owner, as a person, can change the policy"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "`WORKSPACE_REVISION_CONFLICT` — `revision` is not the current `policyRevision`"
           }
         }
       }

@@ -376,6 +376,7 @@
           {
             "group": "Workspace Configuration",
             "pages": [
+              "api-reference/endpoint/patch-api-v1-workspaces-wid-consumer-permissions",
               "api-reference/endpoint/put-api-v1-workspaces-wid-members-useruid",
               "api-reference/endpoint/delete-api-v1-workspaces-wid-members-useruid",
               "api-reference/endpoint/get-api-v1-workspaces-wid-assistants",

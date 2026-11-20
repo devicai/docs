@@ -185,6 +185,14 @@ Each needs the same [role](/devic/workspaces/index#roles) as in the app. Changes
 that carry a revision (rules, resources, members, assistants) refuse a stale
 one with `409`.
 
+Members with the Consumer account role, and guests, follow the workspace's
+[consumer permissions](/devic/workspaces/index#consumer-permissions). An action
+the policy turns off returns `403` with
+`{"error": "WORKSPACE_CONSUMER_PERMISSION_DENIED", "permission": "createThreads"}`.
+The owner changes the policy with
+[`PATCH /api/v1/workspaces/{wid}/consumer-permissions`](/api-reference/endpoint/patch-api-v1-workspaces-wid-consumer-permissions),
+sending all its keys and the workspace's `policyRevision`.
+
 ---
 
 ## Build an automation
